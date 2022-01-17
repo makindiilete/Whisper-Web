@@ -1,0 +1,433 @@
+@font-face {
+  font-family: "TT Norms";
+  src: url("assets/fonts/TTNorms-Bold.otf") format("opentype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "TT Norms";
+  src: url("assets/fonts/TTNorms-Medium.otf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "TT Norms";
+  src: url("assets/fonts/TTNorms-Regular.otf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "TT Norms";
+  src: url("assets/fonts/TTNorms-Italic.otf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --primary-color: #31005C;
+  --secondary-color: #f2a14b;
+  --primary-light-color: #F9F2FF;
+  --tertiary-color: #e8467e;
+  --tertiary-light-color: #f9e5f4;
+  --white: #fafafa;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+html {
+  /*equivalent to 10px*/
+  font-size: 62.5% !important;
+}
+
+body {
+  font-family: "TT Norms", sans-serif !important;
+  background-color: var(--white) !important;
+  color: #23143f !important;
+  letter-spacing: 0 !important;
+  font-size: 1.6rem !important;
+  opacity: 1 !important;
+}
+.row {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
+
+/*Typography*/
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  /*ds place 1rem space btw our heading and their text so it can look closer to what we have on the mockup*/
+  line-height: 1.1 !important;
+  margin-bottom: 1rem !important;
+  font-weight: bold !important;
+}
+
+h1 {
+  /*with html font-size set to 62.5% this is 70px*/
+  font-size: 7rem;
+}
+
+h2 {
+  font-size: 4rem;
+}
+
+h3 {
+  font-size: 3rem;
+}
+
+p {
+  /*in other to avoid margin collapsing bcos paragraph element comes with their own margins so we set this to 0 so only the margin bottom of our headings will take prominent*/
+  margin-top: 0 !important;
+  font-size: 1.6rem;
+}
+
+/*Desktop*/
+@media screen and (min-width: 1024px) {
+  body {
+    font-size: 1.8rem !important;
+  }
+
+  p {
+    font-size: 1.8rem !important;
+  }
+
+  h1 {
+    font-size: 6rem !important;
+  }
+
+  h2 {
+    font-size: 4rem !important;
+  }
+
+  h3 {
+    font-size: 2.8rem !important;
+  }
+  h4 {
+    font-size: 1.999rem !important;
+  }
+  h5 {
+    font-size: 1.414rem !important;
+  }
+  h6 {
+    font-size: 1rem !important;
+  }
+}
+
+.text-light {
+  font-size: 1.4rem !important;
+  font-weight: 300 !important;
+}
+
+.text-underline {
+  text-decoration: underline !important;
+}
+
+.bg-primary {
+  background-color: var(--primary-color) !important;
+}
+
+.bg-tertiary {
+  background-color: var(--tertiary-color) !important;
+}
+
+.bg-secondary {
+  background-color: var(--secondary-color) !important;
+}
+
+.bg-primary-light {
+  background-color: var(--primary-light-color) !important;
+}
+
+.bg-tertiary-light {
+  background-color: var(--tertiary-light-color) !important;
+}
+
+/*BUTTONS*/
+
+.btn-primary {
+  background: var(--primary-color) !important;
+  color: var(--white) !important;
+  font-size: 1.6rem !important;
+  border: 1px solid var(--primary-color) !important;
+  border-radius: 8px !important;
+}
+
+.btn-primary:hover {
+  background: #190a4bff !important;
+  color: var(--white) !important;
+  font-size: 1.6rem !important;
+  border: 1px solid #190a4bff !important;
+  border-radius: 8px !important;
+}
+
+.btn-outline-primary {
+  background: var(--white) !important;
+  color: var(--primary-color) !important;
+  font-size: 1.6rem !important;
+  border: 1px solid var(--primary-color) !important;
+  border-radius: 8px !important;
+}
+
+.btn-outline-primary:hover {
+  background: #190a4bff !important;
+  color: var(--white) !important;
+  font-size: 1.6rem !important;
+  border: 1px solid #190a4bff !important;
+  border-radius: 8px !important;
+}
+
+.btn-secondary {
+  background: var(--secondary-color) !important;
+  color: var(--white) !important;
+  font-size: 1.6rem !important;
+  border: 1px solid var(--secondary-color) !important;
+  border-radius: 8px !important;
+}
+
+.btn-secondary:hover {
+  background: #945715ff !important;
+  color: var(--white) !important;
+  font-size: 1.6rem !important;
+  border: 1px solid #945715ff !important;
+  border-radius: 8px !important;
+}
+
+.btn-outline-secondary {
+  background: var(--white) !important;
+  color: var(--secondary-color) !important;
+  font-size: 1.6rem !important;
+  border: 1px solid var(--secondary-color) !important;
+  border-radius: 8px !important;
+}
+
+.btn-outline-secondary:hover {
+  background: var(--secondary-color) !important;
+  color: var(--white) !important;
+  font-size: 1.6rem !important;
+  border: 1px solid var(--secondary-color) !important;
+  border-radius: 8px !important;
+}
+
+.btn-outline-grey {
+  background: transparent !important;
+  color: #979797 !important;
+  font-size: 1.6rem !important;
+  border: 1px solid #979797 !important;
+  border-radius: 8px !important;
+}
+
+.btn-grey {
+  background: #979797 !important;
+  color: #fff !important;
+  font-size: 1.6rem !important;
+  border: 1px solid #979797 !important;
+  border-radius: 8px !important;
+}
+
+.btn-tertiary {
+  background: var(--tertiary-color) !important;
+  color: var(--white) !important;
+  font-size: 1.6rem !important;
+  border: 1px solid var(--tertiary-color) !important;
+  border-radius: 8px !important;
+}
+
+.btn-tertiary:hover {
+  background: #7a082f !important;
+  color: var(--white) !important;
+  font-size: 1.6rem !important;
+  border: 1px solid #7a082f !important;
+  border-radius: 8px !important;
+}
+
+.btn-outline-tertiary {
+  background: var(--white) !important;
+  color: var(--tertiary-color) !important;
+  font-size: 1.6rem !important;
+  border: 1px solid var(--tertiary-color) !important;
+  border-radius: 8px !important;
+}
+
+.btn-outline-tertiary:hover {
+  background: var(--tertiary-color) !important;
+  color: var(--white) !important;
+  font-size: 1.6rem !important;
+  border: 1px solid var(--tertiary-color) !important;
+  border-radius: 8px !important;
+}
+
+.btn-outline-tertiary.transparent {
+  background-color: transparent !important;
+}
+
+.btn:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.big-round-btn,
+.big-round-btn:hover {
+  min-width: 16.1rem !important;
+  min-height: 4.8rem !important;
+  border-radius: 2.4rem !important;
+}
+
+.primary-text {
+  color: var(--primary-color) !important;
+}
+.secondary-text {
+  color: var(--secondary-color) !important;
+}
+.tertiary-text {
+  color: var(--tertiary-color) !important;
+}
+
+.ant-tabs-ink-bar {
+  background: var(--secondary-color) !important;
+}
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: var(--secondary-color) !important;
+}
+
+.cursor {
+  cursor: pointer !important;
+}
+
+small {
+  font-size: 70% !important;
+}
+
+.ant-dropdown-menu {
+  background-color: #000 !important;
+}
+
+.ant-dropdown-menu-item,
+.ant-dropdown-menu-submenu-title {
+  color: #fff !important;
+  transition: all 0.5s ease-in !important;
+}
+
+.ant-dropdown-menu-item:hover,
+.ant-dropdown-menu-submenu-title:hover {
+  background-color: #fff !important;
+  color: #000 !important;
+}
+
+.ant-layout-sider {
+  /*display: none;*/
+  /*flex: 0 0 10vw !important;*/
+  /*width: 30vw !important;*/
+  /*max-width: 50vw !important;*/
+  /*position: relative !important;*/
+  background: transparent !important;
+  border-right: 1px solid grey !important;
+  margin-right: 4rem !important;
+  /*transition: all 0.2s !important;*/
+}
+
+.ant-table {
+  position: relative !important;
+  font-size: 1.4rem !important;
+  background: transparent !important;
+  border-radius: 2px !important;
+}
+.padding-none {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.tableRowCursor {
+  cursor: pointer !important;
+}
+
+/*ICONS*/
+
+.tertiary-rounded-icon {
+  width: 4.8rem;
+  height: 4.8rem;
+  border-radius: 2.4rem;
+  background-color: var(--tertiary-light-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-img {
+  width: 1.9rem;
+  height: 2.3rem;
+  object-fit: contain;
+}
+
+/*LAYOUT*/
+.flexrow {
+  display: block;
+  margin-bottom: 2rem;
+}
+.flexrowbetween {
+  display: block;
+  margin-bottom: 2rem;
+}
+.flexrowaround {
+  display: block;
+  margin-bottom: 2rem;
+}
+.flexrowevenly {
+  display: block;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .flexrow {
+    display: flex;
+    margin-bottom: 2rem;
+  }
+  .flexrowbetween {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 0;
+  }
+  .flexrowaround {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-bottom: 0;
+  }
+  .flexrowevenly {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-bottom: 0;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .col {
+    margin-bottom: 4rem;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .col-md-4 {
+    margin-bottom: 2rem !important;
+  }
+}
+@media (min-width: 1024px) {
+  small {
+    font-size: 80% !important;
+  }
+  /*  .ant-layout-sider {
+    flex: 0 0 30vw !important;
+    display: block;
+  }*/
+}
