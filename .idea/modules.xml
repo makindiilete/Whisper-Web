@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../../Cashbox/CASHBOX-NATIVE.michael/.idea/CASHBOX-NATIVE.michael.iml" filepath="$PROJECT_DIR$/../../Cashbox/CASHBOX-NATIVE.michael/.idea/CASHBOX-NATIVE.michael.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/Whisper Web.iml" filepath="$PROJECT_DIR$/.idea/Whisper Web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../WhisperAdmin/.idea/WhisperAdmin.iml" filepath="$PROJECT_DIR$/../WhisperAdmin/.idea/WhisperAdmin.iml" />
     </modules>
   </component>
 </project>

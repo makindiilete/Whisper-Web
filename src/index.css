@@ -1,35 +1,14 @@
 @font-face {
-  font-family: "TT Norms";
-  src: url("assets/fonts/TTNorms-Bold.otf") format("opentype");
-  font-weight: bold;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "TT Norms";
-  src: url("assets/fonts/TTNorms-Medium.otf") format("truetype");
+  font-family: "TTNorms";
+  src: local("TTNorms"),
+    url("./fonts/TTNorms/TTNorms-Light.otf") format("opentype");
   font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "TT Norms";
-  src: url("assets/fonts/TTNorms-Regular.otf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "TT Norms";
-  src: url("assets/fonts/TTNorms-Italic.otf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
 }
 
 :root {
-  --primary-color: #31005C;
+  --primary-color: #31005c;
   --secondary-color: #f2a14b;
-  --primary-light-color: #F9F2FF;
+  --primary-light-color: #f9f2ff;
   --tertiary-color: #e8467e;
   --tertiary-light-color: #f9e5f4;
   --white: #fafafa;
@@ -47,12 +26,20 @@ html {
 }
 
 body {
-  font-family: "TT Norms", sans-serif !important;
+  font-family: "TTNorms", sans-serif !important;
   background-color: var(--white) !important;
   color: #23143f !important;
-  letter-spacing: 0 !important;
+  /*letter-spacing: 0 !important;*/
   font-size: 1.6rem !important;
   opacity: 1 !important;
+  /* Enable Ligatures ================ */
+  letter-spacing: 0;
+  -webkit-font-feature-settings: "liga";
+  -moz-font-feature-settings: "liga=1";
+  -moz-font-feature-settings: "liga";
+  -ms-font-feature-settings: "liga" 1;
+  -o-font-feature-settings: "liga";
+  font-feature-settings: "liga";
 }
 .row {
   margin-right: 0 !important;

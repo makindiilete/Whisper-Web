@@ -1,8 +1,7 @@
 import React from "react";
 import { Menu } from "antd";
-import "../assets/css/navigation.css";
+// import "../assets/css/navigation.css";
 import { useHistory, useLocation } from "react-router-dom";
-
 
 const NavigationPage = (props) => {
   const history = useHistory();
@@ -10,11 +9,10 @@ const NavigationPage = (props) => {
   const { pathname } = location;
   const current = pathname.split("/")[1];
 
-
   return (
     <section className="nav">
       <div className="card">
-       <p>Navigation</p>
+        <p>Navigation</p>
       </div>
     </section>
   );

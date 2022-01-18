@@ -1,0 +1,44 @@
+.landing {
+  background-color: #e5e5e5;
+}
+
+.landing .hero-area {
+  height: 100vh;
+}
+
+.hero-area .hero-area__bg {
+  background: url("../../assets/images/home/hero-area.jpg") no-repeat 50%;
+  background-size: cover;
+  height: 100%;
+}
+
+.hero-area .logo {
+  width: 13.1rem;
+  object-fit: contain;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 7.4rem;
+}
+
+.nav .nav__links {
+  /*font-family: "TT Norms Light", sans-serif !important;*/
+  /*font-variant-ligatures: inherit !important;*/
+  display: flex;
+  align-items: center;
+}
+
+.nav .btn {
+  min-width: 16.7rem;
+  min-height: 4.8rem;
+  background-color: #fff;
+  color: var(--primary-color);
+  font-weight: 600;
+  font-family: "TT Norms", sans-serif !important;
+  font-size: 1.4rem;
+  border-radius: 8px;
+  margin-right: 4rem;
+}

@@ -5,6 +5,9 @@ import { BrowserRouter as Router, Switch, useHistory } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { useState } from "react";
 import { AuthContext } from "./Utils/context";
+import LandingPage from "./pages/Landing.page";
+import PublicAreaRoute from "./Layout/PublicAreaRoute";
+import routes from "./routes";
 
 AOS.init();
 
@@ -16,7 +19,11 @@ function App() {
       <div className="App">
         <Router history={history}>
           <Switch>
-
+            <PublicAreaRoute
+              exact
+              component={LandingPage}
+              path={routes.LANDING}
+            />
           </Switch>
         </Router>
         <ToastContainer
