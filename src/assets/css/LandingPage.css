@@ -4,6 +4,7 @@
 
 .landing .hero-area {
   height: 100vh;
+  overflow: scroll;
 }
 
 .hero-area .hero-area__bg {
