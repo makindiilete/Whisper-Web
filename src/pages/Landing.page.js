@@ -61,7 +61,7 @@ const LandingPage = (props) => {
           {/* /.container */}
         </div>
       </section>
-      <section className="beautiful-people">
+      <section className="mini-sections">
         <div className="container">
           <div className="row">
             <div className="col-md-6 d-block d-md-flex align-items-md-center ">
@@ -74,6 +74,69 @@ const LandingPage = (props) => {
             <div className="col-md-6 d-block d-md-flex align-items-md-center ">
               <div>
                 <h3>Beautiful People</h3>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Imperdiet donec purus vehicula lectus est. Et sed tincidunt
+                  adipiscing non, semper. Sem faucibus posuere scelerisque
+                  porttitor amet purus. Lorem in risus convallis felis.
+                </p>
+                <div className="flexrow">
+                  <button className="btn btn-primary">Download the App</button>
+                  <button className="btn btn-light">Create the Account</button>
+                </div>
+              </div>
+            </div>
+            {/* /.col-md-6 */}
+          </div>
+          {/* /.row */}
+        </div>
+        {/* /.container */}
+      </section>
+      <section className="mini-sections">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-6 d-block d-md-flex align-items-md-center ">
+              <div>
+                <h3>
+                  Don’t be lonely tonight. <br /> Get a Companion on Whisper{" "}
+                </h3>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Imperdiet donec purus vehicula lectus est. Et sed tincidunt
+                  adipiscing non, semper. Sem faucibus posuere scelerisque
+                  porttitor amet purus. Lorem in risus convallis felis.
+                </p>
+                <div className="flexrow">
+                  <button className="btn btn-primary">Download the App</button>
+                  <button className="btn btn-light">Create the Account</button>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-6 d-block d-md-flex align-items-md-center ">
+              <img
+                src={beautifulpeople}
+                className="img-fluid beautiful"
+                alt=""
+              />
+            </div>
+          </div>
+          {/* /.row */}
+        </div>
+        {/* /.container */}
+      </section>
+      <section className="mini-sections">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-6 d-block d-md-flex align-items-md-center ">
+              <img
+                src={beautifulpeople}
+                className="img-fluid beautiful"
+                alt=""
+              />
+            </div>
+            <div className="col-md-6 d-block d-md-flex align-items-md-center ">
+              <div>
+                <h3>Safe & Secure</h3>
                 <p>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Imperdiet donec purus vehicula lectus est. Et sed tincidunt
