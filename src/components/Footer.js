@@ -4,7 +4,7 @@ import "../assets/css/LandingPage.css";
 
 const Footer = () => {
   return (
-    <section className=" landing footer py-5">
+    <section className="landing footer py-5">
       <div className="logoListitem">
         <div className="media mb-2">
           <div style={{ width: "12rem" }}>
