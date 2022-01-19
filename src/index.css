@@ -103,15 +103,15 @@ h6 {
 
 h1 {
   /*with html font-size set to 62.5% this is 70px*/
-  font-size: 7rem;
+  font-size: 7rem !important;
 }
 
 h2 {
-  font-size: 4rem;
+  font-size: 4rem !important;
 }
 
 h3 {
-  font-size: 3rem;
+  font-size: 3rem !important;
 }
 
 p {
