@@ -32,15 +32,10 @@
 }
 
 .nav__links p:hover {
-  color: var(--primary-color);
+  border-bottom: 2px solid var(--primary-color);
 }
 
 .nav .btn {
-  /*padding: 1.5rem 3rem;*/
-  /*background-color: #fff;*/
-  /*color: var(--primary-color);*/
-  /*font-weight: 600;*/
-  /*font-family: "TT Norms", sans-serif !important;*/
   margin-right: 4rem;
 }
 
