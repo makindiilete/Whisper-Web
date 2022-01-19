@@ -55,7 +55,9 @@ const LandingPage = (props) => {
               </div>
             </div>
             <div className="d-flex justify-content-center create-account">
-              <button className="btn btn-light">Create Account</button>
+              <button className="btn btn-light" style={{ width: "auto" }}>
+                Create Account
+              </button>
             </div>
           </div>
           {/* /.container */}
