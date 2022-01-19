@@ -5,6 +5,7 @@ import logo from "../assets/images/WhisperLogo.svg";
 import whisperText from "../assets/images/home/purple-outline-text.svg";
 import playstore from "../assets/images/home/Google Play.svg";
 import appstore from "../assets/images/home/App Store.svg";
+import beautifulpeople from "../assets/images/home/bueatifulpeople.jpg";
 
 const LandingPage = (props) => {
   let location = useLocation();
@@ -13,7 +14,7 @@ const LandingPage = (props) => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
   return (
-    <section className="landing">
+    <section className="landing bg-white">
       <section className="hero-area">
         <div className="hero-area__bg">
           <div className="container-fluid">
@@ -59,6 +60,40 @@ const LandingPage = (props) => {
           </div>
           {/* /.container */}
         </div>
+      </section>
+      <section className="beautiful-people">
+        <div className="container">
+          <div className="row">
+            <div
+              className="col-md-6 d-block d-md-flex align-items-md-center "
+              style={{ height: "100vh" }}
+            >
+              <img
+                src={beautifulpeople}
+                className="img-fluid beautiful"
+                alt=""
+              />
+            </div>
+            <div className="col-md-6 d-block d-md-flex align-items-md-center ">
+              <div>
+                <h3>Beautiful People</h3>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Imperdiet donec purus vehicula lectus est. Et sed tincidunt
+                  adipiscing non, semper. Sem faucibus posuere scelerisque
+                  porttitor amet purus. Lorem in risus convallis felis.
+                </p>
+                <div className="d-flex ">
+                  <button className="btn btn-primary">Download the App</button>
+                  <button className="btn btn-light">Create the Account</button>
+                </div>
+              </div>
+            </div>
+            {/* /.col-md-6 */}
+          </div>
+          {/* /.row */}
+        </div>
+        {/* /.container */}
       </section>
       {/* /.hero-area */}
     </section>

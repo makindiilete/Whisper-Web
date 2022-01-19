@@ -68,7 +68,7 @@ html {
 
 body {
   font-family: "tt_normslight", sans-serif !important;
-  background-color: var(--white) !important;
+  background-color: #fff !important;
   color: #23143f !important;
   /*letter-spacing: 0 !important;*/
   font-size: 1.6rem !important;
