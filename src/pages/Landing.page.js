@@ -8,6 +8,7 @@ import appstore from "../assets/images/home/App Store.svg";
 import beautifulpeople from "../assets/images/home/bueatifulpeople.jpg";
 import lonely from "../assets/images/home/lonely.jpg";
 import safe from "../assets/images/home/safe.jpg";
+import heroareatwo from "../assets/images/home/hero-area-two.jpg";
 
 const LandingPage = (props) => {
   let location = useLocation();
@@ -30,36 +31,60 @@ const LandingPage = (props) => {
               </div>
             </div>
             {/* /.nav */}
-            <div className="d-flex justify-content-center">
-              <img src={whisperText} alt="" className="img-fluid whisperText" />
-            </div>
-            <h1 className="text-white text-center heading">
-              The safest and most discreet <br /> dating & hookup experience.
-            </h1>
             <div
-              className="d-flex justify-content-center"
-              style={{ marginTop: "2.6rem" }}
+              style={{
+                height: "80vh",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
             >
-              <div className="straightline" />
-            </div>
-            <br />
-            <p className="text-white text-center">
-              Viverra adipiscing bibendum quisque id egestas magna et. Sed id
-              sed aliquet facilisi <br /> turpis. Sapien ornare nulla cursus
-              ullamcorper. Leo quis libero sit lectus diam <br /> pellentesque
-              ultricies maecenas.
-            </p>
-            <br />
-            <div className="d-flex justify-content-center">
               <div>
-                <img src={playstore} alt="" className="img-fluid storeapps" />
-                <img src={appstore} alt="" className="img-fluid storeapps" />
+                <div className="d-flex justify-content-center">
+                  <img
+                    src={whisperText}
+                    alt=""
+                    className="img-fluid whisperText"
+                  />
+                </div>
+                <h1 className="text-white text-center heading">
+                  The safest and most discreet <br /> dating & hookup
+                  experience.
+                </h1>
+                <div
+                  className="d-flex justify-content-center"
+                  style={{ marginTop: "2.6rem" }}
+                >
+                  <div className="straightline" />
+                </div>
+                <br />
+                <p className="text-white text-center">
+                  Viverra adipiscing bibendum quisque id egestas magna et. Sed
+                  id sed aliquet facilisi <br /> turpis. Sapien ornare nulla
+                  cursus ullamcorper. Leo quis libero sit lectus diam <br />{" "}
+                  pellentesque ultricies maecenas.
+                </p>
+                <br />
+                <div className="d-flex justify-content-center ">
+                  <div>
+                    <img
+                      src={playstore}
+                      alt=""
+                      className="img-fluid storeapps mr-4"
+                    />
+                    <img
+                      src={appstore}
+                      alt=""
+                      className="img-fluid storeapps"
+                    />
+                  </div>
+                </div>
+                <div className="d-flex justify-content-center create-account">
+                  <button className="btn btn-light" style={{ width: "auto" }}>
+                    Create Account
+                  </button>
+                </div>
               </div>
-            </div>
-            <div className="d-flex justify-content-center create-account">
-              <button className="btn btn-light" style={{ width: "auto" }}>
-                Create Account
-              </button>
             </div>
           </div>
           {/* /.container */}
@@ -151,6 +176,26 @@ const LandingPage = (props) => {
         </div>
         {/* /.container */}
       </section>
+      <section className="hero-area-two">
+        <div className="container-fluid">
+          <h1 className="text-white heading text-center mb-5">
+            Meet a Companion and get <br /> the most interesting fun time.
+          </h1>
+          <div className="d-flex justify-content-center ">
+            <div>
+              <img
+                src={playstore}
+                alt=""
+                className="img-fluid storeapps mr-4"
+              />
+              <img src={appstore} alt="" className="img-fluid storeapps" />
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="footer py-5 h-25"></section>
+      {/*<div className="mini-sections"></div>*/}
+      {/* /.hero-area-two */}
       {/* /.hero-area */}
     </section>
   );

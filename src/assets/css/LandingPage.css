@@ -3,7 +3,7 @@
 }
 
 .landing .hero-area {
-  min-height: 100vh;
+  height: 100vh;
 }
 
 .hero-area .hero-area__bg {
@@ -60,7 +60,8 @@
 }
 
 .landing .storeapps {
-  display: block;
+  width: 12rem;
+  cursor: pointer;
 }
 .landing .storeapps:last-child {
   margin: 1rem 0;
@@ -83,6 +84,25 @@
   object-fit: contain;
 }
 
+/*.landing .hero-area-two {
+  background: url("../../assets/images/home/hero-area-two.jpg") no-repeat 50%;
+  background-size: cover;
+  width: 100%;
+  !*height: 50%;*!
+}*/
+
+.landing .hero-area-two {
+  height: 63.4rem;
+  width: 100vw;
+  background-size: cover;
+  background: url("../../assets/images/home/hero-area-two.jpg") no-repeat 50%
+    50%;
+  margin-bottom: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @media (min-width: 768px) {
   .landing .btn {
     width: auto;
@@ -102,6 +122,7 @@
   .landing .storeapps {
     display: inline;
     margin: auto;
+    width: 21rem;
   }
   .landing .storeapps:first-child {
     margin-right: 2rem;
