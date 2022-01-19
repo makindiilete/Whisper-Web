@@ -6,6 +6,8 @@ import whisperText from "../assets/images/home/purple-outline-text.svg";
 import playstore from "../assets/images/home/Google Play.svg";
 import appstore from "../assets/images/home/App Store.svg";
 import beautifulpeople from "../assets/images/home/bueatifulpeople.jpg";
+import lonely from "../assets/images/home/lonely.jpg";
+import safe from "../assets/images/home/safe.jpg";
 
 const LandingPage = (props) => {
   let location = useLocation();
@@ -115,11 +117,7 @@ const LandingPage = (props) => {
               </div>
             </div>
             <div className="col-md-6 d-block d-md-flex align-items-md-center ">
-              <img
-                src={beautifulpeople}
-                className="img-fluid beautiful"
-                alt=""
-              />
+              <img src={lonely} className="img-fluid beautiful" alt="" />
             </div>
           </div>
           {/* /.row */}
@@ -130,11 +128,7 @@ const LandingPage = (props) => {
         <div className="container">
           <div className="row">
             <div className="col-md-6 d-block d-md-flex align-items-md-center ">
-              <img
-                src={beautifulpeople}
-                className="img-fluid beautiful"
-                alt=""
-              />
+              <img src={safe} className="img-fluid beautiful" alt="" />
             </div>
             <div className="col-md-6 d-block d-md-flex align-items-md-center ">
               <div>
