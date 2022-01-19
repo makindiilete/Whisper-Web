@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import "../assets/css/LandingPage.css";
 import logo from "../assets/images/WhisperLogo.svg";
+import logo2 from "../assets/images/WhisperLogo.png";
 import whisperText from "../assets/images/home/purple-outline-text.svg";
 import playstore from "../assets/images/home/Google Play.svg";
 import appstore from "../assets/images/home/App Store.svg";
@@ -193,7 +194,7 @@ const LandingPage = (props) => {
           </div>
         </div>
       </section>
-      <section className="footer py-5 h-25"></section>
+
       {/*<div className="mini-sections"></div>*/}
       {/* /.hero-area-two */}
       {/* /.hero-area */}

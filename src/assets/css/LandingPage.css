@@ -54,6 +54,12 @@
   background-color: #d5a5ff;
 }
 
+.straightline-white {
+  width: 100%;
+  height: 0.1rem;
+  background-color: #fff;
+}
+
 .landing .heading {
   margin-top: -3.8rem;
   font-size: 3rem !important;
@@ -103,7 +109,41 @@
   justify-content: center;
 }
 
+.footer {
+  min-height: 32.6rem;
+  width: 100vw;
+  background-color: #000;
+  display: block;
+  color: #fff;
+}
+
+.footer-item {
+  margin-left: 2rem;
+}
+
+.landing .straightline-white {
+  margin-left: 0;
+}
+
+.landing .logoListitem {
+  margin-bottom: 2rem;
+}
+
 @media (min-width: 768px) {
+  .landing .straightline-white {
+    margin-left: 4rem;
+  }
+  .footer {
+    min-height: 32.6rem;
+    width: 100vw;
+    background-color: #000;
+    display: flex;
+    /*flex-wrap: wrap;*/
+    justify-content: space-around;
+    color: #fff;
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
   .landing .btn {
     width: auto;
   }

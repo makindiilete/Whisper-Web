@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import ErrorBoundary from "../Utils/ErrorBoundary";
 import NavigationPage from "../components/NavigationPage";
 import { useLocation } from "react-router-dom";
+import Footer from "../components/Footer";
 
 const PublicAreaBase = ({ children }) => {
   let location = useLocation();
@@ -10,7 +11,10 @@ const PublicAreaBase = ({ children }) => {
   }, [location.pathname]);
   return (
     <div>
-      <ErrorBoundary>{children}</ErrorBoundary>
+      <ErrorBoundary>
+        {children}
+        <Footer />
+      </ErrorBoundary>
     </div>
   );
 };
