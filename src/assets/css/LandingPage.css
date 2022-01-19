@@ -25,7 +25,7 @@
 }
 
 .nav .nav__links {
-  /*font-family: "TT Norms Light", sans-serif !important;*/
+  font-family: "tt_normsthin", sans-serif !important;
   /*font-variant-ligatures: inherit !important;*/
   display: flex;
   align-items: center;

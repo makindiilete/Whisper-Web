@@ -1,8 +1,41 @@
 @font-face {
-  font-family: "TTNorms";
-  src: local("TTNorms"),
-    url("./fonts/TTNorms/TTNorms-Light.otf") format("opentype");
+  font-family: "tt_normsitalic";
+  src: url("./fonts/ttnorms-italic-webfont.woff2") format("woff2"),
+    url("./fonts/ttnorms-italic-webfont.woff") format("woff");
   font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "tt_normslight";
+  src: url("./fonts/ttnorms-light-webfont.woff2") format("woff2"),
+    url("./fonts/ttnorms-light-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "tt_normsmedium";
+  src: url("./fonts/ttnorms-medium-webfont.woff2") format("woff2"),
+    url("./fonts/ttnorms-medium-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "tt_normsregular";
+  src: url("./fonts/ttnorms-regular-webfont.woff2") format("woff2"),
+    url("./fonts/ttnorms-regular-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "tt_normsthin";
+  src: url("./fonts/ttnorms-thin-webfont.woff2") format("woff2"),
+    url("./fonts/ttnorms-thin-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
 }
 
 :root {
@@ -26,7 +59,7 @@ html {
 }
 
 body {
-  font-family: "TTNorms", sans-serif !important;
+  font-family: "tt_normsregular", sans-serif !important;
   background-color: var(--white) !important;
   color: #23143f !important;
   /*letter-spacing: 0 !important;*/
