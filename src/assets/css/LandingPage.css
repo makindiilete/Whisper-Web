@@ -12,6 +12,10 @@
   height: 100%;
 }
 
+.landing .btn {
+  width: 100%;
+}
+
 .hero-area .logo {
   width: 13.1rem;
   object-fit: contain;
@@ -52,7 +56,7 @@
 
 .landing .heading {
   margin-top: -3.8rem;
-  font-size: 5rem !important;
+  font-size: 3rem !important;
 }
 
 .landing .storeapps {
@@ -69,8 +73,8 @@
 .landing .beautiful-people {
   min-height: 100vh;
   min-width: 100vw;
-  /*display: flex;*/
-  /*align-items: center;*/
+  display: flex;
+  align-items: center;
 }
 
 .landing .beautiful {
@@ -80,6 +84,9 @@
 }
 
 @media (min-width: 768px) {
+  .landing .btn {
+    width: auto;
+  }
   .nav {
     display: flex;
     justify-content: space-between;

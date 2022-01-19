@@ -64,10 +64,7 @@ const LandingPage = (props) => {
       <section className="beautiful-people">
         <div className="container">
           <div className="row">
-            <div
-              className="col-md-6 d-block d-md-flex align-items-md-center "
-              style={{ height: "100vh" }}
-            >
+            <div className="col-md-6 d-block d-md-flex align-items-md-center ">
               <img
                 src={beautifulpeople}
                 className="img-fluid beautiful"
@@ -83,7 +80,7 @@ const LandingPage = (props) => {
                   adipiscing non, semper. Sem faucibus posuere scelerisque
                   porttitor amet purus. Lorem in risus convallis felis.
                 </p>
-                <div className="d-flex ">
+                <div className="flexrow">
                   <button className="btn btn-primary">Download the App</button>
                   <button className="btn btn-light">Create the Account</button>
                 </div>
