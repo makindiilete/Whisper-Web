@@ -18,7 +18,7 @@
 }
 
 .nav {
-  display: flex;
+  display: none;
   justify-content: space-between;
   align-items: center;
   min-height: 7.4rem;
@@ -26,19 +26,70 @@
 
 .nav .nav__links {
   font-family: "tt_normsthin", sans-serif !important;
-  /*font-variant-ligatures: inherit !important;*/
   display: flex;
   align-items: center;
+  cursor: pointer;
+}
+
+.nav__links p:hover {
+  color: var(--primary-color);
 }
 
 .nav .btn {
-  min-width: 16.7rem;
-  min-height: 4.8rem;
-  background-color: #fff;
-  color: var(--primary-color);
-  font-weight: 600;
-  font-family: "TT Norms", sans-serif !important;
-  font-size: 1.4rem;
-  border-radius: 8px;
+  /*padding: 1.5rem 3rem;*/
+  /*background-color: #fff;*/
+  /*color: var(--primary-color);*/
+  /*font-weight: 600;*/
+  /*font-family: "TT Norms", sans-serif !important;*/
   margin-right: 4rem;
+}
+
+.landing .whisperText {
+  width: 40.8rem;
+  margin-top: 7.4rem;
+}
+
+.landing .straightline {
+  width: 16.9rem;
+  height: 0.1rem;
+  background-color: #d5a5ff;
+}
+
+.landing .heading {
+  margin-top: -3.8rem;
+}
+
+.landing .storeapps {
+  display: block;
+}
+.landing .storeapps:last-child {
+  margin: 1rem 0;
+}
+
+.landing .create-account {
+  margin-top: 2rem;
+}
+
+@media (min-width: 768px) {
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 7.4rem;
+  }
+
+  .landing .heading {
+    margin-top: -6rem;
+  }
+
+  .landing .storeapps {
+    display: inline;
+    margin: auto;
+  }
+  .landing .storeapps:first-child {
+    margin-right: 2rem;
+  }
+  .landing .create-account {
+    margin-top: 5rem;
+  }
 }

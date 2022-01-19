@@ -38,6 +38,14 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "tt_normsbold";
+  src: url("./fonts/ttnorms-bold-webfont.woff2") format("woff2"),
+    url("./fonts/ttnorms-bold-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
 :root {
   --primary-color: #31005c;
   --secondary-color: #f2a14b;
@@ -59,7 +67,7 @@ html {
 }
 
 body {
-  font-family: "tt_normsregular", sans-serif !important;
+  font-family: "tt_normslight", sans-serif !important;
   background-color: var(--white) !important;
   color: #23143f !important;
   /*letter-spacing: 0 !important;*/
@@ -90,6 +98,7 @@ h6 {
   line-height: 1.1 !important;
   margin-bottom: 1rem !important;
   font-weight: bold !important;
+  font-family: "tt_normsbold", sans-serif !important;
 }
 
 h1 {
@@ -173,7 +182,13 @@ p {
 }
 
 /*BUTTONS*/
-
+.btn {
+  padding: 1.5rem 3rem !important;
+  border-radius: 8px !important;
+  font-size: 1.4rem !important;
+  font-weight: 600;
+  font-family: "tt_normsregular", sans-serif;
+}
 .btn-primary {
   background: var(--primary-color) !important;
   color: var(--white) !important;
@@ -187,6 +202,22 @@ p {
   color: var(--white) !important;
   font-size: 1.6rem !important;
   border: 1px solid #190a4bff !important;
+  border-radius: 8px !important;
+}
+
+.btn-light {
+  background: var(--white) !important;
+  color: var(--primary-color) !important;
+  font-size: 1.6rem !important;
+  border: 1px solid var(--white) !important;
+  border-radius: 8px !important;
+}
+
+.btn-light:hover {
+  background: var(--primary-color) !important;
+  color: var(--white) !important;
+  font-size: 1.6rem !important;
+  border: 1px solid var(--primary-color) !important;
   border-radius: 8px !important;
 }
 
