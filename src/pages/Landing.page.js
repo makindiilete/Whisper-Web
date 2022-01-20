@@ -10,6 +10,7 @@ import beautifulpeople from "../assets/images/home/bueatifulpeople.jpg";
 import lonely from "../assets/images/home/lonely.jpg";
 import safe from "../assets/images/home/safe.jpg";
 import heroareatwo from "../assets/images/home/hero-area-two.jpg";
+import routes from "../routes";
 
 const LandingPage = (props) => {
   let location = useLocation();
@@ -23,7 +24,12 @@ const LandingPage = (props) => {
         <div className="hero-area__bg">
           <div className="container-fluid">
             <div className="nav">
-              <img src={logo} alt="" className="img-fluid logo" />
+              <img
+                src={logo}
+                alt=""
+                className="img-fluid logo cursor"
+                onClick={() => history.push("/")}
+              />
               <div className="nav__links">
                 <p className="text-white mr-5 padding-none">About Whisper</p>
                 <p className="text-white mr-5 padding-none">Contact us</p>
@@ -42,11 +48,7 @@ const LandingPage = (props) => {
             >
               <div>
                 <div className="d-flex justify-content-center">
-                  <img
-                    src={whisperText}
-                    alt=""
-                    className="img-fluid whisperText"
-                  />
+                  <h1 className="whisperText text-center">Whisper</h1>
                 </div>
                 <h1 className="text-white text-center heading">
                   The safest and most discreet <br /> dating & hookup
@@ -81,7 +83,11 @@ const LandingPage = (props) => {
                   </div>
                 </div>
                 <div className="d-flex justify-content-center create-account">
-                  <button className="btn btn-light" style={{ width: "auto" }}>
+                  <button
+                    className="btn btn-light"
+                    style={{ width: "auto" }}
+                    onClick={() => history.push(routes.signup_createAccount)}
+                  >
                     Create Account
                   </button>
                 </div>
@@ -112,7 +118,12 @@ const LandingPage = (props) => {
                 </p>
                 <div className="flexrow">
                   <button className="btn btn-primary">Download the App</button>
-                  <button className="btn btn-light">Create the Account</button>
+                  <button
+                    className="btn btn-light"
+                    onClick={() => history.push(routes.signup_createAccount)}
+                  >
+                    Create the Account
+                  </button>
                 </div>
               </div>
             </div>
@@ -138,7 +149,12 @@ const LandingPage = (props) => {
                 </p>
                 <div className="flexrow">
                   <button className="btn btn-primary">Download the App</button>
-                  <button className="btn btn-light">Create the Account</button>
+                  <button
+                    className="btn btn-light"
+                    onClick={() => history.push(routes.signup_createAccount)}
+                  >
+                    Create the Account
+                  </button>
                 </div>
               </div>
             </div>
@@ -167,7 +183,12 @@ const LandingPage = (props) => {
                 </p>
                 <div className="flexrow">
                   <button className="btn btn-primary">Download the App</button>
-                  <button className="btn btn-light">Create the Account</button>
+                  <button
+                    className="btn btn-light"
+                    onClick={() => history.push(routes.signup_createAccount)}
+                  >
+                    Create the Account
+                  </button>
                 </div>
               </div>
             </div>

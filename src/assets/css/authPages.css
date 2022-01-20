@@ -1,0 +1,62 @@
+.auth__heroArea {
+  background: url("../../assets/images/auth/hero.png") no-repeat 50%;
+  background-size: cover;
+  height: 50vh;
+}
+
+.auth .auth-popUp {
+  min-height: 47.4rem;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 1.6rem;
+  box-shadow: 0 0 2rem lightgrey;
+  margin-top: -4rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.auth .content {
+  display: grid;
+}
+
+.auth .auth-popUp .right {
+  background-color: #fafafa;
+}
+.auth .auth-popUp .col-md-6 {
+  min-height: 47.4rem;
+  padding-top: 5rem;
+  padding-left: 5rem;
+  padding-right: 5rem;
+}
+
+.dotted-divider {
+  border: 1px dashed lightgrey;
+  width: 50%;
+}
+
+.whisperText {
+  -webkit-text-stroke: 0.1rem #b561ff;
+  color: transparent;
+  font-family: "tt_normsbold_italic" !important;
+  font-size: 7rem !important;
+}
+
+.social-icons {
+  width: 100%;
+  height: 5rem;
+}
+
+@media (min-width: 1024px) {
+  .whisperText {
+    font-size: 12rem !important;
+  }
+
+  .auth .auth-popUp {
+    margin-top: -6rem;
+  }
+
+  .social-icons {
+    width: auto;
+    height: auto;
+  }
+}

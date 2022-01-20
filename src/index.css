@@ -46,6 +46,14 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "tt_normsbold_italic";
+  src: url("./fonts/ttnorms-bolditalic-webfont.woff2") format("woff2"),
+    url("./fonts/ttnorms-bolditalic-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
 :root {
   --primary-color: #31005c;
   --secondary-color: #f2a14b;
