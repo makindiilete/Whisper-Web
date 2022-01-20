@@ -21,6 +21,7 @@
 
 .auth .auth-popUp .right {
   background-color: #fafafa;
+  margin-bottom: 10rem;
 }
 .auth .auth-popUp .col-md-6 {
   min-height: 47.4rem;
@@ -46,7 +47,21 @@
   height: 5rem;
 }
 
+.auth .or-divider {
+  position: absolute;
+  top: 42.2%;
+  left: 48.5%;
+}
+
 @media (min-width: 1024px) {
+  .auth .or-divider {
+    position: absolute;
+    top: 50%;
+    left: 48.5%;
+  }
+  .auth .auth-popUp .right {
+    margin-bottom: 0;
+  }
   .whisperText {
     font-size: 12rem !important;
   }
