@@ -26,7 +26,7 @@ const Footer = () => {
         <br />
         <small className="ml-5">
           4517 Washington Ave. Manchester, <br />{" "}
-          <small className="ml-5">Kentucky 39495</small>
+          <span className="ml-5">Kentucky 39495</span>
         </small>
         <br />
         <small className="ml-5">
