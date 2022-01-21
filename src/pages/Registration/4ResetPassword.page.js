@@ -6,6 +6,7 @@ import { Form, Input } from "antd";
 import AuthContainerPage from "./AuthContainer.page";
 import { FaAngleLeft } from "react-icons/all";
 import routes from "../../routes";
+import SuccessModal from "../../components/Modals/successModal";
 
 const ResetPasswordPage = (props) => {
   let location = useLocation();
@@ -14,12 +15,15 @@ const ResetPasswordPage = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [data, setData] = useState({
     email: "",
   });
 
   const handleSubmit = (values) => {
     console.log(values);
+    // history.push(routes.login);
+    setShowSuccessModal(true);
   };
 
   function handleChange(value, name) {
@@ -98,7 +102,7 @@ const ResetPasswordPage = (props) => {
               {regForm()}
               <button
                 className="btn btn-primary btn-block"
-                onClick={() => history.push(routes.resetPassword)}
+                onClick={() => handleSubmit([])}
               >
                 Continue
               </button>
@@ -107,6 +111,12 @@ const ResetPasswordPage = (props) => {
           {/* /.col-md-6 */}
         </div>
       </div>
+      <SuccessModal
+        title="Changes Saved"
+        subtitle="Your password has been successfully changed"
+        visible={showSuccessModal}
+        onCancel={() => setShowSuccessModal(false)}
+      />
     </AuthContainerPage>
   );
 };

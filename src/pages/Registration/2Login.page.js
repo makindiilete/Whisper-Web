@@ -8,6 +8,7 @@ import apple from "../../assets/images/auth/apple.svg";
 import AuthContainerPage from "./AuthContainer.page";
 import { Form, Input } from "antd";
 import { FaAngleLeft } from "react-icons/all";
+import SuccessModal from "../../components/Modals/successModal";
 
 const TwoLoginPage = (props) => {
   let location = useLocation();
@@ -16,7 +17,6 @@ const TwoLoginPage = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
-
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -24,6 +24,7 @@ const TwoLoginPage = (props) => {
 
   const handleSubmit = (values) => {
     console.log(values);
+    history.push(routes.login);
   };
 
   function handleChange(value, name) {

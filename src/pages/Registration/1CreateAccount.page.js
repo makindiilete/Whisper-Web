@@ -172,7 +172,12 @@ const OneCreateAccountPage = (props) => {
           {regForm()}
           <br />
           {/*<div className="d-flex justify-content-center">*/}
-          <button className="btn btn-primary btn-block">Create account</button>
+          <button
+            className="btn btn-primary btn-block"
+            onClick={() => history.push(routes.usertype)}
+          >
+            Create account
+          </button>
           <br />
           <div className="d-flex justify-content-center">
             <div className="dotted-divider"></div>

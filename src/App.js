@@ -17,6 +17,7 @@ import OneCreateAccountPage from "./pages/Registration/1CreateAccount.page";
 import TwoLoginPage from "./pages/Registration/2Login.page";
 import ForgotPasswordPage from "./pages/Registration/3ForgotPassword.page";
 import ResetPasswordPage from "./pages/Registration/4ResetPassword.page";
+import TypeOfUserPage from "./pages/Registration/5TypeOfUser.page";
 
 AOS.init();
 
@@ -49,6 +50,7 @@ function App() {
               component={ResetPasswordPage}
               path={routes.resetPassword}
             />
+            <Route exact component={TypeOfUserPage} path={routes.usertype} />
           </Switch>
         </Router>
         <ToastContainer

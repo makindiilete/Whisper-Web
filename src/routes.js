@@ -1,8 +1,9 @@
 //Object.freeze ensures the object we pass here cannot be modified anywhere in our app
 export default Object.freeze({
   LANDING: "/",
-  signup_createAccount: "/create-account",
-  login: "/login",
-  forgotPassword: "/forgot-password",
-  resetPassword: "/reset-password",
+  signup_createAccount: "/reg/create-account",
+  login: "/reg/login",
+  forgotPassword: "/reg/forgot-password",
+  resetPassword: "/reg/reset-password",
+  usertype: "/reg/user-type",
 });
