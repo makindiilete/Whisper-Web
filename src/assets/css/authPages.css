@@ -9,7 +9,8 @@
   width: 100%;
   background-color: #fff;
   border-radius: 1.6rem;
-  box-shadow: 0 0 2rem lightgrey;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
   margin-top: -4rem;
   overflow: hidden;
   position: relative;
@@ -21,7 +22,7 @@
 
 .auth .auth-popUp .right {
   background-color: #fafafa;
-  margin-bottom: 10rem;
+  padding-bottom: 10rem;
 }
 .auth .auth-popUp .col-md-6 {
   min-height: 47.4rem;
@@ -61,7 +62,7 @@
     left: 48.5%;
   }
   .auth .auth-popUp .right {
-    margin-bottom: 0;
+    padding-bottom: 0;
   }
   .whisperText {
     font-size: 12rem !important;
