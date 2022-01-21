@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useHistory } from "react-router-dom";
-import { DatePicker, Form, Input, Select } from "antd";
+import { DatePicker, Form, Input, Select, Upload, message, Button } from "antd";
 import { BsUpload, FiUpload, MdLocationPin } from "react-icons/all";
 import { countries } from "../../../components/countryList";
 import useMobile from "../../../hooks/useMobile";
@@ -18,6 +18,7 @@ const StepTwo = ({ currentStep, setCurrentStep, title, subTitle }) => {
     idNumber: "",
     idImgUri: "",
   });
+  const [imgPath, setImgPath] = useState("");
   const [idTypes, setIdTypes] = useState([
     `Driver's licence`,
     "International Password",
@@ -32,6 +33,38 @@ const StepTwo = ({ currentStep, setCurrentStep, title, subTitle }) => {
   function handleChange(value, name) {
     setData({ ...data, [name]: value });
   }
+
+  const props = {
+    name: "file",
+    action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+    headers: {
+      authorization: "authorization-text",
+    },
+    onChange(info) {
+      if (info.file.status !== "uploading") {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === "done") {
+        setImgPath(
+          "https://cdn.pixabay.com/photo/2014/01/30/01/36/girl-254708_960_720.jpg"
+        );
+        message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === "error") {
+        setImgPath(
+          "https://cdn.pixabay.com/photo/2014/01/30/01/36/girl-254708_960_720.jpg"
+        );
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+    progress: {
+      strokeColor: {
+        "0%": "#e8dcfe",
+        "70%": "#190a36",
+      },
+      strokeWidth: 3,
+      format: (percent) => `${parseFloat(percent.toFixed(2))}%`,
+    },
+  };
 
   const regForm = () => {
     return (
@@ -112,19 +145,33 @@ const StepTwo = ({ currentStep, setCurrentStep, title, subTitle }) => {
         </div>
         <div className="flexrowaround">
           {regForm()}
-          <div className="uploadBox">
-            <div className="d-flex flex-column align-items-center">
-              <FiUpload className="primary-light-text" size="3rem" />
-              <h5 className="font-weight-bold text-center mt-4">
-                ID Card Number
-              </h5>
-              <p className="text-muted">
-                Kindly Upload your Govt. Issued ID card
-              </p>
-              <h5 className="font-weight-bold">Browse Files</h5>
-              {/* /.font-weight-bold */}
-              {/* /.font-weight-bold */}
-            </div>
+          <div className="uploadBox img">
+            <Upload {...props}>
+              {imgPath ? (
+                <img
+                  src={imgPath}
+                  alt=""
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
+              ) : (
+                <div className="d-flex flex-column align-items-center">
+                  <FiUpload className="primary-light-text" size="3rem" />
+                  <h5 className="font-weight-bold text-center mt-4">
+                    ID Card Number
+                  </h5>
+                  <p className="text-muted">
+                    Kindly Upload your Govt. Issued ID card
+                  </p>
+                  <h5 className="font-weight-bold">Browse Files</h5>
+                  {/* /.font-weight-bold */}
+                  {/* /.font-weight-bold */}
+                </div>
+              )}
+            </Upload>
           </div>
           {/* /.uploadBox */}
         </div>
