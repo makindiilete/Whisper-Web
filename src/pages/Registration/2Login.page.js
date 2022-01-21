@@ -92,6 +92,7 @@ const TwoLoginPage = (props) => {
             top: mobile ? "3rem" : "3.5rem",
             left: "5rem",
             cursor: "pointer",
+            zIndex: "999999",
           }}
           onClick={() => history.goBack()}
         />
