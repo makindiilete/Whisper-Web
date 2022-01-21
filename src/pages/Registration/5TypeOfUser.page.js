@@ -6,6 +6,7 @@ import { FaAngleLeft } from "react-icons/all";
 import AuthContainerPage from "./AuthContainer.page";
 import img1 from "../../assets/images/auth/typeOfuser/Group 741.svg";
 import img2 from "../../assets/images/auth/typeOfuser/SVG/provider.svg";
+import routes from "../../routes";
 
 const TypeOfUserPage = (props) => {
   let location = useLocation();
@@ -100,7 +101,7 @@ const TypeOfUserPage = (props) => {
               {/* /.d-flex justify-content-between */}
               <button
                 className="btn btn-primary btn-block mb-5"
-                // onClick={() => handleSubmit([])}
+                onClick={() => history.push(routes.createyourprofile)}
                 disabled={!selected}
               >
                 Continue

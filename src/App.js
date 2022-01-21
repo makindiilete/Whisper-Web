@@ -18,6 +18,7 @@ import TwoLoginPage from "./pages/Registration/2Login.page";
 import ForgotPasswordPage from "./pages/Registration/3ForgotPassword.page";
 import ResetPasswordPage from "./pages/Registration/4ResetPassword.page";
 import TypeOfUserPage from "./pages/Registration/5TypeOfUser.page";
+import CreateYourProfilePage from "./pages/Registration/6Profile/6CreateYourProfile.page";
 
 AOS.init();
 
@@ -51,6 +52,11 @@ function App() {
               path={routes.resetPassword}
             />
             <Route exact component={TypeOfUserPage} path={routes.usertype} />
+            <Route
+              exact
+              component={CreateYourProfilePage}
+              path={routes.createyourprofile}
+            />
           </Switch>
         </Router>
         <ToastContainer

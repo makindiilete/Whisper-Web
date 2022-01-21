@@ -344,6 +344,10 @@ p {
 .primary-text {
   color: var(--primary-color) !important;
 }
+
+.primary-light-text {
+  color: var(--primary-light-color) !important;
+}
 .secondary-text {
   color: var(--secondary-color) !important;
 }
@@ -458,16 +462,37 @@ small {
     justify-content: space-between;
     margin-bottom: 0;
   }
+  .flexrowbetweencenter {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0;
+  }
   .flexrowaround {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     margin-bottom: 0;
   }
+  .flexrowaroundcenter {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 0;
+  }
   .flexrowevenly {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+    margin-bottom: 0;
+  }
+  .flexrowevenlycenter {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
     margin-bottom: 0;
   }
 }
@@ -483,17 +508,35 @@ small {
   cursor: pointer;
 }
 
-.ant-form-item-control {
+.ant-form-item-control,
+.ant-select-selector {
   border-radius: 10px !important;
   overflow: hidden !important;
 }
 
-.ant-input {
+.ant-input,
+.ant-select,
+.ant-picker,
+.ant-select-selector {
   border-radius: 10px !important;
   overflow: hidden !important;
   height: 4.8rem !important;
   margin-bottom: 0.5rem !important;
   background-color: transparent !important;
+}
+
+.ant-picker {
+  width: 100% !important;
+}
+
+.ant-select-selection-placeholder {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.ant-select-selection-item {
+  display: flex !important;
+  align-items: center !important;
 }
 
 .btn-block {
