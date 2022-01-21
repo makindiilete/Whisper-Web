@@ -82,12 +82,24 @@
   overflow: hidden;
 }
 
+.createUrProfile .uploadBox.rounded {
+  width: 20rem;
+  border: 3px dashed var(--primary-color);
+  padding: 0.5rem;
+  height: 20rem;
+  margin: 2rem 0;
+  border-radius: 10rem !important;
+  cursor: pointer;
+  overflow: hidden;
+}
+
 @media (min-width: 1024px) {
   .createUrProfile .uploadBox {
     width: 34.4rem;
     border: 1px dashed grey;
     margin: 0;
   }
+
   .auth .or-divider {
     position: absolute;
     top: 50%;

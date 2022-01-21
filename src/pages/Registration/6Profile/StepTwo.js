@@ -147,7 +147,7 @@ const StepTwo = ({ currentStep, setCurrentStep, title, subTitle }) => {
         <div className="flexrowaround">
           {regForm()}
           <div className="uploadBox img">
-            <Upload {...props}>
+            <Upload {...props} maxCount={1}>
               {imgPath ? (
                 <img
                   src={imgPath}

@@ -11,6 +11,7 @@ import routes from "../../../routes";
 import { countries } from "../../../components/countryList";
 import Stepone from "./stepone";
 import StepTwo from "./StepTwo";
+import StepThree from "./StepThree";
 
 const { Option } = Select;
 
@@ -35,6 +36,12 @@ const CreateYourProfilePage = (props) => {
       currentStep={currentStep}
       title="Create Your Profile"
       subTitle="Create your profile using these easy steps."
+    />,
+    <StepThree
+      setCurrentStep={setCurrentStep}
+      currentStep={currentStep}
+      title="Create Your Profile"
+      subTitle="You are just one step away."
     />,
   ];
 
