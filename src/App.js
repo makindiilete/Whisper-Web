@@ -13,8 +13,10 @@ import { AuthContext } from "./Utils/context";
 import LandingPage from "./pages/Landing.page";
 import PublicAreaRoute from "./Layout/PublicAreaRoute";
 import routes from "./routes";
-import OneCreateAccountPage from "./pages/Auth/OneCreateAccount.page";
-import LoginPage from "./pages/Auth/Login.page";
+import OneCreateAccountPage from "./pages/Registration/1CreateAccount.page";
+import TwoLoginPage from "./pages/Registration/2Login.page";
+import ForgotPasswordPage from "./pages/Registration/3ForgotPassword.page";
+import ResetPasswordPage from "./pages/Registration/4ResetPassword.page";
 
 AOS.init();
 
@@ -36,10 +38,16 @@ function App() {
               component={OneCreateAccountPage}
               path={routes.signup_createAccount}
             />
+            <Route exact component={TwoLoginPage} path={routes.login} />
             <Route
-                exact
-                component={LoginPage}
-                path={routes.login}
+              exact
+              component={ForgotPasswordPage}
+              path={routes.forgotPassword}
+            />{" "}
+            <Route
+              exact
+              component={ResetPasswordPage}
+              path={routes.resetPassword}
             />
           </Switch>
         </Router>

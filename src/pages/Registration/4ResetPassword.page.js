@@ -1,25 +1,21 @@
+//21
 import React, { useEffect, useState } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import useMobile from "../../hooks/useMobile";
-import routes from "../../routes";
-import fb from "../../assets/images/auth/fb.svg";
-import google from "../../assets/images/auth/google.svg";
-import apple from "../../assets/images/auth/apple.svg";
-import AuthContainerPage from "./AuthContainer.page";
 import { Form, Input } from "antd";
+import AuthContainerPage from "./AuthContainer.page";
 import { FaAngleLeft } from "react-icons/all";
+import routes from "../../routes";
 
-const LoginPage = (props) => {
+const ResetPasswordPage = (props) => {
   let location = useLocation();
   const history = useHistory();
   const mobile = useMobile();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
-
   const [data, setData] = useState({
     email: "",
-    password: "",
   });
 
   const handleSubmit = (values) => {
@@ -51,15 +47,14 @@ const LoginPage = (props) => {
             ]}
           >
             <Input
-              placeholder="Email"
+              placeholder="New Password"
               onChange={(e) => handleChange(e.target.value, "firstName")}
             />
           </Form.Item>
-
           <Form.Item
             className="mb-3 mb-md-0 mt-2"
             initialValue=""
-            name="password"
+            name="email"
             rules={[
               {
                 required: true,
@@ -68,23 +63,19 @@ const LoginPage = (props) => {
             ]}
           >
             <Input
-              placeholder="Password"
-              onChange={(e) => handleChange(e.target.value, "lastName")}
+              placeholder="Confirm Password"
+              onChange={(e) => handleChange(e.target.value, "firstName")}
             />
           </Form.Item>
-          <br />
-          {/*<div className="d-flex justify-content-center">*/}
-          <button className="btn btn-primary btn-block">Sign in</button>
         </Form>
       </>
     );
   };
-
   return (
     <AuthContainerPage>
       <div className="login position-relative">
         <FaAngleLeft
-          fontSize="4rem"
+          fontSize={mobile ? "4rem" : "2rem"}
           color="#000"
           style={{
             position: "absolute",
@@ -96,36 +87,22 @@ const LoginPage = (props) => {
         />
         <div className="row">
           <div className="col-md-6 offset-md-3">
-            <h4 className="text-center">Sign In</h4>
-            {regForm()}
-            <br />
-            <p className="primary-text text-center font-weight-bolder">
-              Forgot Password?
-            </p>
-            {/* /.text-primary */}
-            <div className="d-flex justify-content-center">
-              <div className="dotted-divider"></div>
+            <div className="d-flex flex-column justify-content-around h-100">
+              <div className="w-100">
+                <h4 className="text-center">Reset Password</h4>
+                <p className="text-center">
+                  A password reset link will be sent to your email address.
+                  Please use the link to reset your password.
+                </p>
+              </div>
+              {regForm()}
+              <button
+                className="btn btn-primary btn-block"
+                onClick={() => history.push(routes.resetPassword)}
+              >
+                Continue
+              </button>
             </div>
-            <p className="text-center mt-5">Sign in with</p>
-            <div className="flexrowaround">
-              <img
-                src={fb}
-                className="img-fluid mb-4 mb-md-0 social-icons "
-                alt=""
-              />
-              <img
-                src={google}
-                className="img-fluid  mb-4 mb-md-0 social-icons "
-                alt=""
-              />
-              <img
-                src={apple}
-                className="img-fluid  mb-4 mb-md-0 social-icons "
-                alt=""
-              />
-            </div>
-            <br />
-            {/*</div>*/}
           </div>
           {/* /.col-md-6 */}
         </div>
@@ -134,4 +111,4 @@ const LoginPage = (props) => {
   );
 };
 
-export default LoginPage;
+export default ResetPasswordPage;
