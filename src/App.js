@@ -14,6 +14,7 @@ import LandingPage from "./pages/Landing.page";
 import PublicAreaRoute from "./Layout/PublicAreaRoute";
 import routes from "./routes";
 import OneCreateAccountPage from "./pages/Auth/OneCreateAccount.page";
+import LoginPage from "./pages/Auth/Login.page";
 
 AOS.init();
 
@@ -34,6 +35,11 @@ function App() {
               exact
               component={OneCreateAccountPage}
               path={routes.signup_createAccount}
+            />
+            <Route
+                exact
+                component={LoginPage}
+                path={routes.login}
             />
           </Switch>
         </Router>

@@ -2,4 +2,5 @@
 export default Object.freeze({
   LANDING: "/",
   signup_createAccount: "/create-account",
+  login: "/login",
 });
