@@ -89,7 +89,9 @@ const Stepone = ({ currentStep, setCurrentStep, title, subTitle }) => {
           >
             <Select.Option value="male">Male</Select.Option>
             <Select.Option value="female">Female</Select.Option>
-            <Select.Option value="others">Others</Select.Option>
+            <Select.Option value="Non-Binary">Non-Binary</Select.Option>
+            <Select.Option value="Transgender">Transgender</Select.Option>
+            <Select.Option value="Intersex">Intersex</Select.Option>
           </Select>
         </Form.Item>
 

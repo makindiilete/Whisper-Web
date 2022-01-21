@@ -51,7 +51,13 @@ const CreateYourProfilePage = (props) => {
             cursor: "pointer",
             zIndex: "999999",
           }}
-          onClick={() => history.goBack()}
+          onClick={() => {
+            if (currentStep > 0) {
+              setCurrentStep(currentStep - 1);
+            } else {
+              history.goBack();
+            }
+          }}
         />
         <div className="container px-5 pb-5 pb-md-0">
           {screens[currentStep]}
