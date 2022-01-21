@@ -57,7 +57,7 @@
 :root {
   --primary-color: #31005c;
   --secondary-color: #f2a14b;
-  --primary-light-color: #f9f2ff;
+  --primary-light-color: #b561ff;
   --tertiary-color: #e8467e;
   --tertiary-light-color: #f9e5f4;
   --white: #fafafa;
@@ -502,6 +502,12 @@ small {
 
 .inline-form {
   width: 100% !important;
+}
+
+.cardz {
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #c4c4c4;
 }
 
 @media only screen and (max-width: 500px) {

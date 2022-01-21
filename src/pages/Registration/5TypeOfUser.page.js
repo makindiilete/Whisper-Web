@@ -1,13 +1,11 @@
 //19
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import useMobile from "../../hooks/useMobile";
 import { FaAngleLeft } from "react-icons/all";
-import routes from "../../routes";
-import fb from "../../assets/images/auth/fb.svg";
-import google from "../../assets/images/auth/google.svg";
-import apple from "../../assets/images/auth/apple.svg";
 import AuthContainerPage from "./AuthContainer.page";
+import img1 from "../../assets/images/auth/typeOfuser/Group 741.svg";
+import img2 from "../../assets/images/auth/typeOfuser/SVG/provider.svg";
 
 const TypeOfUserPage = (props) => {
   let location = useLocation();
@@ -16,9 +14,11 @@ const TypeOfUserPage = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+  const [selected, setSelected] = useState();
+
   return (
     <AuthContainerPage>
-      <div className="login position-relative">
+      <div className="typeOfUser position-relative">
         <FaAngleLeft
           fontSize={mobile ? "4rem" : "2rem"}
           color="#000"
@@ -33,39 +33,79 @@ const TypeOfUserPage = (props) => {
         />
         <div className="row">
           <div className="col-md-6 offset-md-3">
-            <h4 className="text-center">Sign In</h4>
-            <h2>Cards</h2>
-            <br />
-            <p
-              className="primary-text text-center font-weight-bolder cursor"
-              onClick={() => history.push(routes.forgotPassword)}
-            >
-              Forgot Password?
-            </p>
-            {/* /.text-primary */}
-            <div className="d-flex justify-content-center">
-              <div className="dotted-divider"></div>
+            <div className="d-flex flex-column justify-content-around h-100">
+              <div className="w-100">
+                <h4 className="text-center mt-5 mt-md-0">
+                  What type of user are you?
+                </h4>
+                <p className="text-center">
+                  Start by choosing the type of user you <br /> want to be on
+                  Whisper.
+                </p>
+              </div>
+              <div className="flexrowbetween typeOfUser__cards">
+                <div
+                  className={`d-flex justify-content-center align-items-center mr-md-5  ${
+                    selected === 1 && "active"
+                  }`}
+                  onClick={() => setSelected(1)}
+                >
+                  <div className="d-flex flex-column">
+                    <div className="d-flex justify-content-center">
+                      <img
+                        src={img1}
+                        className="img-fluid"
+                        alt=""
+                        style={{
+                          width: "6.2rem",
+                          objectFit: "contain",
+                          height: "6.2rem",
+                        }}
+                      />
+                    </div>
+                    <h5 className="text-center mt-4">Customer</h5>
+                    <small className="text-center">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      Sodales proin enim
+                    </small>
+                  </div>
+                </div>
+                <div
+                  className={`d-flex justify-content-center align-items-center  ${
+                    selected === 2 && "active"
+                  }`}
+                  onClick={() => setSelected(2)}
+                >
+                  <div className="d-flex flex-column">
+                    <div className="d-flex justify-content-center">
+                      <img
+                        src={img2}
+                        className="img-fluid"
+                        alt=""
+                        style={{
+                          width: "6.2rem",
+                          objectFit: "contain",
+                          height: "6.2rem",
+                        }}
+                      />
+                    </div>
+                    <h5 className="text-center mt-4">Provider</h5>
+                    <small className="text-center">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      Sodales proin enim
+                    </small>
+                  </div>
+                </div>
+              </div>
+              {/* /.d-flex justify-content-between */}
+              <button
+                className="btn btn-primary btn-block mb-5"
+                // onClick={() => handleSubmit([])}
+                disabled={!selected}
+              >
+                Continue
+              </button>
             </div>
-            <p className="text-center mt-5">Sign in with</p>
-            <div className="flexrowaround">
-              <img
-                src={fb}
-                className="img-fluid mb-4 mb-md-0 social-icons "
-                alt=""
-              />
-              <img
-                src={google}
-                className="img-fluid  mb-4 mb-md-0 social-icons "
-                alt=""
-              />
-              <img
-                src={apple}
-                className="img-fluid  mb-4 mb-md-0 social-icons "
-                alt=""
-              />
-            </div>
-            <br />
-            {/*</div>*/}
           </div>
           {/* /.col-md-6 */}
         </div>

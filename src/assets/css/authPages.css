@@ -55,6 +55,20 @@
   left: 48.5%;
 }
 
+.typeOfUser__cards > div {
+  min-width: 100%;
+  min-height: 23.3rem;
+  background-color: #f6f7f7;
+  border-radius: 10px;
+  padding: 1rem 2rem;
+  margin-bottom: 4rem;
+  cursor: pointer;
+}
+
+.typeOfUser__cards .active {
+  border: 2px solid var(--primary-light-color);
+}
+
 @media (min-width: 1024px) {
   .auth .or-divider {
     position: absolute;
@@ -75,5 +89,8 @@
   .social-icons {
     width: auto;
     height: auto;
+  }
+  .typeOfUser__cards > div {
+    min-width: 21.6rem;
   }
 }
