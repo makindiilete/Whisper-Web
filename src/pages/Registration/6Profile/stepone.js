@@ -127,7 +127,7 @@ const Stepone = ({ currentStep, setCurrentStep, title, subTitle }) => {
   };
   return (
     <>
-      <div className="d-flex flex-column justify-content-around h-100">
+      <div className="d-flex flex-column justify-content-around h-100 col-md-6 offset-md-3">
         <div className="w-100">
           <h4 className="text-center mt-5 mt-md-0">{title}</h4>
           <p className="text-center">{subTitle}</p>

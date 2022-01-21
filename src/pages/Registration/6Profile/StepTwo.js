@@ -53,7 +53,8 @@ const StepTwo = ({ currentStep, setCurrentStep, title, subTitle }) => {
         setImgPath(
           "https://cdn.pixabay.com/photo/2014/01/30/01/36/girl-254708_960_720.jpg"
         );
-        message.error(`${info.file.name} file upload failed.`);
+        // message.error(`${info.file.name} file upload failed.`);
+        message.success(`${info.file.name} file uploaded successfully`);
       }
     },
     progress: {
