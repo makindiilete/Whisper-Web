@@ -1,5 +1,5 @@
 .auth__heroArea {
-  background: url("../../assets/images/auth/hero.png") no-repeat 50%;
+  background: url("../../images/auth/hero.png") no-repeat 50%;
   background-size: cover;
   height: 50vh;
 }

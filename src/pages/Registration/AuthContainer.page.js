@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import logo from "../../assets/images/WhisperLogo.png";
-import "../../assets/css/authPages.css";
+import "../../assets/css/auth/authPages.css";
 import routes from "../../routes";
 
 const AuthContainerPage = ({ children }) => {

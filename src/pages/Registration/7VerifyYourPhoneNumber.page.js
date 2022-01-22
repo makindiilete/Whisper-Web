@@ -36,6 +36,13 @@ const VerifyYourPhoneNumberPage = (props) => {
     console.log("Values = ", values);
   };
 
+  function handleResendOtp() {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }
+
   return (
     <AuthContainerPage>
       {isLoading ? (
@@ -77,17 +84,24 @@ const VerifyYourPhoneNumberPage = (props) => {
                     scrollToFirstError
                     onFinish={handleSubmit}
                   >
-                    <PhoneInput
-                      enableSearch
-                      country={"us"}
-                      value={phoneNumber}
-                      placeholder="Your phone number"
-                      inputClass="phone-input"
-                      onChange={(phone) => setPhoneNumber(phone)}
-                      autoFormat={false}
-                      className="form-control form-input2 m-0 col-12"
-                      // onBlur={props?.phoneNumber !== "" ? validatePhone : null}
-                    />
+                    <Form.Item
+                      className="mb-3 mb-md-0 mt-2"
+                      initialValue=""
+                      name="phone"
+                      required
+                    >
+                      <PhoneInput
+                        enableSearch
+                        country={"us"}
+                        value={phoneNumber}
+                        placeholder="Your phone number"
+                        inputClass="phone-input"
+                        onChange={(phone) => setPhoneNumber(phone)}
+                        autoFormat={false}
+                        className="form-control form-input2 m-0 col-12"
+                        // onBlur={props?.phoneNumber !== "" ? validatePhone : null}
+                      />
+                    </Form.Item>
                     {phoneNumberError && (
                       <span className="text-danger">
                         Phone number already exist
@@ -117,7 +131,10 @@ const VerifyYourPhoneNumberPage = (props) => {
                     <div className="d-flex justify-content-center mt-2">
                       <small className="primary-text mr-2 text-center">
                         Didn’t get OTP?{" "}
-                        <strong className="text-underline cursor">
+                        <strong
+                          className="text-underline cursor"
+                          onClick={handleResendOtp}
+                        >
                           Re-send OTP
                         </strong>{" "}
                       </small>

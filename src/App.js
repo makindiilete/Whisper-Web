@@ -21,6 +21,7 @@ import TypeOfUserPage from "./pages/Registration/5TypeOfUser.page";
 import CreateYourProfilePage from "./pages/Registration/6Profile/6CreateYourProfile.page";
 import VerifyYourPhoneNumberPage from "./pages/Registration/7VerifyYourPhoneNumber.page";
 import YourAttributesPage from "./pages/Registration/8YourAttributes.page";
+import AboutYourselfPage from "./pages/Registration/9AboutYourself.page";
 
 AOS.init();
 
@@ -68,6 +69,11 @@ function App() {
               exact
               component={YourAttributesPage}
               path={routes.yourAttributes}
+            />
+            <Route
+              exact
+              component={AboutYourselfPage}
+              path={routes.aboutYourself}
             />
           </Switch>
         </Router>

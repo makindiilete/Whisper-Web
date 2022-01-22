@@ -18,7 +18,7 @@ const LoaderComponent = (props) => {
         alignItems: "center",
       }}
     >
-      <img src={loader} alt="" className="img-fluid w-50" />
+      <img src={loader} alt="" className="img-fluid w-25" />
     </div>
   );
 };

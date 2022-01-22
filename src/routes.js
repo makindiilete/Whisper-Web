@@ -9,4 +9,5 @@ export default Object.freeze({
   createyourprofile: "/reg/profile",
   verifyphonenumber: "/reg/phone-verification",
   yourAttributes: "/reg/attributes",
+  aboutYourself: "/reg/about-you",
 });

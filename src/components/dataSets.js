@@ -651,3 +651,13 @@ export const faqs = [
     answer: "Sed nunc gravida porttitor sed viverra ante. Amet, ridiculus.",
   },
 ];
+
+/*=========================================================*/
+export const bodyType = ["Slim", "Average", "Thick", "Chubby"];
+export const bodyHeight = ["Tall", "Average.", "Short", "Very Short"];
+
+export const smoking = ["None", "Hookah", "Tobacco/Cigarette", "4/20"];
+
+export const education = ["High School", "College", "Post Grad", "Doctoriate"];
+
+export const drink = ["Water", "Wine", "Vodka/ Gin", "Whiskey/Brandy"];

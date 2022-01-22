@@ -511,7 +511,7 @@ small {
 .ant-form-item-control,
 .ant-select-selector {
   border-radius: 10px !important;
-  overflow: hidden !important;
+  /*overflow: hidden !important;*/
 }
 
 .ant-input,
@@ -537,6 +537,10 @@ small {
 
 .ant-picker {
   width: 100% !important;
+}
+
+textarea.ant-input {
+  height: auto !important;
 }
 
 .ant-select-selection-placeholder {

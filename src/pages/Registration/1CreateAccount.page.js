@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import useMobile from "../../hooks/useMobile";
-import "../../assets/css/authPages.css";
+import "../../assets/css/auth/authPages.css";
 import whisperText from "../../assets/images/home/purple-outline-text.svg";
 import logo from "../../assets/images/WhisperLogo.png";
 import fb from "../../assets/images/auth/fb.svg";
