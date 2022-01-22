@@ -5,6 +5,7 @@
 }
 
 .auth .auth-popUp {
+  height: 100%;
   min-height: 47.4rem;
   width: 100%;
   background-color: #fff;
@@ -14,6 +15,7 @@
   margin-top: -4rem;
   overflow: hidden;
   position: relative;
+  padding-bottom: 10rem;
 }
 
 .auth .content {
@@ -23,6 +25,7 @@
 .auth .auth-popUp .right {
   background-color: #fafafa;
   padding-bottom: 10rem;
+  margin-bottom: -6rem;
 }
 .auth .auth-popUp .col-md-6 {
   min-height: 47.4rem;
@@ -93,7 +96,16 @@
   overflow: hidden;
 }
 
+.verifyPhone {
+  padding-left: 0;
+  padding-right: 0;
+}
+
 @media (min-width: 1024px) {
+  .verifyPhone {
+    padding-left: 22rem;
+    padding-right: 22rem;
+  }
   .createUrProfile .uploadBox {
     width: 34.4rem;
     border: 1px dashed grey;
@@ -107,6 +119,7 @@
   }
   .auth .auth-popUp .right {
     padding-bottom: 0;
+    margin-bottom: -4rem;
   }
   .whisperText {
     font-size: 12rem !important;

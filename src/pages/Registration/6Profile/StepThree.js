@@ -3,6 +3,7 @@ import { useLocation, useHistory } from "react-router-dom";
 import useMobile from "../../../hooks/useMobile";
 import { message, Upload } from "antd";
 import { FiUpload } from "react-icons/all";
+import routes from "../../../routes";
 
 const StepThree = ({ currentStep, setCurrentStep, title, subTitle }) => {
   let location = useLocation();
@@ -90,7 +91,7 @@ const StepThree = ({ currentStep, setCurrentStep, title, subTitle }) => {
         </div>
         <button
           className="btn btn-primary"
-          onClick={() => setCurrentStep(currentStep + 1)}
+          onClick={() => history.push(routes.verifyphonenumber)}
           style={mobile ? null : { margin: "6rem 30rem" }}
         >
           Continue

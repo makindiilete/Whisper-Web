@@ -19,6 +19,8 @@ import ForgotPasswordPage from "./pages/Registration/3ForgotPassword.page";
 import ResetPasswordPage from "./pages/Registration/4ResetPassword.page";
 import TypeOfUserPage from "./pages/Registration/5TypeOfUser.page";
 import CreateYourProfilePage from "./pages/Registration/6Profile/6CreateYourProfile.page";
+import VerifyYourPhoneNumberPage from "./pages/Registration/7VerifyYourPhoneNumber.page";
+import YourAttributesPage from "./pages/Registration/8YourAttributes.page";
 
 AOS.init();
 
@@ -56,6 +58,16 @@ function App() {
               exact
               component={CreateYourProfilePage}
               path={routes.createyourprofile}
+            />
+            <Route
+              exact
+              component={VerifyYourPhoneNumberPage}
+              path={routes.verifyphonenumber}
+            />
+            <Route
+              exact
+              component={YourAttributesPage}
+              path={routes.yourAttributes}
             />
           </Switch>
         </Router>
