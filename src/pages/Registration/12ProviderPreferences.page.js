@@ -21,8 +21,8 @@ const ProviderPreferencesPage = (props) => {
   const [selected, setSelected] = useState([]);
   const [currentStep, setCurrentStep] = useState(1);
   const [age, setAge] = useState({
-    startRange: 0,
-    endRange: 100,
+    startRange: 18,
+    endRange: 25,
   });
   const [km, setKm] = useState(5);
   const [amount, setAmount] = useState();
