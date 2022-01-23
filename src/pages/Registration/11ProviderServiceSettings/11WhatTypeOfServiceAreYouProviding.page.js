@@ -1,20 +1,16 @@
-// 62, 63,
-//OR
-// 69, 70, 71, 72 ===> 107,108,109,110,111
 import React, { useEffect, useState } from "react";
 import { useLocation, useHistory } from "react-router-dom";
-import useMobile from "../../hooks/useMobile";
-import AuthContainerPage from "./AuthContainer.page";
-import LoaderComponent from "../../components/LoaderComponent";
-import { BiRightArrowAlt, FaAngleLeft, GrTrash } from "react-icons/all";
-import { Upload } from "antd";
-import styles from "../../assets/css/auth/yourAttributes.module.css";
-import img1 from "../../assets/images/auth/typeOfuser/companion.svg";
-import img2 from "../../assets/images/auth/typeOfuser/xrated.svg";
-import img3 from "../../assets/images/auth/typeOfuser/both.svg";
-import routes from "../../routes";
+import useMobile from "../../../hooks/useMobile";
+import AuthContainerPage from "../AuthContainer.page";
+import LoaderComponent from "../../../components/LoaderComponent";
+import { FaAngleLeft } from "react-icons/all";
+import styles from "../../../assets/css/auth/yourAttributes.module.css";
+import img1 from "../../../assets/images/auth/typeOfuser/companion.svg";
+import img2 from "../../../assets/images/auth/typeOfuser/xrated.svg";
+import img3 from "../../../assets/images/auth/typeOfuser/both.svg";
+import routes from "../../../routes";
 
-const WhatAreYouLookingForPage = (props) => {
+const WhatTypeOfServiceAreYouProvidingPage = (props) => {
   let location = useLocation();
   const history = useHistory();
   const mobile = useMobile();
@@ -50,10 +46,10 @@ const WhatAreYouLookingForPage = (props) => {
               <div className="w-100">
                 <br />
                 <h4 className="text-center mt-5 mt-md-0">
-                  What are you looking for?
+                  What type of service will you be providing?
                 </h4>
                 <p className="text-center">
-                  Start by choosing the type of service you are interested in.
+                  Start by choosing the type of service you want to provide.
                 </p>
               </div>
               <div className="flexrowaround typeOfProvider__cards">
@@ -144,7 +140,7 @@ const WhatAreYouLookingForPage = (props) => {
                   <button
                     className={`btn btn-primary btn-block`}
                     disabled={!selected}
-                    onClick={() => history.push(routes.customerPreferences)}
+                    onClick={() => history.push(routes.whoWillYouProvideTo)}
                   >
                     Continue
                   </button>
@@ -159,4 +155,4 @@ const WhatAreYouLookingForPage = (props) => {
   );
 };
 
-export default WhatAreYouLookingForPage;
+export default WhatTypeOfServiceAreYouProvidingPage;

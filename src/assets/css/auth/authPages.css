@@ -99,6 +99,19 @@
   cursor: pointer;
   overflow: hidden;
 }
+.uploadPhotos .uploadBox {
+  width: 100%;
+  border: 1px dashed #b561ff;
+  background: #faf4ff;
+  height: 16.8rem;
+  margin: 2rem 0;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  overflow: hidden;
+}
 
 .createUrProfile .uploadBox.rounded {
   width: 20rem;
@@ -158,5 +171,9 @@
 
   .typeOfProvider__cards {
     margin: 0;
+  }
+
+  .uploadPhotos .uploadBox {
+    width: 16.8rem;
   }
 }

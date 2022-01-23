@@ -23,6 +23,13 @@ import VerifyYourPhoneNumberPage from "./pages/Registration/7VerifyYourPhoneNumb
 import YourAttributesPage from "./pages/Registration/8YourAttributes.page";
 import AboutYourselfPage from "./pages/Registration/9AboutYourself.page";
 import ProviderTypeOfServicePage from "./pages/Registration/5UserType/5ProviderTypeOfService.page";
+import UploadPhotosPage from "./pages/Registration/10UploadPhotos.page";
+import WhatTypeOfServiceAreYouProvidingPage from "./pages/Registration/11ProviderServiceSettings/11WhatTypeOfServiceAreYouProviding.page";
+import WhatAreYouLookingForPage from "./pages/Registration/11WhatAreYouLookingFor.page";
+import WhoWillYouProvideToPage from "./pages/Registration/11ProviderServiceSettings/12WhoWillYouProvideTo.page";
+import SelectTypeOfServicePage from "./pages/Registration/11ProviderServiceSettings/13SelectTypeOfService.page";
+import CustomerPreferencesPage from "./pages/Registration/12CustomerPreferences.page";
+import ProviderPreferencesPage from "./pages/Registration/12ProviderPreferences.page";
 
 AOS.init();
 
@@ -80,6 +87,46 @@ function App() {
               exact
               component={AboutYourselfPage}
               path={routes.aboutYourself}
+            />
+            <Route
+              exact
+              component={UploadPhotosPage}
+              path={routes.uploadYourPhotos}
+            />
+            <Route
+              exact
+              component={WhatTypeOfServiceAreYouProvidingPage}
+              path={routes.serviceYouWantToRender}
+            />
+            <Route
+              exact
+              component={WhatAreYouLookingForPage}
+              path={routes.whatYouAreLookingFor}
+            />
+            <Route
+              exact
+              component={WhatAreYouLookingForPage}
+              path={routes.whatYouAreLookingFor}
+            />
+            <Route
+              exact
+              component={WhoWillYouProvideToPage}
+              path={routes.whoWillYouProvideTo}
+            />
+            <Route
+              exact
+              component={SelectTypeOfServicePage}
+              path={routes.selectTypeOfServiceToProvide}
+            />
+            <Route
+              exact
+              component={CustomerPreferencesPage}
+              path={routes.customerPreferences}
+            />
+            <Route
+              exact
+              component={ProviderPreferencesPage}
+              path={routes.providerPreferences}
             />
           </Switch>
         </Router>

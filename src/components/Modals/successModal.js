@@ -13,6 +13,9 @@ const SuccessModal = ({
   image = modalImg,
   title,
   subtitle,
+  showButton = false,
+  btnText,
+  btnClickHandler,
 }) => {
   let location = useLocation();
   useEffect(() => {
@@ -50,6 +53,7 @@ const SuccessModal = ({
                 width: "20rem",
                 height: "20rem",
               }}
+              alt=""
             />
           </div>
         )}
@@ -62,19 +66,13 @@ const SuccessModal = ({
           <p className="text-center">{subtitle}</p>
         </div>
         <br />
-        {/*  <div className="d-flex justify-content-center">
-                    <button
-                        className="btn btn-primary px-5"
-                        onClick={handleAccept}
-                        disabled={loading}
-                    >
-                        {loading ? (
-                            <span className="spinner-border text-white" />
-                        ) : (
-                            "Accept"
-                        )}
-                    </button>
-                </div>*/}
+        {showButton && (
+          <div className="d-flex justify-content-center">
+            <button className="btn btn-primary" onClick={btnClickHandler}>
+              {btnText}
+            </button>
+          </div>
+        )}
       </div>
     </Modal>
   );

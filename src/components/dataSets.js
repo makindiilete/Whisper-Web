@@ -1,3 +1,10 @@
+import img1 from "../assets/images/auth/providingTo/img1.svg";
+import img2 from "../assets/images/auth/providingTo/img2.svg";
+import img3 from "../assets/images/auth/providingTo/img3.svg";
+import img4 from "../assets/images/auth/providingTo/img4.svg";
+import img5 from "../assets/images/auth/providingTo/img5.svg";
+import img6 from "../assets/images/auth/providingTo/img6.svg";
+
 export const daily = ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"];
 
 export const weekly = ["WK1", "WK2", "WK3", "WK4"];
@@ -661,3 +668,53 @@ export const smoking = ["None", "Hookah", "Tobacco/Cigarette", "4/20"];
 export const education = ["High School", "College", "Post Grad", "Doctoriate"];
 
 export const drink = ["Water", "Wine", "Vodka/ Gin", "Whiskey/Brandy"];
+
+export const providingTo = [
+  {
+    id: 1,
+    text: "Straight Female",
+    icon: img1,
+  },
+  {
+    id: 2,
+    text: "Straight Male",
+    icon: img2,
+  },
+  {
+    id: 3,
+    text: "Gays",
+    icon: img3,
+  },
+  {
+    id: 4,
+    text: "Lesbians",
+    icon: img4,
+  },
+  {
+    id: 5,
+    text: "Trans-male",
+    icon: img5,
+  },
+  {
+    id: 6,
+    text: "Trans-female",
+    icon: img6,
+  },
+];
+
+export const companionServices = [
+  "Tour Guide",
+  "Massage Therapist",
+  "Party Companion",
+  "Escort",
+];
+
+export const xRatedServices = ["Anal", "Bjj", "BDSM", "Group"];
+export const imInto = [
+  "Men",
+  "Women",
+  "Gay",
+  "Lesbians",
+  "Trans-Men",
+  "Trans-Women",
+];

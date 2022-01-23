@@ -15,27 +15,31 @@ const StepThree = ({ currentStep, setCurrentStep, title, subTitle }) => {
   const [imgPath, setImgPath] = useState("");
 
   const props = {
-    name: "file",
-    action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
-    headers: {
-      authorization: "authorization-text",
+    // name: "file",
+    // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+    // headers: {
+    //   authorization: "authorization-text",
+    // },
+    beforeUpload: (file) => {
+      console.log("file to upload = ", file);
+      // this.setState(state => ({
+      //   fileList: [...state.fileList, file],
+      // }));
+      return false;
     },
     onChange(info) {
+      setImgPath(URL.createObjectURL(info.file));
       if (info.file.status !== "uploading") {
         console.log(info.file, info.fileList);
       }
-      if (info.file.status === "done") {
-        setImgPath(
-          "https://cdn.pixabay.com/photo/2015/01/12/10/44/woman-597173_960_720.jpg"
-        );
-        message.success(`${info.file.name} file uploaded successfully`);
-      } else if (info.file.status === "error") {
-        setImgPath(
-          "https://cdn.pixabay.com/photo/2015/01/12/10/44/woman-597173_960_720.jpg"
-        );
-        // message.error(`${info.file.name} file upload failed.`);
-        message.success(`${info.file.name} file uploaded successfully`);
-      }
+      // if (info.file.status === "done") {
+      //   setImgPath(URL.createObjectURL(info.file));
+      //   message.success(`${info.file.name} file uploaded successfully`);
+      // } else if (info.file.status === "error") {
+      //   setImgPath(URL.createObjectURL(info.file));
+      //   // message.error(`${info.file.name} file upload failed.`);
+      //   message.success(`${info.file.name} file uploaded successfully`);
+      // }
     },
     progress: {
       strokeColor: {
@@ -81,7 +85,12 @@ const StepThree = ({ currentStep, setCurrentStep, title, subTitle }) => {
           {/* /.uploadBox */}
         </div>
         <div className="d-flex justify-content-center mb-4">
-          <Upload {...props} maxCount={1}>
+          <Upload
+            accept="image/*"
+            {...props}
+            maxCount={1}
+            showUploadList={false}
+          >
             {!imgPath ? (
               <p className="primary-text text-center">Browse & Upload image</p>
             ) : (

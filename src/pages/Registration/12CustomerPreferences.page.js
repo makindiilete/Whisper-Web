@@ -1,4 +1,3 @@
-// 58,
 import React, { useEffect, useState } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import useMobile from "../../hooks/useMobile";
@@ -6,10 +5,10 @@ import AuthContainerPage from "./AuthContainer.page";
 import LoaderComponent from "../../components/LoaderComponent";
 import { FaAngleLeft } from "react-icons/all";
 import styles from "../../assets/css/auth/yourAttributes.module.css";
+import { imInto, providingTo } from "../../components/dataSets";
 import routes from "../../routes";
-import { Form, Input } from "antd";
 
-const AboutYourselfPage = (props) => {
+const CustomerPreferencesPage = (props) => {
   let location = useLocation();
   const history = useHistory();
   const mobile = useMobile();
@@ -17,18 +16,26 @@ const AboutYourselfPage = (props) => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
   const [isLoading, setIsLoading] = useState(false);
-  const [bio, setBio] = useState("");
+  const [selected, setSelected] = useState([]);
 
-  const handleSubmit = (values) => {
-    console.log(values);
+  const addRemoveItem = (item) => {
+    //Add
+    if (!selected?.includes(item)) {
+      setSelected([...selected, item]);
+    }
+
+    //Remove
+    else {
+      const filterItem = selected?.filter((i) => i !== item);
+      setSelected(filterItem);
+    }
   };
-
   return (
     <AuthContainerPage>
       {isLoading ? (
         <LoaderComponent />
       ) : (
-        <div className="typeOfUser position-relative ">
+        <div className="uploadPhotos position-relative ">
           <FaAngleLeft
             fontSize={mobile ? "4rem" : "2rem"}
             color="#000"
@@ -44,45 +51,31 @@ const AboutYourselfPage = (props) => {
           <div className="container px-5 pb-5 pb-md-0">
             <div
               className="d-flex flex-column justify-content-around"
+              // style={{ minHeight: "47.4rem", marginBottom: "-10rem" }}
               style={{ minHeight: "47.4rem" }}
             >
               <div className="w-100">
                 <br />
-                <h4 className="text-center mt-5 mt-md-0">
-                  Tell Us a little bit about yourself
-                </h4>
-                <p className="text-center">
-                  Just a little information about yourself.
-                </p>
+                <h4 className="text-center mt-5 mt-md-0">Your Preferences</h4>
+                <p className="text-center">What are your preferences?</p>
               </div>
-              <div className={`col-md-6 offset-md-3 ${styles.attributesCol} `}>
-                <Form
-                  layout="vertical"
-                  scrollToFirstError
-                  onFinish={handleSubmit}
-                >
-                  {/* <Input.TextArea
-                    placeholder="Bio"
-                    showCount
-                    rows={5}
-                    maxLength={140}
-                    onChange={(e) => setBio(e.target.value)}
-                  />*/}
-                  <Form.Item
-                    className="mb-3 mb-md-0 mt-2"
-                    initialValue=""
-                    name="otp"
-                    required
-                  >
-                    <Input.TextArea
-                      placeholder="Bio"
-                      showCount
-                      rows={5}
-                      maxLength={140}
-                      onChange={(e) => setBio(e.target.value)}
-                    />
-                  </Form.Item>
-                </Form>
+              <div className={`row `}>
+                <div className={`col-md-8 offset-md-2 ${styles.attributesCol}`}>
+                  <h5>I am into</h5>
+                  <div className={styles.flexrowbetween}>
+                    {imInto?.map((item) => (
+                      <button
+                        key={item}
+                        className={`${styles.attrBtn} ${
+                          selected?.includes(item) ? styles.attrBtnActive : null
+                        }`}
+                        onClick={() => addRemoveItem(item)}
+                      >
+                        {item}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
               <div className="row">
                 <div
@@ -90,8 +83,10 @@ const AboutYourselfPage = (props) => {
                 >
                   <button
                     className={`btn btn-primary btn-block`}
-                    disabled={bio === ""}
-                    onClick={() => history.push(routes.uploadYourPhotos)}
+                    disabled={selected.length === 0}
+                    /*onClick={() =>
+                      history.push(routes.selectTypeOfServiceToProvide)
+                    }*/
                   >
                     Continue
                   </button>
@@ -99,10 +94,11 @@ const AboutYourselfPage = (props) => {
               </div>
             </div>
           </div>
+          {/* /.col-md-6 */}
         </div>
       )}
     </AuthContainerPage>
   );
 };
 
-export default AboutYourselfPage;
+export default CustomerPreferencesPage;

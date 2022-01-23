@@ -104,10 +104,10 @@ const TypeOfUserPage = (props) => {
                 onClick={() => {
                   if (selected === 1) {
                     history.push(routes.createyourprofile);
-                    localStorage.setItem("userTye", "customer");
+                    localStorage.setItem("userType", "customer");
                   } else {
                     history.push(routes.providerServiceType);
-                    localStorage.setItem("userTye", "provider");
+                    localStorage.setItem("userType", "provider");
                   }
                 }}
                 disabled={!selected}

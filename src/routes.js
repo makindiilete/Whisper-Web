@@ -11,4 +11,11 @@ export default Object.freeze({
   verifyphonenumber: "/reg/phone-verification",
   yourAttributes: "/reg/attributes",
   aboutYourself: "/reg/about-you",
+  uploadYourPhotos: "/reg/photo",
+  whatYouAreLookingFor: "/reg/looking-for",
+  serviceYouWantToRender: "/reg/service-to-render",
+  whoWillYouProvideTo: "/reg/providing-to",
+  selectTypeOfServiceToProvide: "/reg/select-services",
+  providerPreferences: "/reg/provider-preferences",
+  customerPreferences: "/reg/customer-preferences",
 });

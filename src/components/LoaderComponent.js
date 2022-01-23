@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import loader from "../assets/images/loadingCircle.gif";
+import loaderPrimary from "../assets/images/loadingCirclePrimaryLight.gif";
 
-const LoaderComponent = (props) => {
+const LoaderComponent = ({ theme = "default" }) => {
   let location = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -18,7 +19,11 @@ const LoaderComponent = (props) => {
         alignItems: "center",
       }}
     >
-      <img src={loader} alt="" className="img-fluid w-25" />
+      <img
+        src={theme === "default" ? loader : loaderPrimary}
+        alt=""
+        className="img-fluid w-25"
+      />
     </div>
   );
 };
