@@ -163,7 +163,7 @@ const StepTwo = ({ currentStep, setCurrentStep, title, subTitle }) => {
                   alt=""
                   style={{
                     width: "100%",
-                    height: "100%",
+                    height: "15.8rem",
                     objectFit: "cover",
                   }}
                 />
