@@ -176,7 +176,7 @@ const UploadPhotosPage = () => {
                               <div
                                 className="cursor p-2 bg-light d-flex justify-content-center align-items-center position-absolute"
                                 style={{
-                                  top: mobile ? "5rem" : "1rem",
+                                  top: "1rem",
                                   right: "1rem",
                                   borderRadius: "5px",
                                 }}
