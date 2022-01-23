@@ -49,7 +49,7 @@ const ProviderTypeOfServicePage = (props) => {
           </div>
           {/* /.col-md-6 */}
         </div>
-        <div className="flexrowaround typeOfProvider__cards mx-5 mx-md-0">
+        <div className="flexrowaround typeOfProvider__cards">
           <div
             className={`d-flex justify-content-center align-items-center  ${
               selected === 1 && "active"

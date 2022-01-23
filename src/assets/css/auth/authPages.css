@@ -78,6 +78,10 @@
   /*margin: 0 2rem 4rem 2rem;*/
 }
 
+.typeOfProvider__cards {
+  margin: 0 4rem;
+}
+
 .typeOfUser__cards .active,
 .typeOfProvider__cards .active {
   border: 2px solid var(--primary-light-color);
@@ -150,5 +154,9 @@
   .typeOfProvider__cards > div {
     width: 21.6rem;
     /*margin: 0;*/
+  }
+
+  .typeOfProvider__cards {
+    margin: 0;
   }
 }
