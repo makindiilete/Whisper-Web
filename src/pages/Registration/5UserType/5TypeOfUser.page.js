@@ -1,12 +1,12 @@
-//19
+//19, 69,
 import React, { useEffect, useState } from "react";
 import { useLocation, useHistory } from "react-router-dom";
-import useMobile from "../../hooks/useMobile";
+import useMobile from "../../../hooks/useMobile";
 import { FaAngleLeft } from "react-icons/all";
-import AuthContainerPage from "./AuthContainer.page";
-import img1 from "../../assets/images/auth/typeOfuser/Group 741.svg";
-import img2 from "../../assets/images/auth/typeOfuser/SVG/provider.svg";
-import routes from "../../routes";
+import AuthContainerPage from "../AuthContainer.page";
+import img1 from "../../../assets/images/auth/typeOfuser/Group 741.svg";
+import img2 from "../../../assets/images/auth/typeOfuser/SVG/provider.svg";
+import routes from "../../../routes";
 
 const TypeOfUserPage = (props) => {
   let location = useLocation();
@@ -101,7 +101,15 @@ const TypeOfUserPage = (props) => {
               {/* /.d-flex justify-content-between */}
               <button
                 className="btn btn-primary btn-block mb-5"
-                onClick={() => history.push(routes.createyourprofile)}
+                onClick={() => {
+                  if (selected === 1) {
+                    history.push(routes.createyourprofile);
+                    localStorage.setItem("userTye", "customer");
+                  } else {
+                    history.push(routes.providerServiceType);
+                    localStorage.setItem("userTye", "provider");
+                  }
+                }}
                 disabled={!selected}
               >
                 Continue

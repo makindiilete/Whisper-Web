@@ -6,6 +6,7 @@ export default Object.freeze({
   forgotPassword: "/reg/forgot-password",
   resetPassword: "/reg/reset-password",
   usertype: "/reg/user-type",
+  providerServiceType: "/reg/provider-services",
   createyourprofile: "/reg/profile",
   verifyphonenumber: "/reg/phone-verification",
   yourAttributes: "/reg/attributes",
