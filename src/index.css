@@ -520,14 +520,45 @@ small {
 .ant-select-selector,
 .react-tel-input .form-control {
   border-radius: 10px !important;
+  margin-bottom: 0.5rem !important;
   overflow: hidden !important;
   height: 4.8rem !important;
-  margin-bottom: 0.5rem !important;
   background-color: transparent !important;
+}
+
+.ant-input .prepend {
+  border-radius: 0 !important;
+  margin-bottom: 0 !important;
 }
 
 .react-tel-input .form-control {
   width: 100% !important;
+}
+
+.appendInput {
+  background: white;
+  border: 1px solid lightgray;
+  padding: 1.58rem 1rem;
+  z-index: 9;
+  margin-left: -1rem;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 0.5rem !important;
+}
+
+.prependInput {
+  width: 9.6rem;
+  height: 4.1rem;
+  background: #faf4ff;
+  border: 1px solid #b561ff;
+  padding: 0 1rem;
+  z-index: 9;
+  /*margin-left: -1rem;*/
+  margin-right: -9rem;
+  border-radius: 8px;
+  margin-bottom: 0.5rem !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .react-tel-input .flag-dropdown,
@@ -592,6 +623,10 @@ textarea.ant-input {
   width: 100% !important;
 }
 
+.ant-slider {
+  margin: 0 !important;
+}
+
 @media only screen and (max-width: 500px) {
   .col {
     margin-bottom: 4rem;
@@ -609,6 +644,22 @@ textarea.ant-input {
   }
   small {
     font-size: 80% !important;
+  }
+
+  .prependInput {
+    width: 9.6rem;
+    height: 4.1rem;
+    background: #faf4ff;
+    border: 1px solid #b561ff;
+    padding: 0 1rem;
+    z-index: 9;
+    /*margin-left: -1rem;*/
+    margin-right: -9.7rem;
+    border-radius: 8px;
+    margin-bottom: 0.5rem !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   /*  .ant-layout-sider {
     flex: 0 0 30vw !important;
