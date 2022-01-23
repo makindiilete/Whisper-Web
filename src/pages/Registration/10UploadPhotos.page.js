@@ -162,7 +162,10 @@ const UploadPhotosPage = () => {
                           {loadingImg.status && img?.id === loadingImg.id ? (
                             <LoaderComponent theme="primaryLight" />
                           ) : img?.url ? (
-                            <div className="position-relative">
+                            <div
+                              className="position-relative"
+                              style={mobile ? { width: "100%" } : null}
+                            >
                               <img
                                 src={img?.url}
                                 alt=""
@@ -170,7 +173,7 @@ const UploadPhotosPage = () => {
                                 style={
                                   mobile
                                     ? {
-                                        width: "23rem",
+                                        width: "100%",
                                         height: "25rem",
                                         objectFit: "cover",
                                       }
