@@ -168,15 +168,15 @@ const UploadPhotosPage = () => {
                                 alt=""
                                 className="img-fluid"
                                 style={{
-                                  width: "30rem",
-                                  height: "16.8rem",
+                                  // width: "30rem",
+                                  // height: "16.8rem",
                                   objectFit: "cover",
                                 }}
                               />
                               <div
                                 className="cursor p-2 bg-light d-flex justify-content-center align-items-center position-absolute"
                                 style={{
-                                  top: "1rem",
+                                  top: mobile ? "5rem" : "1rem",
                                   right: "1rem",
                                   borderRadius: "5px",
                                 }}
