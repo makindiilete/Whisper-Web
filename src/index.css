@@ -588,6 +588,10 @@ textarea.ant-input {
   height: 40px !important;
 }
 
+.ant-upload {
+  width: 100% !important;
+}
+
 @media only screen and (max-width: 500px) {
   .col {
     margin-bottom: 4rem;

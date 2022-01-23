@@ -146,8 +146,9 @@ const UploadPhotosPage = () => {
                   style={mobile ? null : { margin: "0 15rem" }}
                 >
                   {images?.map((img) => (
-                    <div className="uploadBox img">
+                    <div className={mobile ? "w-100" : ""}>
                       <Upload
+                        style={mobile ? { width: "100%" } : null}
                         disabled={img?.url}
                         accept="image/*"
                         {...props}
@@ -157,43 +158,45 @@ const UploadPhotosPage = () => {
                           handleGeneratePreview(info, img?.id)
                         }
                       >
-                        {loadingImg.status && img?.id === loadingImg.id ? (
-                          <LoaderComponent theme="primaryLight" />
-                        ) : img?.url ? (
-                          <div className="position-relative">
-                            <img
-                              src={img?.url}
-                              alt=""
-                              className="img-fluid"
-                              style={{
-                                width: "30rem",
-                                height: "16.8rem",
-                                objectFit: "cover",
-                              }}
-                            />
-                            <div
-                              className="cursor p-2 bg-light d-flex justify-content-center align-items-center position-absolute"
-                              style={{
-                                top: "1rem",
-                                right: "1rem",
-                                borderRadius: "5px",
-                              }}
-                              onClick={() => handleDeleteImg(img?.id)}
-                            >
-                              <GrTrash />
+                        <div className="uploadBox img">
+                          {loadingImg.status && img?.id === loadingImg.id ? (
+                            <LoaderComponent theme="primaryLight" />
+                          ) : img?.url ? (
+                            <div className="position-relative">
+                              <img
+                                src={img?.url}
+                                alt=""
+                                className="img-fluid"
+                                style={{
+                                  width: "30rem",
+                                  height: "16.8rem",
+                                  objectFit: "cover",
+                                }}
+                              />
+                              <div
+                                className="cursor p-2 bg-light d-flex justify-content-center align-items-center position-absolute"
+                                style={{
+                                  top: "1rem",
+                                  right: "1rem",
+                                  borderRadius: "5px",
+                                }}
+                                onClick={() => handleDeleteImg(img?.id)}
+                              >
+                                <GrTrash />
+                              </div>
                             </div>
-                          </div>
-                        ) : (
-                          <div
-                            className="cursor d-flex justify-content-center align-items-center"
-                            style={{
-                              width: mobile ? "100%" : "16.8rem",
-                              height: "16.8rem",
-                            }}
-                          >
-                            <p className="font-weight-bold">+</p>
-                          </div>
-                        )}
+                          ) : (
+                            <div
+                              className="cursor d-flex justify-content-center align-items-center"
+                              style={{
+                                width: mobile ? "100%" : "16.8rem",
+                                height: "16.8rem",
+                              }}
+                            >
+                              <p className="font-weight-bold">+</p>
+                            </div>
+                          )}
+                        </div>
                       </Upload>
                     </div>
                   ))}
