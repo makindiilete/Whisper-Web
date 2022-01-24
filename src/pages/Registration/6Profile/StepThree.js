@@ -54,7 +54,7 @@ const StepThree = ({ currentStep, setCurrentStep, title, subTitle }) => {
   return (
     <>
       <div
-        className="d-flex flex-column justify-content-around"
+        className="d-flex flex-column justify-content-around  h-100 col-md-6 offset-md-3"
         style={{ minHeight: "47.4rem" }}
       >
         <div className="w-100">

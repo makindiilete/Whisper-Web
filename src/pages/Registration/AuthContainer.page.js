@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import logo from "../../assets/images/WhisperLogo.png";
 import "../../assets/css/auth/authPages.css";
+import styles from "../../assets/css/navs/authContainer.module.css";
 import routes from "../../routes";
 
 const AuthContainerPage = ({ children }) => {
@@ -13,16 +14,16 @@ const AuthContainerPage = ({ children }) => {
   return (
     <section className="auth landing">
       <section className="auth__heroArea">
-        <div className="nav pt-4">
+        <div className={`pt-4 ${styles.nav}`}>
           <img
             src={logo}
             alt=""
             className="img-fluid logo cursor"
             onClick={() => history.push("/")}
           />
-          <div className="nav__links">
+          <div className={styles.nav__links}>
             <button
-              className="btn btn-outline-light"
+              className={`btn btn-outline-light ${styles.btn}`}
               onClick={() => history.push(routes.login)}
             >
               Login

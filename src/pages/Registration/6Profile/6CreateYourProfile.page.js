@@ -66,9 +66,7 @@ const CreateYourProfilePage = (props) => {
             }
           }}
         />
-        <div className="container px-5 pb-5 pb-md-0">
-          {screens[currentStep]}
-        </div>
+        <div className="row">{screens[currentStep]}</div>
         {/* /.col-md-6 */}
       </div>
     </AuthContainerPage>

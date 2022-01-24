@@ -142,7 +142,7 @@ const StepTwo = ({ currentStep, setCurrentStep, title, subTitle }) => {
   };
   return (
     <>
-      <div className="d-flex flex-column justify-content-around h-100">
+      <div className="d-flex flex-column justify-content-around h-100 px-5">
         <div className="w-100">
           <br />
           <h4 className="text-center mt-5 mt-md-0">{title}</h4>

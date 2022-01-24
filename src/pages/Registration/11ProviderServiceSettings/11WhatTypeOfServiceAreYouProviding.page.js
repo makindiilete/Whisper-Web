@@ -37,7 +37,7 @@ const WhatTypeOfServiceAreYouProvidingPage = (props) => {
             }}
             onClick={() => history.goBack()}
           />
-          <div className="container px-5 pb-5 pb-md-0">
+          <div className="container pb-5 pb-md-0">
             <div
               className="d-flex flex-column justify-content-around"
               // style={{ minHeight: "47.4rem", marginBottom: "-10rem" }}

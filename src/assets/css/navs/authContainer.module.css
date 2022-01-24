@@ -1,0 +1,31 @@
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 7.4rem;
+}
+
+.nav .nav__links {
+  font-family: "tt_normsthin", sans-serif !important;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.nav__links p:hover {
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.nav .btn {
+  margin-right: 4rem;
+  width: 10rem;
+}
+
+@media (min-width: 1024px) {
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 7.4rem;
+  }
+}
