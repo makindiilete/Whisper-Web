@@ -139,7 +139,12 @@ const ProviderPreferencesPage = (props) => {
               <div className="prependInput">
                 <small>Companion</small>
               </div>
-              <Input onChange={(e) => setAmount(`$ ${e.target.value}`)} />
+              <div className="w-100">
+                <Input
+                  style={{ paddingLeft: "9.5rem" }}
+                  onChange={(e) => setAmount(`$ ${e.target.value}`)}
+                />
+              </div>
               <h5 className="appendInput">/hr</h5>
             </div>
             <div className="flexrowbetweencenter">
@@ -165,7 +170,12 @@ const ProviderPreferencesPage = (props) => {
               <div className="prependInput">
                 <small>X-Rated</small>
               </div>
-              <Input onChange={(e) => setAmount(`$ ${e.target.value}`)} />
+              <div className="w-100">
+                <Input
+                  style={{ paddingLeft: "9.5rem" }}
+                  onChange={(e) => setAmount(`$ ${e.target.value}`)}
+                />
+              </div>
               <h5 className="appendInput">/hr</h5>
             </div>
           </div>
