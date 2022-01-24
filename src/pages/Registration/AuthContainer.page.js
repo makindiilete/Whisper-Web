@@ -22,7 +22,7 @@ const AuthContainerPage = ({ children }) => {
             alt=""
             style={
               mobile
-                ? { width: "12rem", height: "12rem", objectFit: "container" }
+                ? { width: "12rem", height: "12rem", objectFit: "contain" }
                 : null
             }
             className="img-fluid logo cursor"
