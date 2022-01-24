@@ -10,6 +10,7 @@
   background: url("../../assets/images/home/hero-area.jpg") no-repeat 50%;
   background-size: cover;
   height: 100%;
+  overflow: scroll;
 }
 
 .landing .btn {
@@ -19,28 +20,6 @@
 .hero-area .logo {
   width: 13.1rem;
   object-fit: contain;
-}
-
-.nav {
-  display: none;
-  justify-content: space-between;
-  align-items: center;
-  min-height: 7.4rem;
-}
-
-.nav .nav__links {
-  font-family: "tt_normsthin", sans-serif !important;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
-.nav__links p:hover {
-  border-bottom: 2px solid var(--primary-color);
-}
-
-.nav .btn {
-  margin-right: 4rem;
 }
 
 .landing .whisperText {
@@ -145,12 +124,6 @@
   }
   .landing .btn {
     width: auto;
-  }
-  .nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    min-height: 7.4rem;
   }
 
   .landing .heading {

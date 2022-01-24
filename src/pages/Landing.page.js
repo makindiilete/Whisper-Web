@@ -11,10 +11,13 @@ import lonely from "../assets/images/home/lonely.jpg";
 import safe from "../assets/images/home/safe.jpg";
 import heroareatwo from "../assets/images/home/hero-area-two.jpg";
 import routes from "../routes";
+import HomeNavigation from "../components/navs/HomeNavigation";
+import useMobile from "../hooks/useMobile";
 
 const LandingPage = (props) => {
   let location = useLocation();
   const history = useHistory();
+  const mobile = useMobile();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
@@ -23,27 +26,14 @@ const LandingPage = (props) => {
       <section className="hero-area">
         <div className="hero-area__bg">
           <div className="container-fluid">
-            <div className="nav">
-              <img
-                src={logo}
-                alt=""
-                className="img-fluid logo cursor"
-                onClick={() => history.push("/")}
-              />
-              <div className="nav__links">
-                <p className="text-white mr-5 padding-none">About Whisper</p>
-                <p className="text-white mr-5 padding-none">Contact us</p>
-                <p className="text-white mr-5 padding-none">Select</p>
-                <button className="btn btn-light">Download the App</button>
-              </div>
-            </div>
-            {/* /.nav */}
+            <HomeNavigation />
             <div
               style={{
                 height: "80vh",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                marginTop: mobile ? "-5rem" : null,
               }}
             >
               <div>
