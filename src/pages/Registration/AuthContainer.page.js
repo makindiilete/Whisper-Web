@@ -4,6 +4,7 @@ import logo from "../../assets/images/WhisperLogo.png";
 import "../../assets/css/auth/authPages.css";
 import styles from "../../assets/css/navs/authContainer.module.css";
 import routes from "../../routes";
+import useMobile from "../../hooks/useMobile";
 
 const AuthContainerPage = ({ children }) => {
   let location = useLocation();
@@ -11,6 +12,7 @@ const AuthContainerPage = ({ children }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+  const mobile = useMobile();
   return (
     <section className="auth landing">
       <section className="auth__heroArea">
@@ -18,6 +20,11 @@ const AuthContainerPage = ({ children }) => {
           <img
             src={logo}
             alt=""
+            style={
+              mobile
+                ? { width: "12rem", height: "12rem", objectFit: "container" }
+                : null
+            }
             className="img-fluid logo cursor"
             onClick={() => history.push("/")}
           />
