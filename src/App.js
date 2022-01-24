@@ -30,6 +30,7 @@ import WhoWillYouProvideToPage from "./pages/Registration/11ProviderServiceSetti
 import SelectTypeOfServicePage from "./pages/Registration/11ProviderServiceSettings/13SelectTypeOfService.page";
 import CustomerPreferencesPage from "./pages/Registration/12CustomerPreferences.page";
 import ProviderPreferencesPage from "./pages/Registration/12ProviderPreferences.page";
+import NotFound from "./pages/NotFound";
 
 AOS.init();
 
@@ -128,6 +129,7 @@ function App() {
               component={ProviderPreferencesPage}
               path={routes.providerPreferences}
             />
+            <Route component={NotFound} path="*" />
           </Switch>
         </Router>
         <ToastContainer
