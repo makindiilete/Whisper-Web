@@ -31,6 +31,9 @@ import SelectTypeOfServicePage from "./pages/Registration/11ProviderServiceSetti
 import CustomerPreferencesPage from "./pages/Registration/12CustomerPreferences.page";
 import ProviderPreferencesPage from "./pages/Registration/12ProviderPreferences.page";
 import NotFound from "./pages/NotFound";
+import LoggedAreaRoute from "./Layout/LoggedAreaRoute";
+import ProviderHomePage from "./pages/Home/ProviderHome.page";
+import CustomerHomePage from "./pages/Home/CustomerHome.page";
 
 AOS.init();
 
@@ -128,6 +131,11 @@ function App() {
               exact
               component={ProviderPreferencesPage}
               path={routes.providerPreferences}
+            />
+            <LoggedAreaRoute
+              exact
+              component={ProviderHomePage}
+              path={routes.HOME}
             />
             <Route component={NotFound} path="*" />
           </Switch>

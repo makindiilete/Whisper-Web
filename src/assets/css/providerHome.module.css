@@ -1,0 +1,42 @@
+.leftColumn {
+  min-height: 80vh;
+  max-height: 100%;
+  margin-top: 2rem;
+}
+
+.profileDetailsContainer {
+  min-height: 61.2rem;
+  width: 100%;
+  border: 1px solid #e5e5e5;
+  border-radius: 16px;
+  overflow: hidden;
+}
+.galleryImg {
+  width: 100%;
+  min-height: 61.2rem;
+  max-height: 100%;
+  object-fit: cover;
+  max-width: 100%;
+}
+
+.galleryImgOverlay {
+  background: rgba(0, 0, 0, 0.4);
+  /*z-index: -1;*/
+  position: absolute;
+  min-height: 100%;
+}
+
+.profileContainerRightCol {
+  padding: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .leftColumn {
+    border-left: 1px solid #f6f7f7;
+    margin: 0;
+  }
+
+  .profileDetailsContainer {
+    width: 95%;
+  }
+}

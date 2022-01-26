@@ -1,0 +1,103 @@
+.nav {
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+  box-shadow: 0 5px 20px #f7f7f7;
+  padding: 1rem 0;
+  margin-bottom: 4rem;
+}
+
+.nav__list {
+  width: 100%;
+  margin: 0;
+}
+
+.nav__item {
+  margin: 0.5rem 2rem;
+  border-bottom: 1px solid lightgrey;
+  list-style: none !important;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.nav__item:hover,
+.nav__item.active {
+  border-bottom: 3px solid var(--primary-color);
+  color: var(--primary-color);
+}
+
+.nav__brand {
+  width: auto;
+  height: 5.3rem;
+  object-fit: contain;
+}
+
+.collapsible__content {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.15s;
+  padding-left: 0 !important;
+}
+
+.collapsible--expanded .collapsible__content {
+  max-height: 100%;
+  opacity: 1;
+}
+
+.nav__toggler {
+  margin-right: 2rem;
+  opacity: 0.5;
+  transition: all 0.15s;
+  cursor: pointer;
+}
+
+.nav.collapsible--expanded .nav__toggler {
+  opacity: 1;
+  box-shadow: 0 0 0 3px #666;
+  border-radius: 5px;
+  padding: 0.5rem;
+}
+
+.navigation .settings {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border: 1px dotted var(--primary-light-color);
+  background: #faf4ff;
+  border-radius: 8px;
+  width: 15rem;
+  cursor: pointer;
+}
+
+.navigation .settings img {
+  width: 3rem;
+  border-radius: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .nav__brand {
+    width: 11.1rem;
+  }
+  .nav__toggler {
+    display: none;
+  }
+
+  .nav__list {
+    width: auto;
+    display: flex;
+    font-size: 1.6rem;
+    max-height: 100%;
+    opacity: 1;
+    padding-bottom: 0.3rem;
+  }
+  .nav__item {
+    border: 0;
+  }
+  .nav {
+    justify-content: space-around;
+  }
+}

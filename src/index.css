@@ -370,22 +370,6 @@ small {
   font-size: 70% !important;
 }
 
-.ant-dropdown-menu {
-  background-color: #000 !important;
-}
-
-.ant-dropdown-menu-item,
-.ant-dropdown-menu-submenu-title {
-  color: #fff !important;
-  transition: all 0.5s ease-in !important;
-}
-
-.ant-dropdown-menu-item:hover,
-.ant-dropdown-menu-submenu-title:hover {
-  background-color: #fff !important;
-  color: #000 !important;
-}
-
 .ant-layout-sider {
   /*display: none;*/
   /*flex: 0 0 10vw !important;*/

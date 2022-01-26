@@ -24,7 +24,15 @@ const TwoLoginPage = (props) => {
 
   const handleSubmit = (values) => {
     console.log(values);
-    history.push(routes.login);
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        name: "Michael",
+        email: "akindiileteforex@gmail.com",
+        userType: "Provider",
+      })
+    );
+    history.push(routes.HOME);
   };
 
   function handleChange(value, name) {

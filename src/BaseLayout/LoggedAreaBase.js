@@ -1,18 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Layout } from "antd";
+import React, { useEffect, useState } from "react";
 import ErrorBoundary from "../Utils/ErrorBoundary";
 import { useHistory, useLocation } from "react-router-dom";
-import { AuthContext } from "../Utils/context";
 import NavigationPage from "../components/NavigationPage";
-import logo from "../assets/images/WhisperLogo.svg";
 import routes from "../routes";
 import useMobile from "../hooks/useMobile";
 
-const { Sider, Content } = Layout;
 const LoggedAreaBase = ({ children }) => {
   const history = useHistory();
   const mobile = useMobile();
-  const { user, setUser } = useContext(AuthContext);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   let location = useLocation();
   const { pathname } = location;
   const current = pathname.split("/")[1];
@@ -23,7 +19,7 @@ const LoggedAreaBase = ({ children }) => {
 
   if (!user) {
     console.log("token not found");
-    history.push("/");
+    history.push(routes.login);
     return null;
   } else {
     return (
@@ -31,17 +27,11 @@ const LoggedAreaBase = ({ children }) => {
         style={{
           minHeight: "100vh",
         }}
-      > <ErrorBoundary>
-        <NavigationPage />
-        <div
-            style={{
-              marginTop: "13rem",
-              marginLeft: "-4rem",
-            }}
-        >
-          {children}
-        </div>
-      </ErrorBoundary>
+      >
+        <ErrorBoundary>
+          <NavigationPage />
+          <div>{children}</div>
+        </ErrorBoundary>
       </div>
     );
   }
