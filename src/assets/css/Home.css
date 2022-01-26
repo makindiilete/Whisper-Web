@@ -1,5 +1,37 @@
+.badges {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 2.8rem;
+  padding: 0.5rem 1rem;
+  border-radius: 14px;
+  font-weight: bolder;
+  margin-right: 1rem;
+  font-family: "tt_normsmedium", sans-serif !important;
+  margin-bottom: 1rem;
+}
+
+.badges h5 {
+  opacity: 0.8;
+}
+
+.badges-primary {
+  background: #f3e5ff;
+}
+
+.badges-secondary {
+  background: #ffd9da;
+}
+
+.badges-tertiary {
+  background: rgba(25, 181, 248, 0.08);
+}
+
 @media (min-width: 768px) {
   .provider-home {
-    margin: 0 5rem;
+    padding: 0 5rem;
+  }
+  .badges {
+    margin-bottom: 0;
   }
 }
