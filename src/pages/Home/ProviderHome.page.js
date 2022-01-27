@@ -26,13 +26,15 @@ const ProviderHomePage = (props) => {
   }, [location.pathname]);
   const [imgPosition, setImgPosition] = useState(0);
   const [index, setIndex] = useState(0);
-  const [allLikes, setAllLikes] = useState(providerLikes);
+  const [allLikes, setAllLikes] = useState([]);
   const [currentProfile, setCurrentProfile] = useState(providerLikes[0]);
   const [activeImage, setActiveImage] = useState(currentProfile.imgUrls[index]);
   const [images, setImages] = useState(currentProfile.imgUrls);
 
   useEffect(() => {
-    const response = providerLikes?.filter((i) => i.id !== currentProfile?.id);
+    const response = providerLikes?.filter(
+      (i) => i.id !== providerLikes[0]?.id
+    );
     setAllLikes(response);
   }, []);
 
