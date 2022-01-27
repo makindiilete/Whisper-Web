@@ -27,7 +27,7 @@
 }
 
 .galleryImgThumbnail {
-  width: 13.4rem;
+  width: 10.4rem;
   height: 16.2rem;
   object-fit: cover;
   border-radius: 8px;
@@ -40,6 +40,13 @@
   background: rgba(0, 0, 0, 0.3);
   position: absolute;
   /*min-height: 100%;*/
+}
+
+.galleryImgThumbnailDesc {
+  position: absolute;
+  z-index: 1;
+  bottom: 2rem;
+  left: 0.5rem;
 }
 
 .profileContainerRightCol {
@@ -55,5 +62,8 @@
 
   .profileDetailsContainer {
     width: 95%;
+  }
+  .galleryImgThumbnail {
+    width: 13.4rem;
   }
 }
