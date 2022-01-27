@@ -90,6 +90,9 @@ const NavigationPage = (props) => {
               <li className="nav__item">Wallet</li>
               <li className="nav__item">Messaging</li>
               <li className="nav__item">Profile</li>
+              <li className="nav__item" onClick={handleLogout}>
+                Logout
+              </li>
             </>
           ) : (
             <>
