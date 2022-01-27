@@ -7,6 +7,7 @@ import "../assets/css/navigation.css";
 import useMobile from "../hooks/useMobile";
 import avatar from "../assets/images/homeInApp/Rectangle 13 copy.svg";
 import { Dropdown, Menu } from "antd";
+import routes from "../routes";
 
 const { Item, Divider } = Menu;
 
@@ -18,6 +19,11 @@ const NavigationPage = (props) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [path, setPath] = useState(0);
   const mobile = useMobile();
+
+  function handleLogout() {
+    localStorage.removeItem("user");
+    history.push(routes.login);
+  }
 
   const menu = (
     <Menu>
@@ -32,7 +38,7 @@ const NavigationPage = (props) => {
         </p>
       </Item>
       <Divider />
-      <Item key="1">
+      <Item key="1" onClick={handleLogout}>
         <p className="padding-none">
           <FontAwesomeIcon
             icon={icons.faSignOutAlt}

@@ -5,6 +5,81 @@ import img4 from "../assets/images/auth/providingTo/img4.svg";
 import img5 from "../assets/images/auth/providingTo/img5.svg";
 import img6 from "../assets/images/auth/providingTo/img6.svg";
 
+import provImg1 from "../assets/images/homeInApp/Rectangle 2685.svg";
+import provImg2 from "../assets/images/homeInApp/Rectangle 13 copy.svg";
+import provImg3 from "../assets/images/homeInApp/Rectangle 2685 copy 3.svg";
+import provImg4 from "../assets/images/homeInApp/Rectangle 13.svg";
+import provImg5 from "../assets/images/homeInApp/Rectangle 2685 copy 4.svg";
+import provImg6 from "../assets/images/homeInApp/Rectangle 2685 copy 2.svg";
+
+export const providerLikes = [
+  {
+    id: 1,
+    name: "Jack Smith",
+    age: 27,
+    occupation: "Business Man",
+    bio:
+      "Vulputate non rhoncus urna molestie feugiat sed et non. Nibh rhoncus vel pellentesque vitae, Nibh molestie lorem",
+    location: "Los Angeles, CA",
+    distance: "5km",
+    lookingFor: ["Companion", "Xrated"],
+    attributes: ["Average", "Cigarette", "Vodka"],
+    imgUrls: [provImg1, provImg3, provImg6],
+  },
+  {
+    id: 2,
+    name: "Manny Rice",
+    age: 29,
+    occupation: "Software Engineer",
+    bio:
+      "Vulputate non rhoncus urna molestie feugiat sed et non. Nibh rhoncus vel pellentesque vitae, Nibh molestie lorem",
+    location: "Atlanta, GA",
+    distance: "15km",
+    lookingFor: ["Companion", "Xrated"],
+    attributes: ["Average", "Cigarette", "Vodka"],
+    imgUrls: [provImg3, provImg6, provImg1],
+  },
+  {
+    id: 3,
+    name: "Ben Saheed",
+    age: 31,
+    occupation: "Rock Star",
+    bio:
+      "Vulputate non rhoncus urna molestie feugiat sed et non. Nibh rhoncus vel pellentesque vitae, Nibh molestie lorem",
+    location: "India, India",
+    distance: "150km",
+    lookingFor: ["Companion", "Xrated"],
+    attributes: ["Average", "Cigarette", "Vodka"],
+    imgUrls: [provImg4, provImg6, provImg1],
+  },
+  {
+    id: 4,
+    name: "Azeez Fahn",
+    age: 29,
+    occupation: "Stock Broker",
+    bio:
+      "Vulputate non rhoncus urna molestie feugiat sed et non. Nibh rhoncus vel pellentesque vitae, Nibh molestie lorem",
+    location: "Nairobi, Kenya",
+    distance: "70km",
+    lookingFor: ["Companion", "Xrated"],
+    attributes: ["Average", "Cigarette", "Vodka"],
+    imgUrls: [provImg5, provImg6, provImg1],
+  },
+  {
+    id: 5,
+    name: "Michael Bush",
+    age: 43,
+    occupation: "Business Man",
+    bio:
+      "Vulputate non rhoncus urna molestie feugiat sed et non. Nibh rhoncus vel pellentesque vitae, Nibh molestie lorem",
+    location: "Toronto, CA",
+    distance: "5km",
+    lookingFor: ["Companion", "Xrated"],
+    attributes: ["Average", "Cigarette", "Vodka"],
+    imgUrls: [provImg2, provImg3, provImg6],
+  },
+];
+
 export const daily = ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"];
 
 export const weekly = ["WK1", "WK2", "WK3", "WK4"];

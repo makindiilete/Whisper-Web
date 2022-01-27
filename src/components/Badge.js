@@ -1,12 +1,28 @@
 import React, { useEffect, useState } from "react";
 
-export function Badge({ text, type = "primary" }) {
+export function Badge({ text }) {
+  function calcColor() {
+    switch (text?.toString()?.toLowerCase()) {
+      case "companion":
+        return "primary";
+      case "xrated":
+        return "secondary";
+      case "average":
+        return "primary";
+      case "cigarette":
+        return "secondary";
+      case "vodka":
+        return "tertiary";
+      default:
+        return "primary";
+    }
+  }
   return (
     <span
       className={`badges ${
-        type === "primary"
+        calcColor() === "primary"
           ? "badges-primary"
-          : type === "secondary"
+          : calcColor() === "secondary"
           ? "badges-secondary"
           : "badges-tertiary"
       } `}
