@@ -123,15 +123,15 @@ const ProviderHomePage = (props) => {
           <h4>Latest Like/Request</h4>
           <br />
           <div
-            className="d-flex flex-wrap"
-            style={
+            className={styles.thumbnailGridContainer}
+            /*  style={
               mobile
                 ? {
                     marginRight: "-2rem",
                     justifyContent: "center",
                   }
                 : null
-            }
+            }*/
           >
             <div className="position-relative">
               <div
