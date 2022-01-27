@@ -124,7 +124,14 @@ const ProviderHomePage = (props) => {
           <br />
           <div
             className="d-flex flex-wrap"
-            style={mobile ? { marginRight: "-2rem" } : null}
+            style={
+              mobile
+                ? {
+                    marginRight: "-2rem",
+                    justifyContent: "center",
+                  }
+                : null
+            }
           >
             <div className="position-relative">
               <div
