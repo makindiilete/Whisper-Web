@@ -29,7 +29,7 @@ const TwoLoginPage = (props) => {
       JSON.stringify({
         name: "Michael",
         email: "akindiileteforex@gmail.com",
-        userType: "Provider",
+        userType: "Customer",
       })
     );
     history.push(routes.HOME);

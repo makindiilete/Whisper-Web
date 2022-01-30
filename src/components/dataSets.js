@@ -12,6 +12,13 @@ import provImg4 from "../assets/images/homeInApp/Rectangle 13.svg";
 import provImg5 from "../assets/images/homeInApp/Rectangle 2685 copy 4.svg";
 import provImg6 from "../assets/images/homeInApp/Rectangle 2685 copy 2.svg";
 
+import custImg1 from "../assets/images/homeInApp/customer/img1.svg";
+import custImg2 from "../assets/images/homeInApp/customer/img2.svg";
+import custImg3 from "../assets/images/homeInApp/customer/img3.svg";
+import custImg4 from "../assets/images/homeInApp/customer/img4.svg";
+import custImg5 from "../assets/images/homeInApp/customer/img5.svg";
+import custImg6 from "../assets/images/homeInApp/customer/img6.svg";
+
 export const providerLikes = [
   {
     id: 1,
@@ -80,6 +87,73 @@ export const providerLikes = [
   },
 ];
 
+export const customerDiscover = [
+  {
+    id: 1,
+    name: "Sasha",
+    age: 27,
+    occupation: "Business Man",
+    bio:
+      "Vulputate non rhoncus urna molestie feugiat sed et non. Nibh rhoncus vel pellentesque vitae, Nibh molestie lorem",
+    location: "Los Angeles, CA",
+    distance: "5km",
+    lookingFor: ["Companion", "Xrated"],
+    attributes: ["Average", "Cigarette", "Vodka"],
+    imgUrls: [custImg1, custImg3, custImg6],
+  },
+  {
+    id: 2,
+    name: "Katy Perry",
+    age: 29,
+    occupation: "Software Engineer",
+    bio:
+      "Vulputate non rhoncus urna molestie feugiat sed et non. Nibh rhoncus vel pellentesque vitae, Nibh molestie lorem",
+    location: "Atlanta, GA",
+    distance: "15km",
+    lookingFor: ["Companion", "Xrated"],
+    attributes: ["Average", "Cigarette", "Vodka"],
+    imgUrls: [custImg3, custImg6, custImg1],
+  },
+  {
+    id: 3,
+    name: "Jane Maddy",
+    age: 31,
+    occupation: "Rock Star",
+    bio:
+      "Vulputate non rhoncus urna molestie feugiat sed et non. Nibh rhoncus vel pellentesque vitae, Nibh molestie lorem",
+    location: "India, India",
+    distance: "150km",
+    lookingFor: ["Companion", "Xrated"],
+    attributes: ["Average", "Cigarette", "Vodka"],
+    imgUrls: [custImg4, custImg6, custImg1],
+  },
+  {
+    id: 4,
+    name: "Mercy Benie",
+    age: 29,
+    occupation: "Stock Broker",
+    bio:
+      "Vulputate non rhoncus urna molestie feugiat sed et non. Nibh rhoncus vel pellentesque vitae, Nibh molestie lorem",
+    location: "Nairobi, Kenya",
+    distance: "70km",
+    lookingFor: ["Companion", "Xrated"],
+    attributes: ["Average", "Cigarette", "Vodka"],
+    imgUrls: [custImg5, custImg6, custImg1],
+  },
+  {
+    id: 5,
+    name: "Michael Bush",
+    age: 43,
+    occupation: "Business Man",
+    bio:
+      "Vulputate non rhoncus urna molestie feugiat sed et non. Nibh rhoncus vel pellentesque vitae, Nibh molestie lorem",
+    location: "Toronto, CA",
+    distance: "5km",
+    lookingFor: ["Companion", "Xrated"],
+    attributes: ["Average", "Cigarette", "Vodka"],
+    imgUrls: [custImg2, custImg3, custImg6],
+  },
+];
 export const daily = ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"];
 
 export const weekly = ["WK1", "WK2", "WK3", "WK4"];

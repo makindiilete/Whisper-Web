@@ -134,7 +134,11 @@ function App() {
             />
             <LoggedAreaRoute
               exact
-              component={ProviderHomePage}
+              component={
+                user?.userType === "Customer"
+                  ? CustomerHomePage
+                  : ProviderHomePage
+              }
               path={routes.HOME}
             />
             <Route component={NotFound} path="*" />

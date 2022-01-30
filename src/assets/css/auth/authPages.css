@@ -129,7 +129,7 @@
   padding-right: 0;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   .verifyPhone {
     padding-left: 22rem;
     padding-right: 22rem;

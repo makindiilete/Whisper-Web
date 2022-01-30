@@ -435,7 +435,7 @@ small {
   margin-bottom: 2rem;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   .flexrow {
     display: flex;
     margin-bottom: 2rem;
@@ -622,7 +622,7 @@ textarea.ant-input {
     margin-bottom: 2rem !important;
   }
 }
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   .inline-form {
     width: 21.9rem !important;
   }

@@ -36,7 +36,7 @@
   background-color: #faf4ff;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   .attributesRow {
     /*height: auto;*/
     /*background-color: blue;*/
