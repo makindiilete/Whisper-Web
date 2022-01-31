@@ -123,8 +123,7 @@ const ActivatePremiumModal = ({ visible, onCancel }) => {
               $1
             </h3>
             <p className="ml-4 padding-none">
-              Make a $1 payment to view fully view & chat with <br /> this
-              provider.
+              Make a $1 payment to view fully view & chat with this provider.
             </p>
           </div>
           <br />
