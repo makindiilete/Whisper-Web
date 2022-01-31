@@ -21,6 +21,9 @@ import ActivatePremiumModal from "../../components/Modals/activatePremiumModal";
 import PaymentModal from "../../components/Modals/paymentModal";
 import SuccessModal from "../../components/Modals/successModal";
 import modalImg from "../../assets/images/auth/40.svg";
+import FilterModal from "../../components/Modals/filterModal";
+import LoaderComponent from "../../components/LoaderComponent";
+import { IoIosArrowBack } from "react-icons/all";
 
 const CustomerHomePage = (props) => {
   let location = useLocation();
@@ -29,6 +32,15 @@ const CustomerHomePage = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showSearchResult, setShowSearchResult] = useState(false);
+  const [data, setData] = useState({
+    location: "",
+    gender: "",
+    startAge: 18,
+    endAge: 25,
+  });
+  const [showFilter, setShowFilter] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [showActivatePremium, setShowActivatePremium] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -43,6 +55,15 @@ const CustomerHomePage = (props) => {
     currentProfile?.imgUrls[index]
   );
   const [images, setImages] = useState(currentProfile?.imgUrls);
+
+  const handleSearch = () => {
+    setShowFilter(false);
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      setShowSearchResult(true);
+    }, 2000);
+  };
 
   const handleMoveBack = () => {
     const length = images.length;
@@ -76,6 +97,7 @@ const CustomerHomePage = (props) => {
     setActiveImage(selected?.imgUrls[0]);
     setImages(selected?.imgUrls);
     setCurrentProfile(selected);
+    setShowSearchResult(false);
   }
 
   function handleLikeAccepted() {
@@ -103,6 +125,198 @@ const CustomerHomePage = (props) => {
     setActiveImage(returnArr[0].imgUrls[0]);
     setCurrentProfile(returnArr[0]);
     setShowRestore(false);
+  }
+
+  const discover = () => {
+    return (
+      <>
+        <div
+          className="d-flex justify-content-between align-items-center"
+          style={{ width: "95%" }}
+        >
+          <h4 className="padding-none">Discover</h4>
+          <img
+            src={filter}
+            className="img-fluid cursor"
+            alt=""
+            onClick={() => setShowFilter(true)}
+          />
+        </div>
+        <br />
+        <div className={styles.profileDetailsContainer}>
+          <div className="row">
+            <div className="col-md-6 p-0 position-relative">
+              <div className="currentTotalImg">
+                <div className="w-100 h-100 d-flex justify-content-center align-items-center">
+                  <h5 className="text-white padding-none">
+                    {`${imgPosition === images?.length ? 1 : imgPosition + 1}/${
+                      images?.length
+                    }`}
+                  </h5>
+                </div>
+              </div>
+              <div className="prevNextImg">
+                <div className="w-100 d-flex justify-content-between px-3">
+                  <div className="arrow backArrow" onClick={handleMoveBack}>
+                    <FontAwesomeIcon
+                      icon={icons.faChevronLeft}
+                      size="1x"
+                      className="text-white"
+                    />
+                  </div>
+                  {!premiumActive && imgPosition !== 0 && (
+                    <div
+                      className="d-flex flex-column cursor"
+                      onClick={() => setShowActivatePremium(true)}
+                    >
+                      <img
+                        src={locked}
+                        alt=""
+                        className="img-fluid align-self-center"
+                        style={{ width: "3.8rem", height: "4.5rem" }}
+                      />
+                      <p className="text-white text-center">Tap to view</p>
+                    </div>
+                  )}
+
+                  <div className="arrow nextArrow" onClick={handleMoveNext}>
+                    <FontAwesomeIcon
+                      icon={icons.faChevronRight}
+                      size="1x"
+                      className="text-white"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                className={`${styles.galleryImg} ${styles.galleryImgOverlay}`}
+              />
+              <img
+                src={activeImage}
+                alt=""
+                className={`${styles.galleryImg} ${
+                  !premiumActive && imgPosition !== 0 && customer.imageBlur
+                }`}
+              />
+              <div className="actions">
+                <div className="actions__container">
+                  {showRestore && (
+                    <img
+                      src={reverse}
+                      className="img-fluid"
+                      alt=""
+                      onClick={handleDeclineRestored}
+                    />
+                  )}
+                  <img
+                    src={like}
+                    className="img-fluid"
+                    alt=""
+                    onClick={handleLikeAccepted}
+                  />
+                  <img
+                    src={decline}
+                    className="img-fluid"
+                    alt=""
+                    onClick={handleLikeDeclined}
+                  />{" "}
+                  <img
+                    src={fav}
+                    className="img-fluid"
+                    alt=""
+                    onClick={handleFavorite}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className={`col-md-6 ${styles.profileContainerRightCol}`}>
+              <div className="d-flex justify-content-between">
+                <h4 className="text-dark">{`${currentProfile?.name} ${currentProfile?.age}`}</h4>
+                <div className="d-flex justify-content-between align-items-center">
+                  <h5 className="padding-none mt-2">4.4</h5>
+                  <img
+                    src={star}
+                    className="img-fluid ml-2"
+                    alt=""
+                    style={{
+                      width: "1.9rem",
+                      height: "1.9rem",
+                    }}
+                  />
+                </div>
+              </div>
+              <p className="text-muted">
+                {currentProfile?.location} <br />
+                {`${currentProfile?.distance} away`}
+              </p>
+              <div>
+                {currentProfile?.lookingFor?.map((item) => (
+                  <Badge text={item} key={item} />
+                ))}
+              </div>
+              <br />
+              <div className="dotted-divider w-100" />
+              <br />
+              <h4 className="text-dark">Bio</h4>
+              <p className="text-muted">{currentProfile?.bio}</p>
+              <br />
+              <h4>Attributes</h4>
+              {currentProfile?.attributes?.map((item) => (
+                <Badge text={item} key={item} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  };
+
+  const filterResult = () => {
+    return (
+      <>
+        <div className="mb-2">
+          <IoIosArrowBack
+            className="cursor"
+            onClick={() => setShowSearchResult(false)}
+          />
+        </div>
+        <h4 className="padding-none">Filter</h4>
+        <br />
+        <br />
+        <div className={styles.discoverGridContainer}>
+          {allLikes?.map((item, index) => (
+            <div
+              className="position-relative cursor"
+              onClick={() => handleSetCurrentProfile(item?.id, index)}
+              key={item?.id}
+            >
+              <div
+                className={`${styles.galleryImgThumbnail} ${styles.galleryImgThumbnailOverlay}`}
+              />
+              <img
+                src={item?.imgUrls[0]}
+                alt=""
+                className={styles.galleryImgThumbnail}
+              />
+              <div className={styles.galleryImgThumbnailDesc}>
+                <small className="font-weight-bold text-white">
+                  {`${item?.name} ${item?.age}`}
+                </small>
+              </div>
+              {/* /.font-weight-bold */}
+            </div>
+          ))}
+        </div>
+      </>
+    );
+  };
+
+  if (isLoading) {
+    return (
+      <HomeContainerPage>
+        <LoaderComponent />
+      </HomeContainerPage>
+    );
   }
   return (
     <HomeContainerPage>
@@ -197,138 +411,7 @@ const CustomerHomePage = (props) => {
               premiumActive ? `col-md-8 offset-md-2` : `col-md-9`
             } ${customer.rightColumn}`}
           >
-            <div
-              className="d-flex justify-content-between align-items-center"
-              style={{ width: "95%" }}
-            >
-              <h4 className="padding-none">Discover</h4>
-              <img src={filter} className="img-fluid cursor" alt="" />
-            </div>
-            <br />
-            <div className={styles.profileDetailsContainer}>
-              <div className="row">
-                <div className="col-md-6 p-0 position-relative">
-                  <div className="currentTotalImg">
-                    <div className="w-100 h-100 d-flex justify-content-center align-items-center">
-                      <h5 className="text-white padding-none">
-                        {`${
-                          imgPosition === images?.length ? 1 : imgPosition + 1
-                        }/${images?.length}`}
-                      </h5>
-                    </div>
-                  </div>
-                  <div className="prevNextImg">
-                    <div className="w-100 d-flex justify-content-between px-3">
-                      <div className="arrow backArrow" onClick={handleMoveBack}>
-                        <FontAwesomeIcon
-                          icon={icons.faChevronLeft}
-                          size="1x"
-                          className="text-white"
-                        />
-                      </div>
-                      {!premiumActive && imgPosition !== 0 && (
-                        <div
-                          className="d-flex flex-column cursor"
-                          onClick={() => setShowActivatePremium(true)}
-                        >
-                          <img
-                            src={locked}
-                            alt=""
-                            className="img-fluid align-self-center"
-                            style={{ width: "3.8rem", height: "4.5rem" }}
-                          />
-                          <p className="text-white text-center">Tap to view</p>
-                        </div>
-                      )}
-
-                      <div className="arrow nextArrow" onClick={handleMoveNext}>
-                        <FontAwesomeIcon
-                          icon={icons.faChevronRight}
-                          size="1x"
-                          className="text-white"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className={`${styles.galleryImg} ${styles.galleryImgOverlay}`}
-                  />
-                  <img
-                    src={activeImage}
-                    alt=""
-                    className={`${styles.galleryImg} ${
-                      !premiumActive && imgPosition !== 0 && customer.imageBlur
-                    }`}
-                  />
-                  <div className="actions">
-                    <div className="actions__container">
-                      {showRestore && (
-                        <img
-                          src={reverse}
-                          className="img-fluid"
-                          alt=""
-                          onClick={handleDeclineRestored}
-                        />
-                      )}
-                      <img
-                        src={like}
-                        className="img-fluid"
-                        alt=""
-                        onClick={handleLikeAccepted}
-                      />
-                      <img
-                        src={decline}
-                        className="img-fluid"
-                        alt=""
-                        onClick={handleLikeDeclined}
-                      />{" "}
-                      <img
-                        src={fav}
-                        className="img-fluid"
-                        alt=""
-                        onClick={handleFavorite}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className={`col-md-6 ${styles.profileContainerRightCol}`}>
-                  <div className="d-flex justify-content-between">
-                    <h4 className="text-dark">{`${currentProfile?.name} ${currentProfile?.age}`}</h4>
-                    <div className="d-flex justify-content-between align-items-center">
-                      <h5 className="padding-none mt-2">4.4</h5>
-                      <img
-                        src={star}
-                        className="img-fluid ml-2"
-                        alt=""
-                        style={{
-                          width: "1.9rem",
-                          height: "1.9rem",
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <p className="text-muted">
-                    {currentProfile?.location} <br />
-                    {`${currentProfile?.distance} away`}
-                  </p>
-                  <div>
-                    {currentProfile?.lookingFor?.map((item) => (
-                      <Badge text={item} key={item} />
-                    ))}
-                  </div>
-                  <br />
-                  <div className="dotted-divider w-100" />
-                  <br />
-                  <h4 className="text-dark">Bio</h4>
-                  <p className="text-muted">{currentProfile?.bio}</p>
-                  <br />
-                  <h4>Attributes</h4>
-                  {currentProfile?.attributes?.map((item) => (
-                    <Badge text={item} key={item} />
-                  ))}
-                </div>
-              </div>
-            </div>
+            {showSearchResult ? filterResult() : discover()}
           </div>
         </div>
       ) : (
@@ -357,6 +440,13 @@ const CustomerHomePage = (props) => {
             setShowPaymentModal(false);
           }
         }}
+      />
+      <FilterModal
+        visible={showFilter}
+        setData={setData}
+        data={data}
+        handleSearch={handleSearch}
+        onCancel={() => setShowFilter(false)}
       />
       <SuccessModal
         title="Payment Successful"

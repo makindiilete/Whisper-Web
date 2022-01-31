@@ -18,6 +18,13 @@ import custImg3 from "../assets/images/homeInApp/customer/img3.svg";
 import custImg4 from "../assets/images/homeInApp/customer/img4.svg";
 import custImg5 from "../assets/images/homeInApp/customer/img5.svg";
 import custImg6 from "../assets/images/homeInApp/customer/img6.svg";
+import custImg7 from "../assets/images/homeInApp/customer/img7.svg";
+import custImg8 from "../assets/images/homeInApp/customer/img8.svg";
+import custImg9 from "../assets/images/homeInApp/customer/img9.svg";
+import custImg10 from "../assets/images/homeInApp/customer/img10.svg";
+import custImg11 from "../assets/images/homeInApp/customer/img11.svg";
+import custImg12 from "../assets/images/homeInApp/customer/img12.svg";
+import custImg13 from "../assets/images/homeInApp/customer/img13.svg";
 
 export const providerLikes = [
   {
@@ -112,7 +119,7 @@ export const customerDiscover = [
     distance: "15km",
     lookingFor: ["Companion", "Xrated"],
     attributes: ["Average", "Cigarette", "Vodka"],
-    imgUrls: [custImg3, custImg6, custImg1],
+    imgUrls: [custImg2, custImg6, custImg1],
   },
   {
     id: 3,
@@ -125,7 +132,7 @@ export const customerDiscover = [
     distance: "150km",
     lookingFor: ["Companion", "Xrated"],
     attributes: ["Average", "Cigarette", "Vodka"],
-    imgUrls: [custImg4, custImg6, custImg1],
+    imgUrls: [custImg3, custImg6, custImg1],
   },
   {
     id: 4,
@@ -138,11 +145,37 @@ export const customerDiscover = [
     distance: "70km",
     lookingFor: ["Companion", "Xrated"],
     attributes: ["Average", "Cigarette", "Vodka"],
-    imgUrls: [custImg5, custImg6, custImg1],
+    imgUrls: [custImg4, custImg6, custImg1],
   },
   {
     id: 5,
-    name: "Michael Bush",
+    name: "Jane Franca",
+    age: 3,
+    occupation: "Business Man",
+    bio:
+      "Vulputate non rhoncus urna molestie feugiat sed et non. Nibh rhoncus vel pellentesque vitae, Nibh molestie lorem",
+    location: "Toronto, CA",
+    distance: "5km",
+    lookingFor: ["Companion", "Xrated"],
+    attributes: ["Average", "Cigarette", "Vodka"],
+    imgUrls: [custImg5, custImg3, custImg6],
+  },
+  {
+    id: 6,
+    name: "Nickky Perry",
+    age: 29,
+    occupation: "Stock Broker",
+    bio:
+      "Vulputate non rhoncus urna molestie feugiat sed et non. Nibh rhoncus vel pellentesque vitae, Nibh molestie lorem",
+    location: "Nairobi, Kenya",
+    distance: "70km",
+    lookingFor: ["Companion", "Xrated"],
+    attributes: ["Average", "Cigarette", "Vodka"],
+    imgUrls: [custImg6, custImg2, custImg1],
+  },
+  {
+    id: 7,
+    name: "Vivi Musk",
     age: 43,
     occupation: "Business Man",
     bio:
@@ -151,7 +184,85 @@ export const customerDiscover = [
     distance: "5km",
     lookingFor: ["Companion", "Xrated"],
     attributes: ["Average", "Cigarette", "Vodka"],
-    imgUrls: [custImg2, custImg3, custImg6],
+    imgUrls: [custImg7, custImg3, custImg6],
+  },
+  {
+    id: 8,
+    name: "Justina Dan",
+    age: 43,
+    occupation: "Business Man",
+    bio:
+      "Vulputate non rhoncus urna molestie feugiat sed et non. Nibh rhoncus vel pellentesque vitae, Nibh molestie lorem",
+    location: "Toronto, CA",
+    distance: "5km",
+    lookingFor: ["Companion", "Xrated"],
+    attributes: ["Average", "Cigarette", "Vodka"],
+    imgUrls: [custImg8, custImg3, custImg6],
+  },
+  {
+    id: 9,
+    name: "Joy Inna",
+    age: 43,
+    occupation: "Business Man",
+    bio:
+      "Vulputate non rhoncus urna molestie feugiat sed et non. Nibh rhoncus vel pellentesque vitae, Nibh molestie lorem",
+    location: "Toronto, CA",
+    distance: "5km",
+    lookingFor: ["Companion", "Xrated"],
+    attributes: ["Average", "Cigarette", "Vodka"],
+    imgUrls: [custImg9, custImg3, custImg6],
+  },
+  {
+    id: 10,
+    name: "Tonia Bars",
+    age: 43,
+    occupation: "Business Man",
+    bio:
+      "Vulputate non rhoncus urna molestie feugiat sed et non. Nibh rhoncus vel pellentesque vitae, Nibh molestie lorem",
+    location: "Toronto, CA",
+    distance: "5km",
+    lookingFor: ["Companion", "Xrated"],
+    attributes: ["Average", "Cigarette", "Vodka"],
+    imgUrls: [custImg10, custImg3, custImg6],
+  },
+  {
+    id: 11,
+    name: "Barbara Bars",
+    age: 43,
+    occupation: "Business Man",
+    bio:
+      "Vulputate non rhoncus urna molestie feugiat sed et non. Nibh rhoncus vel pellentesque vitae, Nibh molestie lorem",
+    location: "Toronto, CA",
+    distance: "5km",
+    lookingFor: ["Companion", "Xrated"],
+    attributes: ["Average", "Cigarette", "Vodka"],
+    imgUrls: [custImg11, custImg3, custImg6],
+  },
+  {
+    id: 12,
+    name: "Tanu Lilly",
+    age: 43,
+    occupation: "Business Man",
+    bio:
+      "Vulputate non rhoncus urna molestie feugiat sed et non. Nibh rhoncus vel pellentesque vitae, Nibh molestie lorem",
+    location: "Toronto, CA",
+    distance: "5km",
+    lookingFor: ["Companion", "Xrated"],
+    attributes: ["Average", "Cigarette", "Vodka"],
+    imgUrls: [custImg12, custImg3, custImg6],
+  },
+  {
+    id: 13,
+    name: "Liba Shan",
+    age: 23,
+    occupation: "Business Man",
+    bio:
+      "Vulputate non rhoncus urna molestie feugiat sed et non. Nibh rhoncus vel pellentesque vitae, Nibh molestie lorem",
+    location: "Toronto, CA",
+    distance: "5km",
+    lookingFor: ["Companion", "Xrated"],
+    attributes: ["Average", "Cigarette", "Vodka"],
+    imgUrls: [custImg13, custImg3, custImg6],
   },
 ];
 export const daily = ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"];
