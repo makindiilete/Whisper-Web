@@ -502,12 +502,17 @@ small {
 .ant-select,
 .ant-picker,
 .ant-select-selector,
-.react-tel-input .form-control {
+.react-tel-input .form-control,
+.ant-input-affix-wrapper {
   border-radius: 10px !important;
   margin-bottom: 0.5rem !important;
   overflow: hidden !important;
   height: 4.8rem !important;
   background-color: transparent !important;
+}
+
+.ant-input-affix-wrapper {
+  align-items: center !important;
 }
 
 .ant-input .prepend {

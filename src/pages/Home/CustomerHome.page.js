@@ -18,6 +18,9 @@ import filter from "../../assets/images/homeInApp/customer/filter.svg";
 import star from "../../assets/images/homeInApp/customer/star.svg";
 import locked from "../../assets/images/homeInApp/customer/locked.svg";
 import ActivatePremiumModal from "../../components/Modals/activatePremiumModal";
+import PaymentModal from "../../components/Modals/paymentModal";
+import SuccessModal from "../../components/Modals/successModal";
+import modalImg from "../../assets/images/auth/40.svg";
 
 const CustomerHomePage = (props) => {
   let location = useLocation();
@@ -26,7 +29,9 @@ const CustomerHomePage = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [showActivatePremium, setShowActivatePremium] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [premiumActive, setPremiumActive] = useState(false);
   const [imgPosition, setImgPosition] = useState(0);
   const [index, setIndex] = useState(0);
@@ -333,7 +338,35 @@ const CustomerHomePage = (props) => {
 
       <ActivatePremiumModal
         visible={showActivatePremium}
-        onCancel={() => setShowActivatePremium(false)}
+        onCancel={(success) => {
+          if (success === "continue") {
+            setShowActivatePremium(false);
+            setShowPaymentModal(true);
+          } else {
+            setShowActivatePremium(false);
+          }
+        }}
+      />
+      <PaymentModal
+        visible={showPaymentModal}
+        onCancel={(success) => {
+          if (success === "continue") {
+            setShowPaymentModal(false);
+            setShowSuccess(true);
+          } else {
+            setShowPaymentModal(false);
+          }
+        }}
+      />
+      <SuccessModal
+        title="Payment Successful"
+        subtitle="Have fun on whisper"
+        visible={showSuccess}
+        onCancel={() => setShowSuccess(false)}
+        image={modalImg}
+        showButton
+        btnText="Continue"
+        btnClickHandler={() => setShowSuccess(false)}
       />
     </HomeContainerPage>
   );

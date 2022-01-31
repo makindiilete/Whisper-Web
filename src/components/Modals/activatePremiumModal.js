@@ -127,7 +127,12 @@ const ActivatePremiumModal = ({ visible, onCancel }) => {
             </p>
           </div>
           <br />
-          <button className="btn btn-primary btn-block">Make Payment</button>
+          <button
+            className="btn btn-primary btn-block"
+            onClick={() => onCancel("continue")}
+          >
+            Make Payment
+          </button>
         </div>
       </div>
     </Modal>
