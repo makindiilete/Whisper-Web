@@ -32,7 +32,7 @@ const TwoLoginPage = (props) => {
         userType: "Customer",
       })
     );
-    history.push(routes.HOME);
+    history.push(routes.CUSTOMER_HOME);
   };
 
   function handleChange(value, name) {

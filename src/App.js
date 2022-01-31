@@ -134,12 +134,13 @@ function App() {
             />
             <LoggedAreaRoute
               exact
-              component={
-                user?.userType === "Customer"
-                  ? CustomerHomePage
-                  : ProviderHomePage
-              }
-              path={routes.HOME}
+              component={CustomerHomePage}
+              path={routes.CUSTOMER_HOME}
+            />
+            <LoggedAreaRoute
+              exact
+              component={ProviderHomePage}
+              path={routes.PROVIDER_HOME}
             />
             <Route component={NotFound} path="*" />
           </Switch>
