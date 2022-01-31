@@ -61,6 +61,8 @@ const CustomerHomePage = (props) => {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
+      setImgPosition(0);
+      setIndex(0);
       setShowSearchResult(true);
     }, 2000);
   };
