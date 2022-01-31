@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { countries } from "../components/others/countryList";
+import { countries } from "../components/countryList";
 import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 
-export default function useLocation() {
+export default function useLocationHook() {
   const [selectedCountryCode, setSelectedCountryCode] = useState("");
   const [countryList, setCountryList] = useState([]);
   const [address, setAddress] = useState("");
@@ -12,7 +12,7 @@ export default function useLocation() {
   const [postalCode, setPostalCode] = useState("");
 
   useEffect(() => {
-    setCountryList(countries());
+    setCountryList(countries);
   }, []);
 
   const handleChangeDropDown = (address) => {

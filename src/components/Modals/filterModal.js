@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Form, Input, Modal, Slider, Tooltip } from "antd";
+import { Form, Input, Modal, Slider, Tooltip, Menu, Dropdown } from "antd";
+import { DownOutlined } from "@ant-design/icons";
 import { isMobile } from "react-device-detect";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as icons from "@fortawesome/free-solid-svg-icons";
@@ -12,9 +13,12 @@ import "../../assets/css/paymentModal.css";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { HiLocationMarker } from "react-icons/all";
 import "../../assets/css/filterModal.css";
+import useLocationHook from "../../hooks/useLocationHook";
+import PlacesAutocomplete from "react-places-autocomplete";
 
 const FilterModal = ({ visible, onCancel, data, setData, handleSearch }) => {
   let location = useLocation();
+  const { address, handleChangeDropDown, handleSelect } = useLocationHook();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
@@ -30,6 +34,7 @@ const FilterModal = ({ visible, onCancel, data, setData, handleSearch }) => {
     "Transgender",
     "Intersex",
   ]);
+  const [places, setPlaces] = useState([]);
   const [selected, setSelected] = useState("Male");
 
   const handleSubmit = (values) => {
@@ -61,6 +66,20 @@ const FilterModal = ({ visible, onCancel, data, setData, handleSearch }) => {
     // alignItems: "center",
   };
 
+  const placesMenu = (
+    <Menu>
+      {places?.map((item) => (
+        <Menu.Item key={item?.description}>
+          {" "}
+          <span className="mr-2">
+            <HiLocationMarker color="#31005c" size="1.5rem" />
+          </span>{" "}
+          {item?.description}
+        </Menu.Item>
+      ))}
+    </Menu>
+  );
+
   return (
     <Modal
       centered
@@ -91,24 +110,63 @@ const FilterModal = ({ visible, onCancel, data, setData, handleSearch }) => {
           onFinish={handleSubmit}
           // size="large"
         >
-          <Form.Item
-            className="mb-3 mb-md-0 mt-2"
-            initialValue=""
-            name="location"
-            label="Location"
-            rules={[
-              {
-                required: true,
-                message: "Required field",
-              },
-            ]}
-          >
-            <Input
-              onChange={(e) => handleChange(e.target.value, "location")}
-              prefix={<HiLocationMarker color="#31005c" size="2.5rem" />}
-              autoComplete="off"
-            />
-          </Form.Item>
+          <Dropdown overlay={placesMenu} visible={places?.length > 0}>
+            <Form.Item
+              className="mb-3 mb-md-0 mt-2"
+              initialValue=""
+              name="location"
+              label="Location"
+              rules={[
+                {
+                  required: true,
+                  message: "Required field",
+                },
+              ]}
+            >
+              <PlacesAutocomplete
+                required
+                value={address}
+                onChange={(address) => handleChangeDropDown(address)}
+                onSelect={(address) => handleSelect(address)}
+              >
+                {({
+                  getInputProps,
+                  suggestions,
+                  getSuggestionItemProps,
+                  loading,
+                }) => {
+                  setPlaces(suggestions);
+                  console.log("suggestions array = ", suggestions);
+                  return (
+                    <div>
+                      <Input
+                        prefix={
+                          <HiLocationMarker color="#31005c" size="2.5rem" />
+                        }
+                        {...getInputProps({
+                          placeholder: "Enter location",
+                        })}
+                        type="text"
+                        autoComplete="off"
+                      />
+
+                      <div
+                        className="autocomplete-dropdown-container position-absolute"
+                        style={{ zIndex: "1" }}
+                      >
+                        {loading && (
+                          <div className="px-4 bg-light">Loading...</div>
+                        )}
+                        {/*  {suggestions?.map((suggestion) => {
+                      console.log("Places = ", suggestion);
+                    })}*/}
+                      </div>
+                    </div>
+                  );
+                }}
+              </PlacesAutocomplete>
+            </Form.Item>
+          </Dropdown>
 
           <Form.Item
             className="mb-3 mb-md-0 mt-2"
