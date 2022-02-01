@@ -16,7 +16,7 @@ export default function useLocationHook() {
   }, []);
 
   const handleChangeDropDown = (address) => {
-    console.log("Address details from hooks drop down = ", address);
+    // console.log("Address details from hooks drop down = ", address);
     setAddress(address);
   };
 
@@ -41,10 +41,10 @@ export default function useLocationHook() {
         }
       }
     });
+    return splittedAddress;
   };
 
   const handleChange = (name, value) => {
-    console.log(`HOOK - Name = ${name} - Value = ${value}`);
     switch (name) {
       case "country":
         let countryValue;

@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Form, Input, Modal, Slider, Tooltip, Menu, Dropdown } from "antd";
+import {
+  Form,
+  Input,
+  Modal,
+  Slider,
+  Tooltip,
+  Menu,
+  Dropdown,
+  message,
+} from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { isMobile } from "react-device-detect";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -56,29 +65,9 @@ const FilterModal = ({ visible, onCancel, data, setData, handleSearch }) => {
 
   const slider = {
     width: "100%",
-    // height: "4.8rem",
-    // border: "1px solid #DADADA",
-    // borderRadius: "8px",
     padding: "1.7rem 1rem",
     marginTop: mobile ? "-2rem" : null,
-    // display: "flex",
-    // justifyContent: "center",
-    // alignItems: "center",
   };
-
-  const placesMenu = (
-    <Menu>
-      {places?.map((item) => (
-        <Menu.Item key={item?.description}>
-          {" "}
-          <span className="mr-2">
-            <HiLocationMarker color="#31005c" size="1.5rem" />
-          </span>{" "}
-          {item?.description}
-        </Menu.Item>
-      ))}
-    </Menu>
-  );
 
   return (
     <Modal
@@ -110,63 +99,86 @@ const FilterModal = ({ visible, onCancel, data, setData, handleSearch }) => {
           onFinish={handleSubmit}
           // size="large"
         >
-          <Dropdown overlay={placesMenu} visible={places?.length > 0}>
-            <Form.Item
-              className="mb-3 mb-md-0 mt-2"
-              initialValue=""
-              name="location"
-              label="Location"
-              rules={[
-                {
-                  required: true,
-                  message: "Required field",
-                },
-              ]}
+          <Form.Item
+            className="mb-3 mb-md-0 mt-2"
+            initialValue=""
+            name="location"
+            label="Location"
+            rules={[
+              {
+                required: true,
+                message: "Required field",
+              },
+            ]}
+          >
+            <PlacesAutocomplete
+              required
+              value={address}
+              onChange={(address) => handleChangeDropDown(address)}
+              onSelect={(address) => {
+                let splitAddress = handleSelect(address);
+                setData({ ...data, location: splitAddress });
+              }}
             >
-              <PlacesAutocomplete
-                required
-                value={address}
-                onChange={(address) => handleChangeDropDown(address)}
-                onSelect={(address) => handleSelect(address)}
-              >
-                {({
-                  getInputProps,
-                  suggestions,
-                  getSuggestionItemProps,
-                  loading,
-                }) => {
-                  setPlaces(suggestions);
-                  console.log("suggestions array = ", suggestions);
-                  return (
-                    <div>
-                      <Input
-                        prefix={
-                          <HiLocationMarker color="#31005c" size="2.5rem" />
-                        }
-                        {...getInputProps({
-                          placeholder: "Enter location",
-                        })}
-                        type="text"
-                        autoComplete="off"
-                      />
+              {({
+                getInputProps,
+                suggestions,
+                getSuggestionItemProps,
+                loading,
+              }) => {
+                setPlaces(suggestions);
+                return (
+                  <div>
+                    <Input
+                      prefix={
+                        <HiLocationMarker color="#31005c" size="2.5rem" />
+                      }
+                      {...getInputProps({
+                        placeholder: "Enter location",
+                      })}
+                      type="text"
+                      autoComplete="off"
+                      value={address}
+                    />
 
-                      <div
-                        className="autocomplete-dropdown-container position-absolute"
-                        style={{ zIndex: "1" }}
-                      >
-                        {loading && (
-                          <div className="px-4 bg-light">Loading...</div>
-                        )}
-                        {/*  {suggestions?.map((suggestion) => {
-                      console.log("Places = ", suggestion);
-                    })}*/}
-                      </div>
+                    <div
+                      className="autocomplete-dropdown-container position-absolute"
+                      style={{ zIndex: "1" }}
+                    >
+                      {loading ? (
+                        <div className="px-4 bg-light">Loading...</div>
+                      ) : (
+                        <div className="bg-light w-100 p-2">
+                          {suggestions?.map((item) => (
+                            <>
+                              <div
+                                className="d-flex py-2"
+                                {...getSuggestionItemProps(item)}
+                              >
+                                <span className="mr-2">
+                                  <HiLocationMarker
+                                    color="#31005c"
+                                    size="1.5rem"
+                                  />
+                                </span>
+                                <p
+                                  className="cursor padding-none"
+                                  style={{ maxWidth: "100%" }}
+                                >
+                                  {item?.formattedSuggestion?.mainText}
+                                </p>
+                              </div>
+                              <div className="dotted-divider w-100" />
+                            </>
+                          ))}
+                        </div>
+                      )}
                     </div>
-                  );
-                }}
-              </PlacesAutocomplete>
-            </Form.Item>
-          </Dropdown>
+                  </div>
+                );
+              }}
+            </PlacesAutocomplete>
+          </Form.Item>
 
           <Form.Item
             className="mb-3 mb-md-0 mt-2"
