@@ -23,7 +23,6 @@ const TwoLoginPage = (props) => {
   });
 
   const handleSubmit = (values) => {
-    console.log(values);
     localStorage.setItem(
       "user",
       JSON.stringify({

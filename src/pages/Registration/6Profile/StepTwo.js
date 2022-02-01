@@ -26,9 +26,7 @@ const StepTwo = ({ currentStep, setCurrentStep, title, subTitle }) => {
     "National ID Card",
   ]);
 
-  const handleSubmit = (values) => {
-    console.log(values);
-  };
+  const handleSubmit = (values) => {};
 
   function handleChange(value, name) {
     setData({ ...data, [name]: value });
@@ -41,7 +39,6 @@ const StepTwo = ({ currentStep, setCurrentStep, title, subTitle }) => {
     //   authorization: "authorization-text",
     // },
     beforeUpload: (file) => {
-      console.log("file to upload = ", file);
       // this.setState(state => ({
       //   fileList: [...state.fileList, file],
       // }));
@@ -50,7 +47,6 @@ const StepTwo = ({ currentStep, setCurrentStep, title, subTitle }) => {
     onChange(info) {
       setImgPath(URL.createObjectURL(info.file));
       if (info.file.status !== "uploading") {
-        console.log(info.file, info.fileList);
       }
       // if (info.file.status === "done") {
       //   setImgPath(URL.createObjectURL(info.file));

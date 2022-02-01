@@ -18,9 +18,7 @@ const Stepone = ({ currentStep, setCurrentStep, title, subTitle }) => {
     country: "",
   });
 
-  const handleSubmit = (values) => {
-    console.log(values);
-  };
+  const handleSubmit = (values) => {};
 
   function handleChange(value, name) {
     setData({ ...data, [name]: value });

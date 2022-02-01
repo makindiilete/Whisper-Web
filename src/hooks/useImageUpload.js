@@ -36,7 +36,6 @@ export const useImageUpload = ({
 
   const onDrop = React.useCallback(
     (acceptedFiles) => {
-      console.log("accepted files = ", acceptedFiles);
       if (acceptedFiles.length === 0) {
         return toast.error("Select an image!");
       }

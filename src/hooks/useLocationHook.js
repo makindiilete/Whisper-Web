@@ -16,15 +16,12 @@ export default function useLocationHook() {
   }, []);
 
   const handleChangeDropDown = (address) => {
-    // console.log("Address details from hooks drop down = ", address);
     setAddress(address);
   };
 
   const handleSelect = (address) => {
-    console.log("Address details from hooks = ", address);
     const splittedAddress = address.split(",")[0];
     setAddress(splittedAddress);
-    console.log("Address details split = ", splittedAddress);
     geocodeByAddress(address).then((results) => {
       getLatLng(results[0]);
       for (let ac = 0; ac < results[0].address_components.length; ac++) {

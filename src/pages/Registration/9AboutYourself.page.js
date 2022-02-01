@@ -19,9 +19,7 @@ const AboutYourselfPage = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [bio, setBio] = useState("");
 
-  const handleSubmit = (values) => {
-    console.log(values);
-  };
+  const handleSubmit = (values) => {};
 
   return (
     <AuthContainerPage>

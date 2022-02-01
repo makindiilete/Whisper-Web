@@ -47,7 +47,6 @@ const FilterModal = ({ visible, onCancel, data, setData, handleSearch }) => {
   const [selected, setSelected] = useState("Male");
 
   const handleSubmit = (values) => {
-    console.log(values);
     onCancel("continue");
   };
 

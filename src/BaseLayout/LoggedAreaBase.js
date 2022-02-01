@@ -18,7 +18,6 @@ const LoggedAreaBase = ({ children }) => {
   }, [location.pathname]);
 
   if (!user) {
-    console.log("token not found");
     history.push(routes.login);
     return null;
   } else {

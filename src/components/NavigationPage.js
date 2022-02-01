@@ -20,9 +20,7 @@ const NavigationPage = (props) => {
   const [path, setPath] = useState(0);
   const mobile = useMobile();
 
-  useEffect(() => {
-    console.log("Current = ", current);
-  }, [pathname]);
+  useEffect(() => {}, [pathname]);
 
   function handleLogout() {
     localStorage.removeItem("user");

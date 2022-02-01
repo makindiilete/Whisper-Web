@@ -32,9 +32,7 @@ const VerifyYourPhoneNumberPage = (props) => {
     return isValidPhoneNumber(`${phone}`);
   };
 
-  const handleSubmit = (values) => {
-    console.log("Values = ", values);
-  };
+  const handleSubmit = (values) => {};
 
   function handleResendOtp() {
     setIsLoading(true);

@@ -51,7 +51,6 @@ const UploadPhotosPage = () => {
       format: (percent) => `${parseFloat(percent.toFixed(2))}%`,
     },
     beforeUpload: (file) => {
-      console.log("file to upload = ", file);
       // this.setState(state => ({
       //   fileList: [...state.fileList, file],
       // }));
@@ -72,7 +71,6 @@ const UploadPhotosPage = () => {
     let arr = [...images];
     let imgToChange = arr.find((i) => i.id === id);
     if (info.file.status !== "uploading") {
-      console.log(info.file, info.fileList);
     }
     imgToChange.url = URL.createObjectURL(info.file);
     // "https://cdn.pixabay.com/photo/2014/01/30/01/36/girl-254708_960_720.jpg";

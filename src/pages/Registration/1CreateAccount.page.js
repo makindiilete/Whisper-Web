@@ -25,9 +25,7 @@ const OneCreateAccountPage = (props) => {
     password: "",
   });
 
-  const handleSubmit = (values) => {
-    console.log(values);
-  };
+  const handleSubmit = (values) => {};
 
   function handleChange(value, name) {
     setData({ ...data, [name]: value });

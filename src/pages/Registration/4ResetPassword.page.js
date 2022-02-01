@@ -21,7 +21,6 @@ const ResetPasswordPage = (props) => {
   });
 
   const handleSubmit = (values) => {
-    console.log(values);
     // history.push(routes.login);
     setShowSuccessModal(true);
   };

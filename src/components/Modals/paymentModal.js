@@ -25,7 +25,6 @@ const PaymentModal = ({ visible, onCancel }) => {
   });
 
   const handleSubmit = (values) => {
-    console.log(values);
     onCancel("continue");
   };
 
