@@ -114,7 +114,10 @@ const FilterModal = ({ visible, onCancel, data, setData, handleSearch }) => {
             <PlacesAutocomplete
               required
               value={address}
-              onChange={(address) => handleChangeDropDown(address)}
+              onChange={(address) => {
+                handleChangeDropDown(address);
+                setData({ ...data, location: address });
+              }}
               onSelect={(address) => {
                 let splitAddress = handleSelect(address);
                 setData({ ...data, location: splitAddress });
