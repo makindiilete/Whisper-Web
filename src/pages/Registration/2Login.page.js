@@ -23,15 +23,22 @@ const TwoLoginPage = (props) => {
   });
 
   const handleSubmit = (values) => {
+    let userType = localStorage.getItem("userType");
+    localStorage.setItem(
+      "userType",
+      userType === "customer" ? "provider" : "customer"
+    );
     localStorage.setItem(
       "user",
       JSON.stringify({
         name: "Michael",
         email: "akindiileteforex@gmail.com",
-        userType: "Customer",
+        userType: userType === "customer" ? "Customer" : "Provider",
       })
     );
-    history.push(routes.CUSTOMER_HOME);
+    history.push(
+      userType === "customer" ? routes.CUSTOMER_HOME : routes.PROVIDER_HOME
+    );
   };
 
   function handleChange(value, name) {
