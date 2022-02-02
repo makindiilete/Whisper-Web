@@ -92,32 +92,42 @@ const NavigationPage = (props) => {
           {mobile ? (
             <>
               <li
-                onClick={() =>
+                onClick={() => {
+                  setIsExpanded(!isExpanded);
                   history.push(
                     userType?.toLowerCase() === "customer"
                       ? routes.CUSTOMER_HOME
                       : routes.PROVIDER_HOME
-                  )
-                }
+                  );
+                }}
                 className="nav__item"
               >
                 Home
               </li>
               <li
-                onClick={() => history.push(routes.WALLET)}
+                onClick={() => {
+                  setIsExpanded(!isExpanded);
+                  history.push(routes.WALLET);
+                }}
                 className="nav__item"
               >
                 Wallet
               </li>
               <li
-                onClick={() => history.push(routes.CHAT)}
+                onClick={() => {
+                  setIsExpanded(!isExpanded);
+                  history.push(routes.CHAT);
+                }}
                 className="nav__item"
               >
                 Messaging
               </li>
               <li
                 className="nav__item"
-                onClick={() => history.push(routes.PROFILE)}
+                onClick={() => {
+                  setIsExpanded(!isExpanded);
+                  history.push(routes.PROFILE);
+                }}
               >
                 Profile
               </li>
