@@ -41,7 +41,7 @@ const WalletTransactionDetails = ({ visible, onCancel, data }) => {
         paddingBottom: 0,
       }}
     >
-      <div className="py-5 d-flex justify-content-center">
+      <div className="py-5 d-md-flex justify-md-content-center">
         <div style={!mobile ? { padding: "0 10rem" } : null}>
           <div className="w-100 d-flex justify-content-center">
             <div className={premium.premiumBoxImgParentWrapper}>
