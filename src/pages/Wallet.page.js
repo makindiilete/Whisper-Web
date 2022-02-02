@@ -194,7 +194,7 @@ const WalletPage = (props) => {
       <WalletWelcomeModal
         visible={showWelcome}
         onCancel={(params) => {
-          if (params?.toLowerCase() === "continue") {
+          if (params === "Continue") {
             setShowWelcome(false);
             setShowFunding(true);
           } else {
@@ -206,7 +206,7 @@ const WalletPage = (props) => {
       <WalletFundingModal
         visible={showFunding}
         onCancel={(params) => {
-          if (params?.toLowerCase() === "continue") {
+          if (params === "Continue") {
             setShowFunding(false);
             setIsLoading(true);
             setTimeout(() => {
@@ -222,7 +222,7 @@ const WalletPage = (props) => {
       <WithdrawalModal
         visible={showWithdrawal}
         onCancel={(params) => {
-          if (params?.toLowerCase() === "continue") {
+          if (params === "Continue") {
             setShowWithdrawal(false);
             setIsLoading(true);
             setTimeout(() => {
@@ -257,7 +257,7 @@ const WalletPage = (props) => {
         subtitle="Have fun on whisper"
         visible={showFundingSuccess}
         onCancel={(params) => {
-          if (params?.toLowerCase() === "continue") {
+          if (params === "Continue") {
             setShowFundingSuccess(false);
             setIsLoading(true);
             setTimeout(() => {

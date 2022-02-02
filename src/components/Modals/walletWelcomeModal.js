@@ -63,7 +63,7 @@ const WalletWelcomeModal = ({ visible, onCancel }) => {
           <br />
           <button
             className="btn btn-primary btn-block"
-            onClick={() => onCancel("continue")}
+            onClick={() => onCancel("Continue")}
           >
             Continue
           </button>
