@@ -78,7 +78,25 @@
   color: #31aa52 !important;
 }
 
+.history {
+  width: 100%;
+  min-height: 39.2rem;
+  background: #fbfbfb;
+  border-radius: 10px;
+  padding: 2rem;
+}
+
+.history div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
 @media (min-width: 768px) {
+  .history {
+    width: 48.4rem;
+  }
   .premiumBox {
     /*width: 30.6rem;*/
     min-height: 13.2rem;

@@ -17,6 +17,7 @@ const PaymentModal = ({ visible, onCancel }) => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
   const mobile = useMobile();
+  const [form] = Form.useForm();
   const [selectedMethod, setSelectedMethod] = useState(1);
   const [data, setData] = useState({
     cardNumber: "",
@@ -32,6 +33,16 @@ const PaymentModal = ({ visible, onCancel }) => {
     setData({ ...data, [name]: value });
   }
 
+  useEffect(() => {
+    if (
+      data.expiryDate.length === 2 &&
+      !String(data.expiryDate).includes("/")
+    ) {
+      setData({ ...data, expiryDate: `${data.expiryDate}/` });
+      form.setFieldsValue({ expiryDate: `${data.expiryDate}/` });
+    }
+  }, [data]);
+
   const paymentForm = () => {
     return (
       <>
@@ -40,6 +51,7 @@ const PaymentModal = ({ visible, onCancel }) => {
             layout="vertical"
             scrollToFirstError
             onFinish={handleSubmit}
+            form={form}
             // size="large"
           >
             <Form.Item

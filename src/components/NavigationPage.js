@@ -18,6 +18,9 @@ const NavigationPage = (props) => {
   const current = pathname.split("/")[1];
   const [isExpanded, setIsExpanded] = useState(false);
   const [path, setPath] = useState(0);
+  const [userType, setUserType] = useState(
+    JSON.parse(localStorage.getItem("user")).userType
+  );
   const mobile = useMobile();
 
   useEffect(() => {}, [pathname]);
@@ -29,7 +32,7 @@ const NavigationPage = (props) => {
 
   const menu = (
     <Menu>
-      <Item key="0">
+      <Item key="0" onClick={() => history.push(routes.PROFILE)}>
         <p className="padding-none">
           <FontAwesomeIcon
             icon={icons.faUser}
@@ -88,19 +91,64 @@ const NavigationPage = (props) => {
         <ul className="list nav__list collapsible__content">
           {mobile ? (
             <>
-              <li className="nav__item">Home</li>
-              <li className="nav__item">Wallet</li>
-              <li className="nav__item">Messaging</li>
-              <li className="nav__item">Profile</li>
+              <li
+                onClick={() =>
+                  history.push(
+                    userType?.toLowerCase() === "customer"
+                      ? routes.CUSTOMER_HOME
+                      : routes.PROVIDER_HOME
+                  )
+                }
+                className="nav__item"
+              >
+                Home
+              </li>
+              <li
+                onClick={() => history.push(routes.WALLET)}
+                className="nav__item"
+              >
+                Wallet
+              </li>
+              <li
+                onClick={() => history.push(routes.CHAT)}
+                className="nav__item"
+              >
+                Messaging
+              </li>
+              <li
+                className="nav__item"
+                onClick={() => history.push(routes.PROFILE)}
+              >
+                Profile
+              </li>
               <li className="nav__item" onClick={handleLogout}>
                 Logout
               </li>
             </>
           ) : (
             <>
-              <li className={`nav__item ${path === 0 && "active"}`}>Home</li>
-              <li className={`nav__item ${path === 1 && "active"}`}>Wallet</li>
-              <li className={`nav__item ${path === 2 && "active"}`}>
+              <li
+                onClick={() =>
+                  history.push(
+                    userType?.toLowerCase() === "customer"
+                      ? routes.CUSTOMER_HOME
+                      : routes.PROVIDER_HOME
+                  )
+                }
+                className={`nav__item ${path === 0 && "active"}`}
+              >
+                Home
+              </li>
+              <li
+                onClick={() => history.push(routes.WALLET)}
+                className={`nav__item ${path === 1 && "active"}`}
+              >
+                Wallet
+              </li>
+              <li
+                onClick={() => history.push(routes.CHAT)}
+                className={`nav__item ${path === 2 && "active"}`}
+              >
                 Messaging
               </li>
             </>

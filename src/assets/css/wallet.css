@@ -1,0 +1,15 @@
+.transactions {
+  width: 100%;
+}
+
+.transactions__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .transactions {
+    width: 58.8rem;
+  }
+}

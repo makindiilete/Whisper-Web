@@ -24,6 +24,7 @@ import modalImg from "../../assets/images/auth/40.svg";
 import FilterModal from "../../components/Modals/filterModal";
 import LoaderComponent from "../../components/LoaderComponent";
 import { IoIosArrowBack } from "react-icons/all";
+import { SubscribePremium } from "../../components/SubscribePremium";
 
 const CustomerHomePage = (props) => {
   let location = useLocation();
@@ -324,90 +325,10 @@ const CustomerHomePage = (props) => {
     <HomeContainerPage>
       {allLikes?.length > 0 ? (
         <div className="row">
-          {!premiumActive && (
-            <div className={`col-md-3 ${customer.leftColumn}`}>
-              <div className="w-100 d-flex justify-content-center">
-                <div className={customer.premiumBoxImgParentWrapper}>
-                  <div className={customer.premiumBoxImgWrapper}>
-                    <img src={premiumImg} alt="" />
-                  </div>
-                </div>
-              </div>
-              <div className={customer.premiumBox}>
-                <div>
-                  <h5 className="primary-text text-center padding-none mb-2">
-                    Whisper Premium
-                  </h5>
-                  <div className="d-flex justify-content-center">
-                    <small className="text-center padding-none ">
-                      Get Whisper Premium to gain to chat, view and meet anyone
-                      you please
-                    </small>
-                  </div>
-                </div>
-              </div>
-              <div className={customer.premiumPrices}>
-                <div className="row">
-                  <div className={`col-4 ${customer.premiumPriceCol}`}>
-                    <div>
-                      <h5 className="text-center padding-none primary-text">
-                        1
-                      </h5>
-                      <div className="d-flex justify-content-center">
-                        <h6 className="text-muted text-center">Month</h6>
-                      </div>
-                      <div className="dotted-divider w-100" />
-                      <div className="d-flex justify-content-center">
-                        <h6 className="text-muted text-center mt-2">
-                          $20/Month
-                        </h6>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className={`col-4 position-relative ${customer.premiumPriceActive} ${customer.premiumPriceCol}`}
-                  >
-                    <div>
-                      <h5 className="text-center padding-none primary-text">
-                        6
-                      </h5>
-                      <div className="d-flex justify-content-center">
-                        <h6 className="font-weight-bolder text-dark text-center">
-                          Month
-                        </h6>
-                      </div>
-                      <div className="dotted-divider w-100" />
-                      <div className="d-flex justify-content-center">
-                        <h6 className="font-weight-bolder text-dark text-center mt-2">
-                          $70/Month
-                        </h6>
-                      </div>
-                    </div>
-                    <div className={customer.badge}>
-                      <h6 className="padding-none">Most Popular</h6>
-                    </div>
-                  </div>
-                  <div className={`col-4 ${customer.premiumPriceCol}`}>
-                    <div>
-                      <h5 className="text-center padding-none primary-text">
-                        1
-                      </h5>
-                      <div className="d-flex justify-content-center">
-                        <h6 className="text-muted text-center">Month</h6>
-                      </div>
-                      <div className="dotted-divider w-100" />
-                      <div className="d-flex justify-content-center">
-                        <h6 className="text-muted text-center mt-2">
-                          $120/Month
-                        </h6>
-                      </div>
-                    </div>
-                  </div>
-                  {/* /.col-md-4 */}
-                </div>
-              </div>
-            </div>
-          )}
+          <SubscribePremium
+            handlePremium={() => setShowActivatePremium(true)}
+            visible={!premiumActive}
+          />
           <div
             className={`${
               premiumActive ? `col-md-8 offset-md-2` : `col-md-9`

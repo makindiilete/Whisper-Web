@@ -4,6 +4,7 @@ export default Object.freeze({
   CUSTOMER_HOME: "/home/customer",
   PROVIDER_HOME: "/home/provider",
   WALLET: "/wallet",
+  PROFILE: "/profile",
   CHAT: "/messaging",
   signup_createAccount: "/reg/create-account",
   login: "/reg/login",
