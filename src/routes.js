@@ -5,6 +5,7 @@ export default Object.freeze({
   PROVIDER_HOME: "/home/provider",
   WALLET: "/wallet",
   PROFILE: "/profile",
+  EDIT_PROFILE: "/edit_profile",
   CHAT: "/messaging",
   signup_createAccount: "/reg/create-account",
   login: "/reg/login",

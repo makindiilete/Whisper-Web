@@ -36,6 +36,7 @@ import ProviderHomePage from "./pages/Home/ProviderHome.page";
 import CustomerHomePage from "./pages/Home/CustomerHome.page";
 import WalletPage from "./pages/Wallet.page";
 import ProfilePage from "./pages/Profile/Profile.page";
+import EditProfilePage from "./pages/Profile/EditProfile.page";
 
 AOS.init();
 
@@ -153,6 +154,11 @@ function App() {
               exact
               component={ProfilePage}
               path={routes.PROFILE}
+            />
+            <LoggedAreaRoute
+              exact
+              component={EditProfilePage}
+              path={routes.EDIT_PROFILE}
             />
             <Route component={NotFound} path="*" />
           </Switch>

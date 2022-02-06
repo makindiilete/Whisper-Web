@@ -17,6 +17,7 @@ import { Badge } from "../../components/Badge";
 import MapComponent from "../../components/MapComponent";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as icons from "@fortawesome/free-solid-svg-icons";
+import routes from "../../routes";
 
 const ProfilePage = () => {
   let location = useLocation();
@@ -102,7 +103,10 @@ const ProfilePage = () => {
             } `}
           >
             <div className="d-md-flex justify-content-md-end">
-              <div className="d-flex align-items-center mr-md-5 mb-3 mb-md-0">
+              <div
+                className="d-flex align-items-center mr-md-5 mb-3 mb-md-0 cursor"
+                onClick={() => history.push(routes.EDIT_PROFILE)}
+              >
                 <FontAwesomeIcon
                   icon={icons.faUserCog}
                   className="primary-text"
@@ -167,7 +171,11 @@ const ProfilePage = () => {
               <div className="col-md-8">
                 <div className="d-flex justify-content-between">
                   <h5>Bio</h5>
-                  <AiOutlineEdit size="2rem" className="cursor" />
+                  <AiOutlineEdit
+                    onClick={() => history.push(routes.EDIT_PROFILE)}
+                    size="2rem"
+                    className="cursor"
+                  />
                 </div>
                 <div>
                   <small className="text-muted">{user?.bio}</small>
@@ -177,7 +185,11 @@ const ProfilePage = () => {
               <div className="col-md-8 mt-3">
                 <div className="d-flex justify-content-between">
                   <h5>Attributes</h5>
-                  <AiOutlineEdit size="2rem" className="cursor" />
+                  <AiOutlineEdit
+                    onClick={() => history.push(routes.EDIT_PROFILE)}
+                    size="2rem"
+                    className="cursor"
+                  />
                 </div>
                 <div className="d-flex justify-content-between mb-4">
                   <small className="text-muted"> Body Type </small>
@@ -216,7 +228,11 @@ const ProfilePage = () => {
               <div className="col-md-8">
                 <div className="d-flex justify-content-between">
                   <h5>I am interested in</h5>
-                  <AiOutlineEdit size="2rem" className="cursor" />
+                  <AiOutlineEdit
+                    onClick={() => history.push(routes.EDIT_PROFILE)}
+                    size="2rem"
+                    className="cursor"
+                  />
                 </div>
                 <div>
                   {user?.interests?.map((item) => (
@@ -230,7 +246,11 @@ const ProfilePage = () => {
               <div className="col-md-8">
                 <div className="d-flex justify-content-between">
                   <h5>I am here for</h5>
-                  <AiOutlineEdit size="2rem" className="cursor" />
+                  <AiOutlineEdit
+                    onClick={() => history.push(routes.EDIT_PROFILE)}
+                    size="2rem"
+                    className="cursor"
+                  />
                 </div>
                 <div>
                   {user?.hereFor?.map((item) => (
@@ -247,7 +267,11 @@ const ProfilePage = () => {
                   <h5>Job Title</h5>
                   <h5>Phone Number</h5>
                   <h5>Email</h5>
-                  <AiOutlineEdit size="2rem" className="cursor" />
+                  <AiOutlineEdit
+                    onClick={() => history.push(routes.EDIT_PROFILE)}
+                    size="2rem"
+                    className="cursor"
+                  />
                 </div>
                 <div className="d-flex justify-content-between">
                   <div>

@@ -12,6 +12,7 @@ import SuccessModal from "../../components/Modals/successModal";
 import provImg1 from "../../assets/images/homeInApp/Rectangle 2685.svg";
 import provImg3 from "../../assets/images/homeInApp/Rectangle 2685 copy 3.svg";
 import provImg6 from "../../assets/images/homeInApp/Rectangle 2685 copy 2.svg";
+import moment from "moment";
 
 const TwoLoginPage = (props) => {
   let location = useLocation();
@@ -34,7 +35,7 @@ const TwoLoginPage = (props) => {
     localStorage.setItem(
       "user",
       JSON.stringify({
-        name: "Michael",
+        name: "Michael Omoakin",
         age: 29,
         email: "akindiileteforex@gmail.com",
         bio:
@@ -52,6 +53,8 @@ const TwoLoginPage = (props) => {
         occupation: "Business Man",
         imgUrls: [provImg1, provImg3, provImg6],
         phone: "+2348109330138",
+        gender: "Male",
+        dob: moment().format("L"),
         userType: userType === "customer" ? "Customer" : "Provider",
       })
     );
