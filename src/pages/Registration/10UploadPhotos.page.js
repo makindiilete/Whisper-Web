@@ -37,11 +37,6 @@ const UploadPhotosPage = () => {
   ]);
 
   const props = {
-    // name: "file",
-    // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
-    // headers: {
-    //   authorization: "authorization-text",
-    // },
     progress: {
       strokeColor: {
         "0%": "#e8dcfe",
@@ -51,9 +46,6 @@ const UploadPhotosPage = () => {
       format: (percent) => `${parseFloat(percent.toFixed(2))}%`,
     },
     beforeUpload: (file) => {
-      // this.setState(state => ({
-      //   fileList: [...state.fileList, file],
-      // }));
       return false;
     },
   };
@@ -67,30 +59,13 @@ const UploadPhotosPage = () => {
   };
 
   const handleGeneratePreview = (info, id) => {
-    // setLoadingImg({ status: true, id: id });
     let arr = [...images];
     let imgToChange = arr.find((i) => i.id === id);
     if (info.file.status !== "uploading") {
     }
     imgToChange.url = URL.createObjectURL(info.file);
-    // "https://cdn.pixabay.com/photo/2014/01/30/01/36/girl-254708_960_720.jpg";
-    /*    if (info.file.status === "done") {
-      imgToChange.url =
-        "https://cdn.pixabay.com/photo/2014/01/30/01/36/girl-254708_960_720.jpg";
-      message.success(`${info.file.name} file uploaded successfully`);
-    } else if (info.file.status === "error") {
-      imgToChange.url =
-        "https://cdn.pixabay.com/photo/2014/01/30/01/36/girl-254708_960_720.jpg";
-      // message.error(`${info.file.name} file upload failed.`);
-      message.success(`${info.file.name} file uploaded successfully`);
-    }*/
     setImages(arr);
     handleShowContinueBtn(arr);
-    /* setTimeout(() => {
-      setLoadingImg({ status: false, id: null });
-      setImages(arr);
-      handleShowContinueBtn(arr);
-    }, 2000);*/
   };
 
   const handleShowContinueBtn = (array = []) => {

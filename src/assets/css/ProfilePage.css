@@ -1,0 +1,53 @@
+.profile .uploadBox {
+  width: 12.4rem;
+  height: 12.4rem;
+  border: 1px dashed #b561ff;
+  background: #faf4ff;
+  border-radius: 8px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.profile .imgThumbnail {
+  width: 12.4rem;
+  height: 12.4rem;
+}
+
+.profile .grid__Container {
+  display: grid;
+  grid-template: repeat(auto-fill, 10.4rem) / repeat(6, 10.4rem);
+  justify-items: center;
+  align-items: center;
+  row-gap: 4rem;
+  column-gap: 6.5rem;
+  justify-content: center;
+  margin-bottom: 5rem;
+}
+
+@media (min-width: 320px) and (max-width: 500px) {
+  .profile .grid__Container {
+    grid-template: repeat(auto-fill, 10.4rem) / repeat(2, 10.4rem);
+    row-gap: 1.5rem;
+    column-gap: 3.5rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1410px) {
+  .profile .grid__Container {
+    grid-template: repeat(auto-fill, 16.4rem) / repeat(3, 16.4rem);
+    row-gap: 1.5rem;
+    column-gap: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .profile .uploadBox {
+    width: 16.4rem;
+    height: 16.4rem;
+  }
+
+  .profile .imgThumbnail {
+    width: 16.4rem;
+    height: 16.4rem;
+  }
+}

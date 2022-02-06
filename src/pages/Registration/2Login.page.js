@@ -9,6 +9,9 @@ import AuthContainerPage from "./AuthContainer.page";
 import { Form, Input } from "antd";
 import { FaAngleLeft } from "react-icons/all";
 import SuccessModal from "../../components/Modals/successModal";
+import provImg1 from "../../assets/images/homeInApp/Rectangle 2685.svg";
+import provImg3 from "../../assets/images/homeInApp/Rectangle 2685 copy 3.svg";
+import provImg6 from "../../assets/images/homeInApp/Rectangle 2685 copy 2.svg";
 
 const TwoLoginPage = (props) => {
   let location = useLocation();
@@ -32,7 +35,23 @@ const TwoLoginPage = (props) => {
       "user",
       JSON.stringify({
         name: "Michael",
+        age: 29,
         email: "akindiileteforex@gmail.com",
+        bio:
+          "Augue massa pellentesque rhoncus a blandit purus platea hac erat. Egestas eu nibh bibendum at porttitor risus. Sapien, mi potenti morbi amet mauris urna interdum. Eu, suspendisse volutpat purus lacus eget. Tincidunt scelerisque elit pellentesque odio cursus etiam cras.",
+        hereFor: ["Companion", "Xrated"],
+        attributes: {
+          bodyType: "Slim",
+          Height: "Average",
+          Education: "College",
+          Drinking: "Water",
+          Smoking: "Hookah",
+        },
+
+        interests: ["Movies", "Smoking", "Drinks"],
+        occupation: "Business Man",
+        imgUrls: [provImg1, provImg3, provImg6],
+        phone: "+2348109330138",
         userType: userType === "customer" ? "Customer" : "Provider",
       })
     );

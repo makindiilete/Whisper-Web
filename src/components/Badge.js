@@ -6,12 +6,14 @@ export function Badge({ text }) {
       case "companion":
         return "primary";
       case "xrated":
+      case "movies":
         return "secondary";
       case "average":
         return "primary";
       case "cigarette":
         return "secondary";
       case "vodka":
+      case "smoking":
         return "tertiary";
       default:
         return "primary";

@@ -341,6 +341,14 @@ p {
   border-radius: 2.4rem !important;
 }
 
+.btn-md-auto {
+  width: auto !important;
+}
+
+.btn-sm-block {
+  width: 100% !important;
+}
+
 .primary-text {
   color: var(--primary-color) !important;
 }
