@@ -74,7 +74,7 @@ const EditProfilePage = (props) => {
               </div>
             </div>
             <br />
-            <div className="dotted-divider w-50" />
+            <div className={`dotted-divider ${mobile ? "w-100" : "w-50"}`} />
             <br />
             <div className="col-md-6 mt-3">
               <div className="d-flex align-items-center mb-5">
@@ -95,7 +95,7 @@ const EditProfilePage = (props) => {
               </div>
             </div>
             <br />
-            <div className="dotted-divider w-50" />
+            <div className={`dotted-divider ${mobile ? "w-100" : "w-50"}`} />
             <br />
             <div className="col-md-6 mt-3">
               <div className="d-flex align-items-center mb-5">
@@ -132,7 +132,6 @@ const EditProfilePage = (props) => {
 
               <div className="d-flex justify-content-between mb-5">
                 <small className="text-dark">
-                  {" "}
                   Receive Notifications by Mail
                 </small>
                 <Switch
@@ -143,8 +142,7 @@ const EditProfilePage = (props) => {
 
               <div className="d-flex justify-content-between mb-5">
                 <small className="text-dark">
-                  {" "}
-                  Receive Notifications by SMS{" "}
+                  Receive Notifications by SMS
                 </small>
                 <Switch
                   checked={notifications.sms}
