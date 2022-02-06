@@ -15,6 +15,8 @@ import LoaderComponent from "../../components/LoaderComponent";
 import "../../assets/css/ProfilePage.css";
 import { Badge } from "../../components/Badge";
 import MapComponent from "../../components/MapComponent";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import * as icons from "@fortawesome/free-solid-svg-icons";
 
 const ProfilePage = () => {
   let location = useLocation();
@@ -101,7 +103,10 @@ const ProfilePage = () => {
           >
             <div className="d-md-flex justify-content-md-end">
               <div className="d-flex align-items-center mr-md-5 mb-3 mb-md-0">
-                <GrUserSettings style={{ color: "#31005c" }} />
+                <FontAwesomeIcon
+                  icon={icons.faUserCog}
+                  className="primary-text"
+                />
                 <p className="primary-text padding-none ml-2">Edit Settings</p>
               </div>
               <div>
