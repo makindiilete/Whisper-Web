@@ -18,6 +18,10 @@ import MapComponent from "../../components/MapComponent";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as icons from "@fortawesome/free-solid-svg-icons";
 import routes from "../../routes";
+import DeleteAccountModal from "../../components/DeleteAccountModal";
+import modalImg from "../../assets/images/auth/40.svg";
+import deleteImg from "../../assets/images/deleteAcct.png";
+import SuccessModal from "../../components/Modals/successModal";
 
 const ProfilePage = () => {
   let location = useLocation();
@@ -26,6 +30,8 @@ const ProfilePage = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [showContinue, setShowContinue] = useState(false);
   const [loadingImg, setLoadingImg] = useState({
     status: false,
@@ -42,6 +48,11 @@ const ProfilePage = () => {
     { id: 5, url: null },
     { id: 6, url: null },
   ]);
+
+  function handleLogout() {
+    localStorage.removeItem("user");
+    history.push(routes.login);
+  }
 
   const props = {
     progress: {
@@ -300,10 +311,16 @@ const ProfilePage = () => {
               <br />
               <br />
               <div className="col-md-8 d-md-flex justify-content-md-between">
-                <button className="btn btn-outline-primary  btn-sm-block btn-md-auto mb-2 mb-md-0 mr-md-3">
+                <button
+                  className="btn btn-outline-primary  btn-sm-block btn-md-auto mb-2 mb-md-0 mr-md-3"
+                  onClick={() => setShowDeleteModal(true)}
+                >
                   Delete Account
                 </button>
-                <button className="btn btn-primary btn-sm-block btn-md-auto">
+                <button
+                  className="btn btn-primary btn-sm-block btn-md-auto"
+                  onClick={handleLogout}
+                >
                   <FiLogOut /> Logout
                 </button>
               </div>
@@ -312,6 +329,28 @@ const ProfilePage = () => {
         </div>
         {/* /.row */}
       </section>
+      <DeleteAccountModal
+        visible={showDeleteModal}
+        onCancel={(arg) => {
+          if (arg === "continue") {
+            setShowDeleteModal(false);
+            setShowSuccess(true);
+          } else {
+            setShowDeleteModal(false);
+          }
+        }}
+      />
+
+      <SuccessModal
+        visible={showSuccess}
+        onCancel={() => {
+          setShowSuccess(false);
+          handleLogout();
+        }}
+        title="Your account has been permanently deleted."
+        subtitle=""
+        image={deleteImg}
+      />
     </HomeContainerPage>
   );
 };

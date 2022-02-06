@@ -59,13 +59,6 @@ const AboutYourselfPage = (props) => {
                   scrollToFirstError
                   onFinish={handleSubmit}
                 >
-                  {/* <Input.TextArea
-                    placeholder="Bio"
-                    showCount
-                    rows={5}
-                    maxLength={140}
-                    onChange={(e) => setBio(e.target.value)}
-                  />*/}
                   <Form.Item
                     className="mb-3 mb-md-0 mt-2"
                     initialValue=""
