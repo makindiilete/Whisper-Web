@@ -125,7 +125,13 @@ const ProfilePage = () => {
                 <p className="primary-text padding-none ml-2">Edit Settings</p>
               </div>
               <div>
-                <button className="btn btn-outline-primary btn-sm-block btn-md-auto">
+                <button
+                  className="btn btn-outline-primary btn-sm-block btn-md-auto"
+                  onClick={() => {
+                    history.push(routes.usertype);
+                    localStorage.setItem("promoteToProvider", "yes");
+                  }}
+                >
                   Become a Provider
                 </button>
               </div>

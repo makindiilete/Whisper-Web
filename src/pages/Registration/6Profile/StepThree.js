@@ -99,7 +99,7 @@ const StepThree = ({ currentStep, setCurrentStep, title, subTitle }) => {
         <button
           className="btn btn-primary"
           onClick={() => history.push(routes.verifyphonenumber)}
-          style={mobile ? null : { margin: "6rem 30rem" }}
+          // style={mobile ? null : { margin: "6rem 30rem" }}
         >
           Continue
         </button>

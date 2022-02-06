@@ -17,6 +17,15 @@ const TypeOfUserPage = (props) => {
   }, [location.pathname]);
   const [selected, setSelected] = useState();
 
+  useEffect(() => {
+    if (localStorage.getItem("promoteToProvider")) {
+      setSelected(2);
+    }
+    return () => {
+      localStorage.removeItem("promoteToProvider");
+    };
+  }, []);
+
   return (
     <AuthContainerPage>
       <div className="typeOfUser position-relative">
