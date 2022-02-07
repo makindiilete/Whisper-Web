@@ -1,6 +1,8 @@
 //Object.freeze ensures the object we pass here cannot be modified anywhere in our app
 export default Object.freeze({
   LANDING: "/",
+  ABOUT: "/about",
+  CONTACT: "/contact",
   CUSTOMER_HOME: "/home/customer",
   PROVIDER_HOME: "/home/provider",
   WALLET: "/wallet",

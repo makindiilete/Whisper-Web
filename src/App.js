@@ -10,7 +10,7 @@ import {
 import { ToastContainer } from "react-toastify";
 import { useState } from "react";
 import { AuthContext } from "./Utils/context";
-import LandingPage from "./pages/Landing.page";
+import LandingPage from "./pages/Landing/Landing.page";
 import PublicAreaRoute from "./Layout/PublicAreaRoute";
 import routes from "./routes";
 import OneCreateAccountPage from "./pages/Registration/1CreateAccount.page";
@@ -37,6 +37,8 @@ import CustomerHomePage from "./pages/Home/CustomerHome.page";
 import WalletPage from "./pages/Wallet.page";
 import ProfilePage from "./pages/Profile/Profile.page";
 import EditProfilePage from "./pages/Profile/EditProfile.page";
+import AboutPage from "./pages/OtherLinks/About.page";
+import ContactPage from "./pages/OtherLinks/Contact.page";
 
 AOS.init();
 
@@ -58,6 +60,8 @@ function App() {
               component={OneCreateAccountPage}
               path={routes.signup_createAccount}
             />
+            <Route exact component={AboutPage} path={routes.ABOUT} />
+            <Route exact component={ContactPage} path={routes.CONTACT} />
             <Route exact component={TwoLoginPage} path={routes.login} />
             <Route
               exact

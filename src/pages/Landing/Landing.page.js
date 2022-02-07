@@ -1,18 +1,18 @@
 import React, { useEffect } from "react";
 import { useLocation, useHistory } from "react-router-dom";
-import "../assets/css/LandingPage.css";
-import logo from "../assets/images/WhisperLogo.svg";
-import logo2 from "../assets/images/WhisperLogo.png";
-import whisperText from "../assets/images/home/purple-outline-text.svg";
-import playstore from "../assets/images/home/Google Play.svg";
-import appstore from "../assets/images/home/App Store.svg";
-import beautifulpeople from "../assets/images/home/bueatifulpeople.jpg";
-import lonely from "../assets/images/home/lonely.jpg";
-import safe from "../assets/images/home/safe.jpg";
-import heroareatwo from "../assets/images/home/hero-area-two.jpg";
-import routes from "../routes";
-import HomeNavigation from "../components/navs/HomeNavigation";
-import useMobile from "../hooks/useMobile";
+import "../../assets/css/LandingPage.css";
+import logo from "../../assets/images/WhisperLogo.svg";
+import logo2 from "../../assets/images/WhisperLogo.png";
+import whisperText from "../../assets/images/home/purple-outline-text.svg";
+import playstore from "../../assets/images/home/Google Play.svg";
+import appstore from "../../assets/images/home/App Store.svg";
+import beautifulpeople from "../../assets/images/home/bueatifulpeople.jpg";
+import lonely from "../../assets/images/home/lonely.jpg";
+import safe from "../../assets/images/home/safe.jpg";
+import heroareatwo from "../../assets/images/home/hero-area-two.jpg";
+import routes from "../../routes";
+import HomeNavigation from "../../components/navs/HomeNavigation";
+import useMobile from "../../hooks/useMobile";
 
 const LandingPage = (props) => {
   let location = useLocation();

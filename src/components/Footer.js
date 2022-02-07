@@ -1,8 +1,11 @@
 import React from "react";
 import logo2 from "../assets/images/WhisperLogo.png";
 import "../assets/css/LandingPage.css";
+import { useHistory } from "react-router-dom";
+import routes from "../routes";
 
 const Footer = () => {
+  const history = useHistory();
   return (
     <section className="landing footer py-5">
       <div className="logoListitem">
@@ -36,7 +39,7 @@ const Footer = () => {
       <div className="footer-item mt-5 mt-md-0">
         <h5 className="text-white">The Company</h5>
         <ul className="no-bullet-list">
-          <li>About Whisper</li>
+          <li onClick={() => history.push(routes.ABOUT)}>About Whisper</li>
           <li>Contact Us</li>
           <li>FAQ</li>
         </ul>
