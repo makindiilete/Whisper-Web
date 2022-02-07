@@ -3,6 +3,8 @@ import logo2 from "../assets/images/WhisperLogo.png";
 import "../assets/css/LandingPage.css";
 import { useHistory } from "react-router-dom";
 import routes from "../routes";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import * as icons from "@fortawesome/free-brands-svg-icons";
 
 const Footer = () => {
   const history = useHistory();
@@ -55,8 +57,26 @@ const Footer = () => {
       <div className="footer-item">
         <h5 className="text-white">Follow Us</h5>
         <ul className="no-bullet-list">
-          <li onClick={() => history.push(routes.TERMS)}>Terms & Conditions</li>
-          <li onClick={() => history.push(routes.PRIVACY)}>Privacy Policy</li>
+          <li className="d-flex justify-content-between pl-5 pl-md-0">
+            <FontAwesomeIcon
+              icon={icons.faFacebookF}
+              size=""
+              className="text-white cursor mr-md-3"
+              onClick={() => window.open("https://facebook.com", "_blank")}
+            />
+            <FontAwesomeIcon
+              icon={icons.faTwitter}
+              size=""
+              className="text-white cursor mr-md-3"
+              onClick={() => window.open("https://twitter.com", "_blank")}
+            />
+            <FontAwesomeIcon
+              icon={icons.faLinkedinIn}
+              size=""
+              className="text-white cursor"
+              onClick={() => window.open("https://www.linkedin.com", "_blank")}
+            />
+          </li>
         </ul>
       </div>
     </section>
