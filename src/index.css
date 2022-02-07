@@ -519,6 +519,10 @@ small {
   background-color: transparent !important;
 }
 
+.input-white {
+  background-color: white !important;
+}
+
 .ant-input-affix-wrapper {
   align-items: center !important;
 }

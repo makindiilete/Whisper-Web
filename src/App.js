@@ -40,6 +40,8 @@ import EditProfilePage from "./pages/Profile/EditProfile.page";
 import AboutPage from "./pages/OtherLinks/About.page";
 import ContactPage from "./pages/OtherLinks/Contact.page";
 import TermsPage from "./pages/OtherLinks/Terms.page";
+import PrivacyPage from "./pages/OtherLinks/Privacy.page";
+import FaqPage from "./pages/OtherLinks/Faq.page";
 
 AOS.init();
 
@@ -64,6 +66,8 @@ function App() {
             <Route exact component={AboutPage} path={routes.ABOUT} />
             <Route exact component={ContactPage} path={routes.CONTACT} />
             <Route exact component={TermsPage} path={routes.TERMS} />
+            <Route exact component={PrivacyPage} path={routes.PRIVACY} />
+            <Route exact component={FaqPage} path={routes.FAQ} />
             <Route exact component={TwoLoginPage} path={routes.login} />
             <Route
               exact

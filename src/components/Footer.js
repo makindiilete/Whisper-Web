@@ -41,14 +41,14 @@ const Footer = () => {
         <ul className="no-bullet-list">
           <li onClick={() => history.push(routes.ABOUT)}>About Whisper</li>
           <li onClick={() => history.push(routes.CONTACT)}>Contact Us</li>
-          <li>FAQ</li>
+          <li onClick={() => history.push(routes.FAQ)}>FAQ</li>
         </ul>
       </div>
       <div className="footer-item">
         <h5 className="text-white">Legal</h5>
         <ul className="no-bullet-list">
           <li onClick={() => history.push(routes.TERMS)}>Terms & Conditions</li>
-          <li>Privacy Policy</li>
+          <li onClick={() => history.push(routes.PRIVACY)}>Privacy Policy</li>
         </ul>
       </div>
 
@@ -56,7 +56,7 @@ const Footer = () => {
         <h5 className="text-white">Follow Us</h5>
         <ul className="no-bullet-list">
           <li onClick={() => history.push(routes.TERMS)}>Terms & Conditions</li>
-          <li>Privacy Policy</li>
+          <li onClick={() => history.push(routes.PRIVACY)}>Privacy Policy</li>
         </ul>
       </div>
     </section>

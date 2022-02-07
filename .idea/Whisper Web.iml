@@ -10,5 +10,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="WhisperAdmin" />
     <orderEntry type="module" module-name="CASHBOX-NATIVE.michael" />
+    <orderEntry type="module" module-name="Ryva" />
   </component>
 </module>
