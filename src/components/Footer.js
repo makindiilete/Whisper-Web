@@ -5,9 +5,11 @@ import { useHistory } from "react-router-dom";
 import routes from "../routes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as icons from "@fortawesome/free-brands-svg-icons";
+import useMobile from "../hooks/useMobile";
 
 const Footer = () => {
   const history = useHistory();
+  const mobile = useMobile();
   return (
     <section className="landing footer py-5">
       <div className="logoListitem">
@@ -56,28 +58,29 @@ const Footer = () => {
 
       <div className="footer-item">
         <h5 className="text-white">Follow Us</h5>
-        <ul className="no-bullet-list">
-          <li className="d-flex justify-content-between pl-5 pl-md-0">
-            <FontAwesomeIcon
-              icon={icons.faFacebookF}
-              size=""
-              className="text-white cursor mr-md-3"
-              onClick={() => window.open("https://facebook.com", "_blank")}
-            />
-            <FontAwesomeIcon
-              icon={icons.faTwitter}
-              size=""
-              className="text-white cursor mr-md-3"
-              onClick={() => window.open("https://twitter.com", "_blank")}
-            />
-            <FontAwesomeIcon
-              icon={icons.faLinkedinIn}
-              size=""
-              className="text-white cursor"
-              onClick={() => window.open("https://www.linkedin.com", "_blank")}
-            />
-          </li>
-        </ul>
+        <div
+          className="d-flex justify-content-between"
+          style={!mobile ? null : { paddingRight: "10rem" }}
+        >
+          <FontAwesomeIcon
+            icon={icons.faFacebookF}
+            size=""
+            className="text-white cursor mr-md-3"
+            onClick={() => window.open("https://facebook.com", "_blank")}
+          />
+          <FontAwesomeIcon
+            icon={icons.faTwitter}
+            size=""
+            className="text-white cursor mr-md-3"
+            onClick={() => window.open("https://twitter.com", "_blank")}
+          />
+          <FontAwesomeIcon
+            icon={icons.faLinkedinIn}
+            size=""
+            className="text-white cursor"
+            onClick={() => window.open("https://www.linkedin.com", "_blank")}
+          />
+        </div>
       </div>
     </section>
   );
