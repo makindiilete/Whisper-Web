@@ -16,7 +16,12 @@ const AboutPage = (props) => {
       <OtherLinksContainer>
         <div className="row">
           <div className="col-md-6 p-0 d-none d-md-block ">
-            <img src={image} alt="" className="img-fluid" />
+            <img
+              src={image}
+              alt=""
+              className="img-fluid h-100"
+              style={{ objectFit: "cover" }}
+            />
           </div>
           <div className="col-md-6">
             <h3 style={!mobile ? { marginTop: "10rem" } : null}>
