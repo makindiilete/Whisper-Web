@@ -47,7 +47,12 @@ const OtherLinksNav = (props) => {
             : "nav collapsible collapsible--expanded "
         }
       >
-        <img src={logo} className="img-fluid nav__brand" alt="" />
+        <img
+          src={logo}
+          className="img-fluid nav__brand cursor"
+          alt=""
+          onClick={() => history.push("/")}
+        />
         <FontAwesomeIcon
           icon={icons.faBars}
           size="2x"

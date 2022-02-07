@@ -14,7 +14,7 @@ const AboutPage = (props) => {
   return (
     <>
       <OtherLinksContainer>
-        <div className="row" style={!mobile ? { marginTop: "-4rem" } : null}>
+        <div className="row">
           <div className="col-md-6 p-0 d-none d-md-block ">
             <img src={image} alt="" className="img-fluid" />
           </div>

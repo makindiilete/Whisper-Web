@@ -13,11 +13,19 @@ const OtherLinksContainer = ({ children }) => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
   return (
-    <>
+    <div>
       <OtherLinksNav />
-      {children}
+      <div
+        style={
+          !mobile
+            ? { marginTop: "-4rem", minHeight: "70vh" }
+            : { minHeight: "70vh" }
+        }
+      >
+        {children}
+      </div>
       <Footer />
-    </>
+    </div>
   );
 };
 

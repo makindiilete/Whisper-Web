@@ -40,7 +40,7 @@ const Footer = () => {
         <h5 className="text-white">The Company</h5>
         <ul className="no-bullet-list">
           <li onClick={() => history.push(routes.ABOUT)}>About Whisper</li>
-          <li>Contact Us</li>
+          <li onClick={() => history.push(routes.CONTACT)}>Contact Us</li>
           <li>FAQ</li>
         </ul>
       </div>

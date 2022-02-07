@@ -5,6 +5,7 @@ import logo from "../../assets/images/WhisperLogo.svg";
 import styles from "../../assets/css/navs/homeNavigation.module.css";
 import { CloseSquareOutlined, MenuFoldOutlined } from "@ant-design/icons";
 import { CgCloseR, RiMenu3Line } from "react-icons/all";
+import routes from "../../routes";
 
 const HomeNavigation = (props) => {
   let location = useLocation();
@@ -37,9 +38,11 @@ const HomeNavigation = (props) => {
           {isExpanded && mobile ? (
             <>
               <ul>
-                <li>About Whisper</li>
-                <li>Contact us</li>
-                <li>Select</li>
+                <li onClick={() => history.push(routes.ABOUT)}>
+                  About Whisper
+                </li>
+                <li onClick={() => history.push(routes.CONTACT)}>Contact us</li>
+                <li onClick={() => history.push(routes.login)}>Login</li>
                 <li>
                   <button className={`btn btn-light ${styles.btn}`}>
                     Download the App
@@ -49,9 +52,24 @@ const HomeNavigation = (props) => {
             </>
           ) : !isExpanded && mobile ? null : (
             <>
-              <p className="text-white mr-5 padding-none">About Whisper</p>
-              <p className="text-white mr-5 padding-none">Contact us</p>
-              <p className="text-white mr-5 padding-none">Select</p>
+              <p
+                className="text-white mr-5 padding-none"
+                onClick={() => history.push(routes.ABOUT)}
+              >
+                About Whisper
+              </p>
+              <p
+                className="text-white mr-5 padding-none"
+                onClick={() => history.push(routes.CONTACT)}
+              >
+                Contact us
+              </p>
+              <p
+                className="text-white mr-5 padding-none"
+                onClick={() => history.push(routes.login)}
+              >
+                Login
+              </p>
               <button className={`btn btn-light ${styles.btn}`}>
                 Download the App
               </button>
