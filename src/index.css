@@ -213,6 +213,28 @@ p {
   border-radius: 8px !important;
 }
 
+.btn-outline-primary-light {
+  background: transparent !important;
+  color: var(--primary-light-color) !important;
+  border: 1px solid var(--primary-light-color) !important;
+  border-radius: 21.5px !important;
+  font-size: 1rem !important;
+}
+
+.btn-outline-primary-light:hover {
+  background: var(--primary-color) !important;
+  color: var(--white) !important;
+  font-size: 1.6rem !important;
+  border: 1px solid var(--primary-color) !important;
+  border-radius: 8px !important;
+}
+
+.btn-outline-primary-light:disabled {
+  background: transparent !important;
+  color: grey !important;
+  border: 1px solid grey !important;
+}
+
 .btn-light {
   background: var(--white) !important;
   color: var(--primary-color) !important;
@@ -444,6 +466,9 @@ small {
 }
 
 @media (min-width: 768px) {
+  .btn-outline-primary-light {
+    font-size: 1.6rem !important;
+  }
   .flexrow {
     display: flex;
     margin-bottom: 2rem;

@@ -42,6 +42,7 @@ import ContactPage from "./pages/OtherLinks/Contact.page";
 import TermsPage from "./pages/OtherLinks/Terms.page";
 import PrivacyPage from "./pages/OtherLinks/Privacy.page";
 import FaqPage from "./pages/OtherLinks/Faq.page";
+import ChatPage from "./pages/Messaging/Chat.page";
 
 AOS.init();
 
@@ -170,6 +171,7 @@ function App() {
               component={EditProfilePage}
               path={routes.EDIT_PROFILE}
             />
+            <LoggedAreaRoute exact component={ChatPage} path={routes.CHAT} />
             <Route component={NotFound} path="*" />
           </Switch>
         </Router>
