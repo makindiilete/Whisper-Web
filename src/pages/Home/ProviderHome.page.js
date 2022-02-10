@@ -187,7 +187,10 @@ const ProviderHomePage = (props) => {
               {allLikes?.map((item, index) => (
                 <div
                   className="position-relative cursor"
-                  onClick={() => handleSetCurrentProfile(item?.id, index)}
+                  onClick={() => {
+                    handleSetCurrentProfile(item?.id, index);
+                    window.scrollTo(0, 0);
+                  }}
                   key={item?.id}
                 >
                   <div
