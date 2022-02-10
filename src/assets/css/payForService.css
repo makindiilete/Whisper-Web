@@ -1,0 +1,10 @@
+.payForService__or {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.payForService__or__item {
+  flex-grow: 1;
+  border: 1px solid #dadada;
+}

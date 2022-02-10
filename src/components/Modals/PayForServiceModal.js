@@ -11,6 +11,7 @@ import premiumImg from "../../assets/images/homeInApp/customer/premium.svg";
 import { Badge } from "../Badge";
 import styles from "../../assets/css/auth/yourAttributes.module.css";
 import { imInto } from "../dataSets";
+import "../../assets/css/payForService.css";
 
 const PayForServiceModal = ({
   visible,
@@ -55,7 +56,7 @@ const PayForServiceModal = ({
         paddingBottom: 0,
       }}
     >
-      <div className="py-5">
+      <div className="py-5 payForService">
         <h4>{`${user?.name} Services`}</h4>
         <br />
         <div className="d-flex justify-content-center flex-wrap">
@@ -80,9 +81,10 @@ const PayForServiceModal = ({
         />
         <br />
         <br />
-        <div className="d-flex justify-content-center">
+        <div className="payForService__or">
+          <div className="payForService__or__item" />
           <div
-            className="d-flex justify-content-center align-items-center"
+            className="mx-3 d-flex justify-content-center align-items-center"
             style={{
               width: "9.3rem",
               height: "4.2rem",
@@ -91,6 +93,7 @@ const PayForServiceModal = ({
           >
             <p className="padding-none text-muted">OR</p>
           </div>
+          <div className="payForService__or__item" />
         </div>
         <br />
         <div className={styles.flexrowbetween}>
