@@ -104,7 +104,7 @@ const WalletPage = (props) => {
       <div className="row wallet">
         <SubscribePremium
           handlePremium={() => setShowPaymentModal(true)}
-          visible={!showPaymentModal}
+          visible={!premiumActive}
         />
         <div
           className={`paymentModal ${

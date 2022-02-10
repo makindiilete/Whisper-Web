@@ -7,7 +7,7 @@ export function SubscribePremium({ handlePremium, visible }) {
     return (
       <div
         onClick={handlePremium}
-        className={`col-md-3 ${customer.leftColumn}`}
+        className={`col-md-3 cursor ${customer.leftColumn}`}
       >
         <div className="w-100 d-flex justify-content-center">
           <div className={customer.premiumBoxImgParentWrapper}>
