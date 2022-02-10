@@ -2,6 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../../Africa Prudential/Web" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../../Cashbox/CASHBOX-NATIVE.michael" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../../Driva/Ryva" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../../Personal/CLASSES/Interviews/Seamfix" vcs="Git" />

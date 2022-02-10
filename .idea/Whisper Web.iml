@@ -13,5 +13,6 @@
     <orderEntry type="module" module-name="Ryva" />
     <orderEntry type="module" module-name="Seamfix" />
     <orderEntry type="module" module-name="nest-init" />
+    <orderEntry type="module" module-name="Web" />
   </component>
 </module>

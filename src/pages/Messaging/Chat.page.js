@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import useMobile from "../../hooks/useMobile";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -62,6 +62,17 @@ const ChatPage = (props) => {
   const handleSetCurrentProfile = (id) => {
     history.push(`${routes.CUSTOMER_HOME}/id`);
   };
+
+  const msgEndRef = useRef(null);
+  const scrollToBottom = () => {
+    msgEndRef?.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    // if (chatMsgs?.length > 0) {
+    scrollToBottom();
+    // }
+  }, []);
 
   return (
     <HomeContainerPage>
@@ -173,7 +184,7 @@ const ChatPage = (props) => {
           <div className="dotted-divider w-100" />
           <>
             <div className="py-3 overflow-auto" style={{ height: "90%" }}>
-              {chatMsgs?.map((item) => (
+              {chatMsgs?.map((item, index) => (
                 <>
                   <div className=" mb-4">
                     <p className="padding-none conversation conversation__sender">
@@ -185,6 +196,13 @@ const ChatPage = (props) => {
                       {item?.receiver}
                     </p>
                   </div>
+                  {index === chatMsgs?.length - 1 && (
+                    <div
+                      className="w-100"
+                      style={{ height: "5rem" }}
+                      ref={msgEndRef}
+                    />
+                  )}
                 </>
               ))}
             </div>
