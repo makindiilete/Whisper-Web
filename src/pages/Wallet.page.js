@@ -15,6 +15,7 @@ import SuccessModal from "../components/Modals/successModal";
 import modalImg from "../assets/images/auth/40.svg";
 import WithdrawalModal from "../components/Modals/withdrawalModal";
 import WalletTransactionDetails from "../components/Modals/walletTransactionDetails";
+import PaymentModal from "../components/Modals/paymentModal";
 
 const WalletPage = (props) => {
   let location = useLocation();
@@ -27,6 +28,8 @@ const WalletPage = (props) => {
   const [userType, setUserType] = useState(
     JSON.parse(localStorage.getItem("user")).userType
   );
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [showFunding, setShowFunding] = useState(false);
   const [showWithdrawal, setShowWithdrawal] = useState(false);
@@ -100,8 +103,8 @@ const WalletPage = (props) => {
     <HomeContainerPage>
       <div className="row wallet">
         <SubscribePremium
-          handlePremium={() => setShowActivatePremium(true)}
-          visible={!premiumActive}
+          handlePremium={() => setShowPaymentModal(true)}
+          visible={!showPaymentModal}
         />
         <div
           className={`paymentModal ${
@@ -203,6 +206,18 @@ const WalletPage = (props) => {
         }}
       />
 
+      <PaymentModal
+        visible={showPaymentModal}
+        onCancel={(success) => {
+          if (success === "continue") {
+            setShowPaymentModal(false);
+            setShowSuccess(true);
+          } else {
+            setShowPaymentModal(false);
+          }
+        }}
+      />
+
       <WalletFundingModal
         visible={showFunding}
         onCancel={(params) => {
@@ -250,6 +265,17 @@ const WalletPage = (props) => {
         showButton
         btnText="Continue"
         btnClickHandler={() => setShowWithdrawalSuccess(false)}
+      />
+
+      <SuccessModal
+        title="Payment Successful"
+        subtitle="Have fun on whisper"
+        visible={showSuccess}
+        onCancel={() => setShowSuccess(false)}
+        image={modalImg}
+        showButton
+        btnText="Continue"
+        btnClickHandler={() => setShowSuccess(false)}
       />
 
       <SuccessModal

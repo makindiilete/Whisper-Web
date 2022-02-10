@@ -18,7 +18,8 @@
   flex-wrap: wrap;
 }
 
-.attrBtn {
+.attrBtn,
+.attrBtnPayment {
   width: 100%;
   max-width: 100%;
   min-height: 4.8rem;
@@ -44,6 +45,9 @@
   }
   .attrBtn {
     width: 16.8rem;
+  }
+  .attrBtnPayment {
+    width: 27.6rem;
   }
   .flexrowbetween {
     display: flex;

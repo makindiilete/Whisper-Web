@@ -149,6 +149,11 @@ function App() {
             <LoggedAreaRoute
               exact
               component={CustomerHomePage}
+              path={routes.CUSTOMER_HOME}
+            />
+            <LoggedAreaRoute
+              exact
+              component={CustomerHomePage}
               path={`${routes.CUSTOMER_HOME}/:id`}
             />
             <LoggedAreaRoute
@@ -172,6 +177,11 @@ function App() {
               path={routes.EDIT_PROFILE}
             />
             <LoggedAreaRoute exact component={ChatPage} path={routes.CHAT} />
+            <LoggedAreaRoute
+              exact
+              component={ChatPage}
+              path={`${routes.CHAT}/:id`}
+            />
             <Route component={NotFound} path="*" />
           </Switch>
         </Router>

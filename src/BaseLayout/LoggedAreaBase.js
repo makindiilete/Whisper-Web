@@ -29,7 +29,7 @@ const LoggedAreaBase = ({ children }) => {
       >
         <ErrorBoundary>
           <NavigationPage />
-          <div>{children}</div>
+          <div style={{ paddingTop: "10rem" }}>{children}</div>
         </ErrorBoundary>
       </div>
     );

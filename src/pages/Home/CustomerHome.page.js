@@ -25,11 +25,15 @@ import FilterModal from "../../components/Modals/filterModal";
 import LoaderComponent from "../../components/LoaderComponent";
 import { IoIosArrowBack } from "react-icons/all";
 import { SubscribePremium } from "../../components/SubscribePremium";
+import msg from "../../assets/images/chat/love.svg";
+import routes from "../../routes";
 
 const CustomerHomePage = (props) => {
   let location = useLocation();
   const history = useHistory();
   const mobile = useMobile();
+  const params = location?.search;
+  const customerId = location?.pathname?.split("/")[3];
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
@@ -202,34 +206,47 @@ const CustomerHomePage = (props) => {
                 }`}
               />
               <div className="actions">
-                <div className="actions__container">
-                  {showRestore && (
+                {params === "?chat=yes" ? (
+                  <div className="actions__container">
                     <img
-                      src={reverse}
+                      src={msg}
                       className="img-fluid"
                       alt=""
-                      onClick={handleDeclineRestored}
+                      onClick={() =>
+                        history.push(`${routes.CHAT}/${customerId}`)
+                      }
+                    />{" "}
+                  </div>
+                ) : (
+                  <div className="actions__container">
+                    {showRestore && (
+                      <img
+                        src={reverse}
+                        className="img-fluid"
+                        alt=""
+                        onClick={handleDeclineRestored}
+                      />
+                    )}
+                    <img
+                      src={like}
+                      className="img-fluid"
+                      alt=""
+                      onClick={handleLikeAccepted}
                     />
-                  )}
-                  <img
-                    src={like}
-                    className="img-fluid"
-                    alt=""
-                    onClick={handleLikeAccepted}
-                  />
-                  <img
-                    src={decline}
-                    className="img-fluid"
-                    alt=""
-                    onClick={handleLikeDeclined}
-                  />{" "}
-                  <img
-                    src={fav}
-                    className="img-fluid"
-                    alt=""
-                    onClick={handleFavorite}
-                  />
-                </div>
+                    <img
+                      src={decline}
+                      className="img-fluid"
+                      alt=""
+                      onClick={handleLikeDeclined}
+                    />{" "}
+                    <img
+                      src={fav}
+                      className="img-fluid"
+                      alt=""
+                      onClick={handleFavorite}
+                    />
+                  </div>
+                )}
               </div>
             </div>
             <div className={`col-md-6 ${styles.profileContainerRightCol}`}>
