@@ -31,7 +31,7 @@ const ChatPage = (props) => {
   let location = useLocation();
   const history = useHistory();
   const mobile = useMobile();
-
+  const userId = location.pathname?.split("/")[2];
   const [allLikes, setAllLikes] = useState(customerDiscover);
   const [showSuccess, setShowSuccess] = useState(false);
   const [currentChat, setCurrentChat] = useState(customerDiscover[0]);
@@ -39,6 +39,10 @@ const ChatPage = (props) => {
   const [showPayForService, setShowPayForService] = useState(false);
   const [showPayment, setShowPayment] = useState(false);
   const [chatMsgs, setChatMsgs] = useState([]);
+
+  useEffect(() => {
+    setShowMsgs(true);
+  }, [userId]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
