@@ -20,7 +20,35 @@ const ChatPage = (props) => {
   const mobile = useMobile();
 
   const [allLikes, setAllLikes] = useState(customerDiscover);
+  const [currentChat, setCurrentChat] = useState(customerDiscover[0]);
   const [showMsgs, setShowMsgs] = useState(false);
+  const chatMsgs = [
+    {
+      id: 1,
+      sender: "hello. ",
+      receiver: "Hi. ",
+    },
+    {
+      id: 2,
+      sender: "how are you doing today?. ",
+      receiver: "im doing fine thank you. ",
+    },
+    {
+      id: 3,
+      sender: "dts great. ",
+      receiver: "Yeah ",
+    },
+    {
+      id: 4,
+      sender: "How has bin your education",
+      receiver: "We dey push am",
+    },
+    {
+      id: 5,
+      sender: "okay. ",
+      receiver: "Bye",
+    },
+  ];
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -67,7 +95,7 @@ const ChatPage = (props) => {
             <div
               className="position-relative cursor mb-3 d-flex align-items-center"
               onClick={() => {
-                // handleSetCurrentProfile(item?.id, index)
+                setCurrentChat(item);
                 setShowMsgs(!showMsgs);
               }}
               key={item?.id}
@@ -107,12 +135,12 @@ const ChatPage = (props) => {
                   />
                 )}
                 <img
-                  src={allLikes[0]?.imgUrls[0]}
+                  src={currentChat?.imgUrls[0]}
                   alt=""
                   className="galleryImgThumbnail mr-3"
                   style={{ height: "4rem", width: "4rem" }}
                 />
-                <h5 className="padding-none">Niccky Perry</h5>
+                <h5 className="padding-none">{currentChat?.name}</h5>
               </div>
 
               <div className="d-flex align-items-center">
@@ -138,13 +166,31 @@ const ChatPage = (props) => {
           <br />
           <div className="dotted-divider w-100" />
           <>
-            <div className="py-3 h-75 ">
-              <p>hello msg</p>
+            <div className="py-3 h-75 overflow-auto ">
+              {chatMsgs?.map((item) => (
+                <>
+                  <div className=" mb-4">
+                    <p className="padding-none conversation conversation__sender">
+                      {item?.sender}
+                    </p>
+                  </div>
+                  <div className="receiver__container mb-4">
+                    <p className="padding-none conversation conversation__receiver">
+                      {item?.receiver}
+                    </p>
+                  </div>
+                </>
+              ))}
             </div>
           </>
           <>
             <div className="d-flex align-items-center justify-content-between">
-              <Input name="message" />
+              <Input.TextArea
+                rows={2}
+                name="message"
+                allowClear
+                placeholder="Message..."
+              />
               <img
                 src={send}
                 className="img-fluid ml-3"
@@ -152,6 +198,7 @@ const ChatPage = (props) => {
                 style={{
                   width: "4.8rem",
                   height: "4.8rem",
+                  marginTop: "-1rem",
                 }}
               />
             </div>

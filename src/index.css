@@ -548,9 +548,9 @@ small {
   background-color: white !important;
 }
 
-.ant-input-affix-wrapper {
+/*.ant-input-affix-wrapper {
   align-items: center !important;
-}
+}*/
 
 .ant-input .prepend {
   border-radius: 0 !important;
@@ -691,4 +691,9 @@ textarea.ant-input {
     flex: 0 0 30vw !important;
     display: block;
   }*/
+}
+
+.ant-input-affix-wrapper-textarea-with-clear-btn {
+  padding: 0 !important;
+  border: 1px solid grey !important;
 }

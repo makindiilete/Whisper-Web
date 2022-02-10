@@ -33,6 +33,30 @@
   display: none;
 }
 
+.conversation {
+  width: fit-content !important;
+  border-radius: 8px;
+  padding: 2rem;
+}
+
+.conversation__sender {
+  background: #f6f6f7;
+  color: #596282;
+  /*left: 0;*/
+}
+
+.conversation__receiver {
+  background: #f3e5ff;
+  color: #31005c;
+  /*right: 0;*/
+}
+
+.receiver__container {
+  display: flex;
+  justify-content: end;
+  padding-right: 1rem;
+}
+
 @media (max-width: 320px) {
   .chat .thumbnailGridContainer {
     grid-template: repeat(auto-fill, 10.4rem) / repeat(2, 10.4rem);

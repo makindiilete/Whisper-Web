@@ -149,7 +149,7 @@ function App() {
             <LoggedAreaRoute
               exact
               component={CustomerHomePage}
-              path={routes.CUSTOMER_HOME}
+              path={`${routes.CUSTOMER_HOME}/:id`}
             />
             <LoggedAreaRoute
               exact
