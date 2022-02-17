@@ -5,7 +5,7 @@ const apiClient = create({
 });
 
 apiClient.addAsyncRequestTransform(async (request) => {
-  const authToken = localStorage.getItem("access-token");
+  const authToken = localStorage.getItem("token");
   if (!authToken) {
   } else {
     request.headers["Authorization"] = `Bearer ${authToken}`;

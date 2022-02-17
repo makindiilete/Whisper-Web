@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as icons from "@fortawesome/free-solid-svg-icons";
 import cancel from "../assets/images/imageCancel.svg";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
 
 export const useImageUpload = ({
   endpoint,

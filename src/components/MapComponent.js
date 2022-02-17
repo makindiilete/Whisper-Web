@@ -13,21 +13,6 @@ const MapComponent = (props) => {
   const [long, setLong] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
-  /*  const coords = async () => {
-    setIsLoading(true);
-    const address = encodeURI(props.address);
-    const res = await propertyLocationCoords(address);
-    if (typeof res !== "undefined") {
-      setLat(res.geometry.location.lat);
-      setLong(res.geometry.location.lng);
-      setIsLoading(false);
-    } else {
-      setLat(6.605874);
-      setLong(3.349149);
-      setIsLoading(false);
-    }
-  };*/
-
   useEffect(() => {
     // setLat(6.605874);
     // setLong(3.349149);

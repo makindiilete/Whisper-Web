@@ -20,7 +20,7 @@ const ProviderTypeOfServicePage = (props) => {
   return (
     <AuthContainerPage>
       <div className="typeOfUser position-relative">
-        <FaAngleLeft
+        {/*  <FaAngleLeft
           fontSize={mobile ? "4rem" : "2rem"}
           color="#000"
           style={{
@@ -31,7 +31,7 @@ const ProviderTypeOfServicePage = (props) => {
             zIndex: "999999",
           }}
           onClick={() => history.goBack()}
-        />
+        />*/}
         <br />
         <br />
         <div className="row">

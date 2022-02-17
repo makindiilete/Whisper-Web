@@ -12,17 +12,26 @@ import { countries } from "../../../components/countryList";
 import Stepone from "./stepone";
 import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
+import { useSelector } from "react-redux";
 
 const { Option } = Select;
 
 const CreateYourProfilePage = (props) => {
-  let location = useLocation();
   const history = useHistory();
+  let location = useLocation();
+  const search = location.search;
+  const params = new URLSearchParams(search);
+  const step = params.get("step");
   const mobile = useMobile();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
-  const [currentStep, setCurrentStep] = useState(0);
+  const user = useSelector((state) => state.userReducer?.data);
+  const [currentStep, setCurrentStep] = useState(1);
+
+  useEffect(() => {
+    setCurrentStep(Number(step));
+  }, [step]);
 
   const screens = [
     <Stepone
@@ -30,18 +39,24 @@ const CreateYourProfilePage = (props) => {
       currentStep={currentStep}
       title="Create Your Profile"
       subTitle="Create your profile using these easy steps."
+      user={user}
+      userType={user?.userType?.toLowerCase()}
     />,
     <StepTwo
       setCurrentStep={setCurrentStep}
       currentStep={currentStep}
       title="Create Your Profile"
       subTitle="Create your profile using these easy steps."
+      user={user}
+      userType={user?.userType?.toLowerCase()}
     />,
     <StepThree
       setCurrentStep={setCurrentStep}
       currentStep={currentStep}
       title="Create Your Profile"
       subTitle="You are just one step away."
+      user={user}
+      userType={user?.userType?.toLowerCase()}
     />,
   ];
 
@@ -59,14 +74,10 @@ const CreateYourProfilePage = (props) => {
             zIndex: "999999",
           }}
           onClick={() => {
-            if (currentStep > 0) {
-              setCurrentStep(currentStep - 1);
-            } else {
-              history.goBack();
-            }
+            history.goBack();
           }}
         />
-        <div>{screens[currentStep]}</div>
+        <div>{screens[currentStep > 0 ? currentStep - 1 : 0]}</div>
         {/* /.col-md-6 */}
       </div>
     </AuthContainerPage>

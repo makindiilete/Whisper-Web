@@ -7,6 +7,14 @@ import AuthContainerPage from "../AuthContainer.page";
 import img1 from "../../../assets/images/auth/typeOfuser/Group 741.svg";
 import img2 from "../../../assets/images/auth/typeOfuser/SVG/provider.svg";
 import routes from "../../../routes";
+import { updateUserTypeService } from "../../../services/Auth/Registration/registrationService";
+import { useDispatch, useSelector } from "react-redux";
+import { message } from "antd";
+import {
+  adminFetchUserAction,
+  fetchUserTypeDataAction,
+  loginAction,
+} from "../../../redux/actions/userAction";
 
 const TypeOfUserPage = (props) => {
   let location = useLocation();
@@ -15,7 +23,10 @@ const TypeOfUserPage = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+  const dispatch = useDispatch();
   const [selected, setSelected] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  const user = useSelector((state) => state.userReducer?.data);
 
   useEffect(() => {
     if (localStorage.getItem("promoteToProvider")) {
@@ -26,10 +37,31 @@ const TypeOfUserPage = (props) => {
     };
   }, []);
 
+  const updateUser = async () => {
+    setIsLoading(true);
+    const response = await updateUserTypeService({
+      userId: user?._id,
+      userType: selected === 1 ? "Customer" : "Provider",
+    });
+    setIsLoading(false);
+    if (response.ok) {
+      dispatch(adminFetchUserAction(user?._id));
+      if (selected === 1) {
+        history.push(`${routes.createyourprofile}?step=1`);
+      } else {
+        history.push(routes.providerServiceType);
+      }
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  };
+
   return (
     <AuthContainerPage>
       <div className="typeOfUser position-relative">
-        <FaAngleLeft
+        {/*  <FaAngleLeft
           fontSize={mobile ? "4rem" : "2rem"}
           color="#000"
           style={{
@@ -40,7 +72,7 @@ const TypeOfUserPage = (props) => {
             zIndex: "999999",
           }}
           onClick={() => history.goBack()}
-        />
+        />*/}
         <div className="row">
           <div className="col-md-6 offset-md-3">
             <div className="d-flex flex-column justify-content-around h-100">
@@ -110,18 +142,14 @@ const TypeOfUserPage = (props) => {
               {/* /.d-flex justify-content-between */}
               <button
                 className="btn btn-primary btn-block mb-5"
-                onClick={() => {
-                  if (selected === 1) {
-                    history.push(routes.createyourprofile);
-                    localStorage.setItem("userType", "customer");
-                  } else {
-                    history.push(routes.providerServiceType);
-                    localStorage.setItem("userType", "provider");
-                  }
-                }}
-                disabled={!selected}
+                onClick={updateUser}
+                disabled={!selected || isLoading}
               >
-                Continue
+                {isLoading ? (
+                  <span className="spinner-border text-white" />
+                ) : (
+                  "Continue"
+                )}
               </button>
             </div>
           </div>

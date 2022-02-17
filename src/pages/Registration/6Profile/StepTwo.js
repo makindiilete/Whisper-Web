@@ -4,19 +4,34 @@ import { DatePicker, Form, Input, Select, Upload, message, Button } from "antd";
 import { BsUpload, FiUpload, MdLocationPin } from "react-icons/all";
 import { countries } from "../../../components/countryList";
 import useMobile from "../../../hooks/useMobile";
+import { updateCustomerProfileService } from "../../../services/Customers/Profile/ProfileService";
+import { updateProviderProfileService } from "../../../services/Providers/Profile/ProfileService";
+import { adminFetchUserAction } from "../../../redux/actions/userAction";
+import routes from "../../../routes";
+import { useDispatch } from "react-redux";
+import LoaderComponent from "../../../components/LoaderComponent";
 
-const StepTwo = ({ currentStep, setCurrentStep, title, subTitle }) => {
+const StepTwo = ({
+  currentStep,
+  setCurrentStep,
+  title,
+  subTitle,
+  user,
+  userType,
+}) => {
   let location = useLocation();
   const history = useHistory();
   const mobile = useMobile();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
-
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  const [noImageError, setNoImageError] = useState(false);
   const [data, setData] = useState({
     idType: "",
-    idNumber: "",
-    idImgUri: "",
+    idCardNumber: "",
+    idCards: "",
   });
   const [imgPath, setImgPath] = useState("");
   const [idTypes, setIdTypes] = useState([
@@ -26,7 +41,33 @@ const StepTwo = ({ currentStep, setCurrentStep, title, subTitle }) => {
     "National ID Card",
   ]);
 
-  const handleSubmit = (values) => {};
+  const handleSubmit = async (values) => {
+    if (data.idCards === "") {
+      setNoImageError(true);
+    } else {
+      setNoImageError(false);
+      const formdata = new FormData();
+      formdata.append("idType", data.idType);
+      formdata.append("idCardNumber", data.idCardNumber);
+      formdata.append("idCards", data.idCards);
+      formdata.append("userId", user?._id);
+      setIsLoading(true);
+      const response =
+        userType === "customer"
+          ? await updateCustomerProfileService(formdata)
+          : await updateProviderProfileService(formdata);
+      setIsLoading(false);
+      if (response.ok) {
+        dispatch(adminFetchUserAction(user?._id));
+        setCurrentStep(currentStep + 1);
+        history.push(`${routes.createyourprofile}?step=${currentStep + 1}`);
+      } else {
+        message.error(
+          response?.data?.errors[0].message || "Something went wrong"
+        );
+      }
+    }
+  };
 
   function handleChange(value, name) {
     setData({ ...data, [name]: value });
@@ -46,6 +87,7 @@ const StepTwo = ({ currentStep, setCurrentStep, title, subTitle }) => {
     },
     onChange(info) {
       setImgPath(URL.createObjectURL(info.file));
+      setData({ ...data, idCards: info.file });
       if (info.file.status !== "uploading") {
       }
       // if (info.file.status === "done") {
@@ -98,6 +140,7 @@ const StepTwo = ({ currentStep, setCurrentStep, title, subTitle }) => {
                 .toLowerCase()
                 .localeCompare(optionB.children.toLowerCase())
             }
+            onChange={(value) => setData({ ...data, idType: value })}
           >
             {idTypes?.map((item) => (
               <Select.Option value={item} key={item}>
@@ -109,7 +152,7 @@ const StepTwo = ({ currentStep, setCurrentStep, title, subTitle }) => {
         <Form.Item
           className="mb-3 mb-md-0 mt-2"
           initialValue=""
-          name="idNumber"
+          name="idCardNumber"
           label="ID Card Number"
           rules={[
             {
@@ -118,7 +161,9 @@ const StepTwo = ({ currentStep, setCurrentStep, title, subTitle }) => {
             },
           ]}
         >
-          <Input onChange={(e) => handleChange(e.target.value, "idNumber")} />
+          <Input
+            onChange={(e) => handleChange(e.target.value, "idCardNumber")}
+          />
         </Form.Item>
         <div className="flexrowbetweencenter">
           <div
@@ -136,6 +181,9 @@ const StepTwo = ({ currentStep, setCurrentStep, title, subTitle }) => {
       </Form>
     );
   };
+  if (isLoading) {
+    return <LoaderComponent />;
+  }
   return (
     <>
       <div className="d-flex flex-column justify-content-around h-100 px-5">
@@ -146,44 +194,48 @@ const StepTwo = ({ currentStep, setCurrentStep, title, subTitle }) => {
         </div>
         <div className="flexrowaround">
           {regForm()}
-          <div className="uploadBox img">
-            <Upload
-              accept="image/*"
-              {...props}
-              maxCount={1}
-              showUploadList={false}
-            >
-              {imgPath ? (
-                <img
-                  src={imgPath}
-                  alt=""
-                  style={{
-                    width: "100%",
-                    // height: "15.8rem",
-                    objectFit: "cover",
-                  }}
-                />
-              ) : (
-                <div className="d-flex flex-column align-items-center">
-                  <FiUpload className="primary-light-text" size="3rem" />
-                  <h5 className="font-weight-bold text-center mt-4">
-                    ID Card Number
-                  </h5>
-                  <p className="text-muted text-center">
-                    Kindly Upload your Govt. Issued ID card
-                  </p>
-                  <h5 className="font-weight-bold">Browse Files</h5>
-                  {/* /.font-weight-bold */}
-                  {/* /.font-weight-bold */}
-                </div>
-              )}
-            </Upload>
+          <div>
+            <div className="uploadBox img">
+              <Upload
+                accept="image/*"
+                {...props}
+                maxCount={1}
+                showUploadList={false}
+              >
+                {imgPath ? (
+                  <img
+                    src={imgPath}
+                    alt=""
+                    style={{
+                      width: "100%",
+                      // height: "15.8rem",
+                      objectFit: "cover",
+                    }}
+                  />
+                ) : (
+                  <div className="d-flex flex-column align-items-center">
+                    <FiUpload className="primary-light-text" size="3rem" />
+                    <h5 className="font-weight-bold text-center mt-4">
+                      ID Card Number
+                    </h5>
+                    <p className="text-muted text-center">
+                      Kindly Upload your Govt. Issued ID card
+                    </p>
+                    <h5 className="font-weight-bold">Browse Files</h5>
+                    {/* /.font-weight-bold */}
+                    {/* /.font-weight-bold */}
+                  </div>
+                )}
+              </Upload>
+            </div>
+            {noImageError && (
+              <p className="text-danger">*Select your ID Image</p>
+            )}
           </div>
-          {/* /.uploadBox */}
         </div>
         <button
           className="btn btn-primary"
-          onClick={() => setCurrentStep(currentStep + 1)}
+          onClick={handleSubmit}
           style={mobile ? null : { margin: "6rem 30rem" }}
         >
           Continue

@@ -5,7 +5,7 @@ import useMobile from "../../hooks/useMobile";
 import AuthContainerPage from "./AuthContainer.page";
 import LoaderComponent from "../../components/LoaderComponent";
 import { FaAngleLeft } from "react-icons/all";
-import { Form, Input } from "antd";
+import { Form, Input, message } from "antd";
 import PhoneInput from "react-phone-input-2";
 import SuccessModal from "../../components/Modals/successModal";
 import routes from "../../routes";
@@ -17,6 +17,13 @@ import {
   smoking,
 } from "../../components/dataSets";
 import styles from "../../assets/css/auth/yourAttributes.module.css";
+import { finalizePhoneVerficationService } from "../../services/Auth/Verification/verificationService";
+import { updateCustomerProfileService } from "../../services/Customers/Profile/ProfileService";
+import { updateProviderProfileService } from "../../services/Providers/Profile/ProfileService";
+import { useDispatch, useSelector } from "react-redux";
+import { updateCustomerAttributesService } from "../../services/Customers/Attributes/AttributesService";
+import { updateProviderAttributesService } from "../../services/Providers/Attributes/AttributesService";
+import { adminFetchUserAction } from "../../redux/actions/userAction";
 
 const YourAttributesPage = (props) => {
   let location = useLocation();
@@ -25,19 +32,32 @@ const YourAttributesPage = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.userReducer?.data);
   const [isLoading, setIsLoading] = useState(false);
-  const [selected, setSelected] = useState([]);
+  const [attr, setAttr] = useState({
+    bodyType: "",
+    height: "",
+    education: "",
+    smokeType: "",
+    drinkType: "",
+  });
 
-  const addRemoveItem = (item) => {
-    //Add
-    if (!selected?.includes(item)) {
-      setSelected([...selected, item]);
-    }
-
-    //Remove
-    else {
-      const filterItem = selected?.filter((i) => i !== item);
-      setSelected(filterItem);
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    attr.userId = user?._id;
+    const response =
+      user?.userType?.toLowerCase() === "customer"
+        ? await updateCustomerAttributesService(attr)
+        : await updateProviderAttributesService(attr);
+    setIsLoading(false);
+    if (response.ok) {
+      dispatch(adminFetchUserAction(user?._id));
+      history.push(routes.aboutYourself);
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
     }
   };
 
@@ -52,9 +72,9 @@ const YourAttributesPage = (props) => {
                 <button
                   key={item}
                   className={`${styles.attrBtn} ${
-                    selected?.includes(item) ? styles.attrBtnActive : null
+                    attr?.bodyType === item ? styles.attrBtnActive : null
                   }`}
-                  onClick={() => addRemoveItem(item)}
+                  onClick={() => setAttr({ ...attr, bodyType: item })}
                 >
                   {item}
                 </button>
@@ -69,9 +89,9 @@ const YourAttributesPage = (props) => {
                 <button
                   key={item}
                   className={`${styles.attrBtn} ${
-                    selected?.includes(item) ? styles.attrBtnActive : null
+                    attr?.height === item ? styles.attrBtnActive : null
                   }`}
-                  onClick={() => addRemoveItem(item)}
+                  onClick={() => setAttr({ ...attr, height: item })}
                 >
                   {item}
                 </button>
@@ -95,9 +115,9 @@ const YourAttributesPage = (props) => {
                 <button
                   key={item}
                   className={`${styles.attrBtn} ${
-                    selected?.includes(item) ? styles.attrBtnActive : null
+                    attr?.smokeType === item ? styles.attrBtnActive : null
                   }`}
-                  onClick={() => addRemoveItem(item)}
+                  onClick={() => setAttr({ ...attr, smokeType: item })}
                 >
                   {item}
                 </button>
@@ -112,9 +132,9 @@ const YourAttributesPage = (props) => {
                 <button
                   key={item}
                   className={`${styles.attrBtn} ${
-                    selected?.includes(item) ? styles.attrBtnActive : null
+                    attr?.education === item ? styles.attrBtnActive : null
                   }`}
-                  onClick={() => addRemoveItem(item)}
+                  onClick={() => setAttr({ ...attr, education: item })}
                 >
                   {item}
                 </button>
@@ -138,9 +158,9 @@ const YourAttributesPage = (props) => {
                 <button
                   key={item}
                   className={`${styles.attrBtn} ${
-                    selected?.includes(item) ? styles.attrBtnActive : null
+                    attr?.drinkType === item ? styles.attrBtnActive : null
                   }`}
-                  onClick={() => addRemoveItem(item)}
+                  onClick={() => setAttr({ ...attr, drinkType: item })}
                 >
                   {item}
                 </button>
@@ -194,8 +214,7 @@ const YourAttributesPage = (props) => {
                 >
                   <button
                     className={`btn btn-primary btn-block`}
-                    disabled={selected?.length === 0}
-                    onClick={() => history.push(routes.aboutYourself)}
+                    onClick={handleSubmit}
                   >
                     Continue
                   </button>

@@ -13,5 +13,6 @@
     <orderEntry type="module" module-name="Ryva" />
     <orderEntry type="module" module-name="Web" />
     <orderEntry type="module" module-name="CodevolutionReact" />
+    <orderEntry type="module" module-name="cashbox" />
   </component>
 </module>

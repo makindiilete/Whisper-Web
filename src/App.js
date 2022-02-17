@@ -48,7 +48,7 @@ AOS.init();
 
 function App() {
   const history = useHistory();
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+  const [user, setUser] = useState();
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       <div className="App">

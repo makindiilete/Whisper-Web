@@ -4,15 +4,32 @@ import useMobile from "../../../hooks/useMobile";
 import { message, Upload } from "antd";
 import { FiUpload } from "react-icons/all";
 import routes from "../../../routes";
+import {
+  updateCustomerProfilePicService,
+  updateCustomerProfileService,
+} from "../../../services/Customers/Profile/ProfileService";
+import { updateProviderProfileService } from "../../../services/Providers/Profile/ProfileService";
+import { adminFetchUserAction } from "../../../redux/actions/userAction";
+import { useDispatch } from "react-redux";
 
-const StepThree = ({ currentStep, setCurrentStep, title, subTitle }) => {
+const StepThree = ({
+  currentStep,
+  setCurrentStep,
+  title,
+  subTitle,
+  user,
+  userType,
+}) => {
   let location = useLocation();
   const history = useHistory();
   const mobile = useMobile();
+  const dispatch = useDispatch();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+  const [isLoading, setIsLoading] = useState(false);
   const [imgPath, setImgPath] = useState("");
+  const [imgFile, setImgFile] = useState();
 
   const props = {
     // name: "file",
@@ -28,6 +45,7 @@ const StepThree = ({ currentStep, setCurrentStep, title, subTitle }) => {
     },
     onChange(info) {
       setImgPath(URL.createObjectURL(info.file));
+      setImgFile(info.file);
       if (info.file.status !== "uploading") {
       }
       // if (info.file.status === "done") {
@@ -47,6 +65,26 @@ const StepThree = ({ currentStep, setCurrentStep, title, subTitle }) => {
       strokeWidth: 3,
       format: (percent) => `${parseFloat(percent.toFixed(2))}%`,
     },
+  };
+
+  const handleSubmit = async (values) => {
+    const formdata = new FormData();
+    formdata.append("profilePictures", imgFile);
+    formdata.append("userId", user?._id);
+    setIsLoading(true);
+    const response =
+      userType === "customer"
+        ? await updateCustomerProfilePicService(formdata)
+        : await updateCustomerProfilePicService(formdata);
+    setIsLoading(false);
+    if (response.ok) {
+      dispatch(adminFetchUserAction(user?._id));
+      history.push(routes.verifyphonenumber);
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
   };
 
   return (
@@ -98,10 +136,15 @@ const StepThree = ({ currentStep, setCurrentStep, title, subTitle }) => {
         </div>
         <button
           className="btn btn-primary"
-          onClick={() => history.push(routes.verifyphonenumber)}
+          disabled={!imgFile || isLoading}
+          onClick={handleSubmit}
           // style={mobile ? null : { margin: "6rem 30rem" }}
         >
-          Continue
+          {isLoading ? (
+            <span className="spinner-border text-white" />
+          ) : (
+            "Continue"
+          )}
         </button>
 
         {/* /.primary-text */}

@@ -1,3 +1,6 @@
-export const userConstants = {
-  // CREATE_USER_REQUEST: "CREATE_USER_REQUEST",
+export const constants = {
+  SAVE_USER: "SAVE_USER",
+  FETCH_USER: "FETCH_USER",
+  LOGIN_USER: "LOGIN_USER",
+  ADMIN_FETCH_USER: "ADMIN_FETCH_USER",
 };

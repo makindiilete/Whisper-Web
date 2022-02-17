@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import useMobile from "../../hooks/useMobile";
-import { Form, Input, Upload } from "antd";
+import { Form, Input, message, Upload } from "antd";
 import routes from "../../routes";
 import AuthContainerPage from "./AuthContainer.page";
 import PhoneInput from "react-phone-input-2";
@@ -12,6 +12,14 @@ import { FaAngleLeft } from "react-icons/all";
 import LoaderComponent from "../../components/LoaderComponent";
 import SuccessModal from "../../components/Modals/successModal";
 import modalImg from "../../assets/images/auth/40.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { updateCustomerProfileService } from "../../services/Customers/Profile/ProfileService";
+import { updateProviderProfileService } from "../../services/Providers/Profile/ProfileService";
+import { adminFetchUserAction } from "../../redux/actions/userAction";
+import {
+  finalizePhoneVerficationService,
+  initPhoneVerificationService,
+} from "../../services/Auth/Verification/verificationService";
 
 const VerifyYourPhoneNumberPage = (props) => {
   let location = useLocation();
@@ -20,7 +28,9 @@ const VerifyYourPhoneNumberPage = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
-  const [phoneNumberError, setPhoneNumberError] = useState(false);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.userReducer?.data);
+  const [alreadyExist, setAlreadyExist] = useState(false);
   const [invalidPhoneNumberError, setInvalidPhoneNumberError] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState();
   const [otpCode, setOtpCode] = useState(null);
@@ -28,17 +38,66 @@ const VerifyYourPhoneNumberPage = (props) => {
   const [otpVerified, setOtpVerified] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const checkPhoneValidity = (phone) => {
-    return isValidPhoneNumber(`${phone}`);
+  const checkPhoneValidity = () => {
+    const foneValid = isValidPhoneNumber(`+${phoneNumber}`);
+    if (!foneValid) {
+      setInvalidPhoneNumberError(true);
+    } else {
+      setInvalidPhoneNumberError(false);
+    }
+    return foneValid;
   };
 
-  const handleSubmit = (values) => {};
-
-  function handleResendOtp() {
-    setIsLoading(true);
-    setTimeout(() => {
+  const handleSubmit = async (values) => {
+    const foneIsValid = checkPhoneValidity();
+    if (foneIsValid) {
+      const formdata = new FormData();
+      formdata.append("phone", `+${phoneNumber}`);
+      formdata.append("userId", user?._id);
+      setIsLoading(true);
+      const response =
+        user?.userType?.toLowerCase() === "customer"
+          ? await updateCustomerProfileService(formdata)
+          : await updateProviderProfileService(formdata);
       setIsLoading(false);
-    }, 2000);
+      if (response.ok) {
+        await initPhoneVerificationService({ userId: user?._id });
+        dispatch(adminFetchUserAction(user?._id));
+        setShowOtp(true);
+      } else {
+        message.error(
+          response?.data?.errors[0].message || "Something went wrong"
+        );
+      }
+    }
+  };
+  const handleSubmitOtp = async () => {
+    setIsLoading(true);
+    const response = await finalizePhoneVerficationService({
+      userId: user?._id,
+      authCode: otpCode,
+    });
+    setIsLoading(false);
+    if (response.ok) {
+      setOtpVerified(true);
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  };
+
+  async function handleResendOtp() {
+    setIsLoading(true);
+    const response = await initPhoneVerificationService({ userId: user?._id });
+    setIsLoading(false);
+    if (response.ok) {
+      message.success(`Otp sent to +${phoneNumber}`);
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
   }
 
   return (
@@ -86,7 +145,12 @@ const VerifyYourPhoneNumberPage = (props) => {
                       className="mb-3 mb-md-0 mt-2"
                       initialValue=""
                       name="phone"
-                      required
+                      rules={[
+                        {
+                          required: true,
+                          message: "Required field",
+                        },
+                      ]}
                     >
                       <PhoneInput
                         enableSearch
@@ -100,26 +164,33 @@ const VerifyYourPhoneNumberPage = (props) => {
                         // onBlur={props?.phoneNumber !== "" ? validatePhone : null}
                       />
                     </Form.Item>
-                    {phoneNumberError && (
-                      <span className="text-danger">
-                        Phone number already exist
-                      </span>
+                    {alreadyExist && (
+                      <p className="text-danger">Phone number already exist</p>
                     )}
                     {invalidPhoneNumberError && (
-                      <span className="text-danger">Invalid phone number</span>
+                      <p className="text-danger">Invalid phone number</p>
                     )}
+                    <br />
+                    <button className="btn btn-primary btn-block">
+                      Continue
+                    </button>
                   </Form>
                 ) : (
                   <Form
                     layout="vertical"
                     scrollToFirstError
-                    onFinish={handleSubmit}
+                    onFinish={handleSubmitOtp}
                   >
                     <Form.Item
                       className="mb-3 mb-md-0 mt-2"
                       initialValue=""
                       name="otp"
-                      required
+                      rules={[
+                        {
+                          required: true,
+                          message: "Required field",
+                        },
+                      ]}
                     >
                       <Input
                         placeholder="Enter your otp"
@@ -137,31 +208,15 @@ const VerifyYourPhoneNumberPage = (props) => {
                         </strong>{" "}
                       </small>
                     </div>
+                    <br />
+                    <button className="btn btn-primary btn-block">
+                      Continue
+                    </button>
                   </Form>
                 )}
               </div>
-              <button
-                className="btn btn-primary"
-                disabled={!phoneNumber}
-                onClick={() => {
-                  if (!showOtp) {
-                    setShowOtp(true);
-                  } else {
-                    setIsLoading(true);
-                    setTimeout(() => {
-                      setIsLoading(false);
-                      setOtpVerified(true);
-                    }, 2000);
-                  }
-                }}
-              >
-                Continue
-              </button>
-
-              {/* /.primary-text */}
             </div>
           </div>
-          {/* /.col-md-6 */}
         </div>
       )}
       <SuccessModal

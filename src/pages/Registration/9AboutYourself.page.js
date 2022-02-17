@@ -7,19 +7,43 @@ import LoaderComponent from "../../components/LoaderComponent";
 import { FaAngleLeft } from "react-icons/all";
 import styles from "../../assets/css/auth/yourAttributes.module.css";
 import routes from "../../routes";
-import { Form, Input } from "antd";
+import { Form, Input, message } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { updateCustomerProfileService } from "../../services/Customers/Profile/ProfileService";
+import { updateProviderProfileService } from "../../services/Providers/Profile/ProfileService";
+import { adminFetchUserAction } from "../../redux/actions/userAction";
 
 const AboutYourselfPage = (props) => {
   let location = useLocation();
   const history = useHistory();
   const mobile = useMobile();
+  const dispatch = useDispatch();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
   const [isLoading, setIsLoading] = useState(false);
+  const user = useSelector((state) => state.userReducer?.data);
   const [bio, setBio] = useState("");
 
-  const handleSubmit = (values) => {};
+  const handleSubmit = async (values) => {
+    setIsLoading(true);
+    const formdata = new FormData();
+    formdata.append("userId", user?._id);
+    formdata.append("biography", bio);
+    const response =
+      user?.userType?.toLowerCase() === "customer"
+        ? await updateCustomerProfileService(formdata)
+        : await updateProviderProfileService(formdata);
+    setIsLoading(false);
+    if (response.ok) {
+      dispatch(adminFetchUserAction(user?._id));
+      history.push(routes.uploadYourPhotos);
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  };
 
   return (
     <AuthContainerPage>
@@ -63,7 +87,7 @@ const AboutYourselfPage = (props) => {
                     className="mb-3 mb-md-0 mt-2"
                     initialValue=""
                     name="otp"
-                    required
+                    rules={[{ required: true, message: "Required field" }]}
                   >
                     <Input.TextArea
                       placeholder="Bio"
@@ -73,20 +97,11 @@ const AboutYourselfPage = (props) => {
                       onChange={(e) => setBio(e.target.value)}
                     />
                   </Form.Item>
-                </Form>
-              </div>
-              <div className="row">
-                <div
-                  className={`col-md-6 offset-md-3 ${styles.attributesCol} `}
-                >
-                  <button
-                    className={`btn btn-primary btn-block`}
-                    disabled={bio === ""}
-                    onClick={() => history.push(routes.uploadYourPhotos)}
-                  >
+                  <br />
+                  <button className={`btn btn-primary btn-block`}>
                     Continue
                   </button>
-                </div>
+                </Form>
               </div>
             </div>
           </div>

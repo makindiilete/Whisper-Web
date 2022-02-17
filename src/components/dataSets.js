@@ -921,13 +921,13 @@ export const faqs = [
 
 /*=========================================================*/
 export const bodyType = ["Slim", "Average", "Thick", "Chubby"];
-export const bodyHeight = ["Tall", "Average.", "Short", "Very Short"];
+export const bodyHeight = ["Tall", "Average", "Short", "Very Short"];
 
 export const smoking = ["None", "Hookah", "Tobacco/Cigarette", "4/20"];
 
-export const education = ["High School", "College", "Post Grad", "Doctoriate"];
+export const education = ["High School", "College", "Post Grad", "Doctorate"];
 
-export const drink = ["Water", "Wine", "Vodka/ Gin", "Whiskey/Brandy"];
+export const drink = ["Water", "Wine", "Vodka/Gin", "Whiskey/Brandy", "None"];
 
 export const providingTo = [
   {

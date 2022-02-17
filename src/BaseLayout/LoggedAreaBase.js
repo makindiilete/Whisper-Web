@@ -17,7 +17,7 @@ const LoggedAreaBase = ({ children }) => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
-  if (!user) {
+  if (!localStorage.getItem("token")) {
     history.push(routes.login);
     return null;
   } else {
