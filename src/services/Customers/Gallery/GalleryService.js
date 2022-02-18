@@ -7,6 +7,8 @@ export const getCustomerGalleryByIdService = (id) =>
 
 export const uploadCustomerGalleryService = (data) =>
   apiClient.post(`/customer/uploadImagesToCustomerGallery`, data);
+export const uploadCustomerGalleryWithLinkService = (data) =>
+  apiClient.post(`/customer/uploadImagesToCustomerGalleryWithLink`, data);
 export const deleteCustomerGalleryService = (data) =>
   apiClient.delete(`/customer/deleteCustomerGallery`, data);
 export const likeCustomerPictureService = (data) =>

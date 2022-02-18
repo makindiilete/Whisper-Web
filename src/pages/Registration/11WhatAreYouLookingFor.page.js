@@ -7,15 +7,23 @@ import useMobile from "../../hooks/useMobile";
 import AuthContainerPage from "./AuthContainer.page";
 import LoaderComponent from "../../components/LoaderComponent";
 import { BiRightArrowAlt, FaAngleLeft, GrTrash } from "react-icons/all";
-import { Upload } from "antd";
+import { message, Upload } from "antd";
 import styles from "../../assets/css/auth/yourAttributes.module.css";
 import img1 from "../../assets/images/auth/typeOfuser/companion.svg";
 import img2 from "../../assets/images/auth/typeOfuser/xrated.svg";
 import img3 from "../../assets/images/auth/typeOfuser/both.svg";
 import routes from "../../routes";
+import { uploadCustomerGalleryService } from "../../services/Customers/Gallery/GalleryService";
+import { uploadProviderGalleryService } from "../../services/Providers/Gallery/Gallery";
+import { updateCustomerPreferenceService } from "../../services/Customers/Preference/PrefenceService";
+import { updateProviderPreferenceService } from "../../services/Providers/Preference/PrefenceService";
+import { useDispatch, useSelector } from "react-redux";
+import { adminFetchUserAction } from "../../redux/actions/userAction";
 
 const WhatAreYouLookingForPage = (props) => {
   let location = useLocation();
+  const user = useSelector((state) => state.userReducer?.data);
+  const dispatch = useDispatch();
   const history = useHistory();
   const mobile = useMobile();
   useEffect(() => {
@@ -23,6 +31,25 @@ const WhatAreYouLookingForPage = (props) => {
   }, [location.pathname]);
   const [isLoading, setIsLoading] = useState(false);
   const [selected, setSelected] = useState();
+  const [selectedPref, setSelectedPref] = useState("");
+
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    const response = await updateCustomerPreferenceService({
+      userId: user?._id,
+      lookingFor: selected === 3 ? ["Companion", "X-Rated"] : [selectedPref],
+    });
+    setIsLoading(false);
+    if (response.ok) {
+      history.push(routes.customerPreferences);
+      dispatch(adminFetchUserAction(user?._id));
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  };
+
   return (
     <AuthContainerPage>
       {isLoading ? (
@@ -61,7 +88,10 @@ const WhatAreYouLookingForPage = (props) => {
                   className={`d-flex justify-content-center align-items-center  ${
                     selected === 1 && "active"
                   }`}
-                  onClick={() => setSelected(1)}
+                  onClick={() => {
+                    setSelected(1);
+                    setSelectedPref("Companion");
+                  }}
                 >
                   <div className="d-flex flex-column">
                     <div className="d-flex justify-content-center">
@@ -87,7 +117,10 @@ const WhatAreYouLookingForPage = (props) => {
                   className={`d-flex justify-content-center align-items-center  ${
                     selected === 2 && "active"
                   }`}
-                  onClick={() => setSelected(2)}
+                  onClick={() => {
+                    setSelected(2);
+                    setSelectedPref("X-Rated");
+                  }}
                 >
                   <div className="d-flex flex-column">
                     <div className="d-flex justify-content-center">
@@ -114,7 +147,10 @@ const WhatAreYouLookingForPage = (props) => {
                   className={`d-flex justify-content-center align-items-center  ${
                     selected === 3 && "active"
                   }`}
-                  onClick={() => setSelected(3)}
+                  onClick={() => {
+                    setSelected(3);
+                    setSelectedPref("Both");
+                  }}
                 >
                   <div className="d-flex flex-column">
                     <div className="d-flex justify-content-center">
@@ -144,7 +180,7 @@ const WhatAreYouLookingForPage = (props) => {
                   <button
                     className={`btn btn-primary btn-block`}
                     disabled={!selected}
-                    onClick={() => history.push(routes.customerPreferences)}
+                    onClick={handleSubmit}
                   >
                     Continue
                   </button>

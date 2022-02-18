@@ -8,25 +8,25 @@ import useMobile from "../hooks/useMobile";
 import avatar from "../assets/images/homeInApp/Rectangle 13 copy.svg";
 import { Dropdown, Menu } from "antd";
 import routes from "../routes";
+import { useSelector } from "react-redux";
 
 const { Item, Divider } = Menu;
 
 const NavigationPage = (props) => {
   const history = useHistory();
   let location = useLocation();
+  const user = useSelector((state) => state.userReducer?.data);
   const { pathname } = location;
   const current = pathname.split("/")[1];
   const [isExpanded, setIsExpanded] = useState(false);
   const [path, setPath] = useState(0);
-  const [userType, setUserType] = useState(
-    JSON.parse(localStorage.getItem("user")).userType
-  );
+  const [userType, setUserType] = useState(user?.userType);
   const mobile = useMobile();
 
   useEffect(() => {}, [pathname]);
 
   function handleLogout() {
-    localStorage.removeItem("user");
+    localStorage.removeItem("token");
     history.push(routes.login);
   }
 
@@ -167,7 +167,11 @@ const NavigationPage = (props) => {
         {!mobile && (
           <Dropdown overlay={menu} trigger={["click"]}>
             <div className="settings">
-              <img src={avatar} className=" img-fluid" alt="" />
+              <img
+                src={user?.customerProfile?.profilePictureUri}
+                className=" img-fluid"
+                alt=""
+              />
               <FontAwesomeIcon
                 icon={icons.faChevronDown}
                 size="1x"

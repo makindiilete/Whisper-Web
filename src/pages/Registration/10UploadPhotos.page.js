@@ -9,7 +9,20 @@ import { BiRightArrowAlt, FaAngleLeft, GrTrash } from "react-icons/all";
 import styles from "../../assets/css/auth/yourAttributes.module.css";
 import routes from "../../routes";
 import AuthContainerPage from "./AuthContainer.page";
-import { message, Upload } from "antd";
+import { Input, message, Switch, Upload } from "antd";
+import { v4 as uuidv4 } from "uuid";
+import { updateCustomerProfileService } from "../../services/Customers/Profile/ProfileService";
+import { updateProviderProfileService } from "../../services/Providers/Profile/ProfileService";
+import { adminFetchUserAction } from "../../redux/actions/userAction";
+import {
+  uploadCustomerGalleryService,
+  uploadCustomerGalleryWithLinkService,
+} from "../../services/Customers/Gallery/GalleryService";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  uploadProviderGalleryService,
+  uploadProviderGalleryWithLinkService,
+} from "../../services/Providers/Gallery/Gallery";
 
 const UploadPhotosPage = () => {
   let location = useLocation();
@@ -18,6 +31,11 @@ const UploadPhotosPage = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+  const user = useSelector((state) => state.userReducer?.data);
+  const dispatch = useDispatch();
+  const [files, setFiles] = useState([]);
+  const [caption, setCaption] = useState("");
+  const [makePrivate, setMakePrivate] = useState(true);
   const [showContinue, setShowContinue] = useState(false);
   const [showWarning, setShowWarning] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -30,10 +48,10 @@ const UploadPhotosPage = () => {
     { id: 2, url: null },
     { id: 3, url: null },
     { id: 4, url: null },
-    { id: 5, url: null },
+    /*  { id: 5, url: null },
     { id: 6, url: null },
     { id: 7, url: null },
-    { id: 8, url: null },
+    { id: 8, url: null },*/
   ]);
 
   const props = {
@@ -50,21 +68,26 @@ const UploadPhotosPage = () => {
     },
   };
 
-  const handleDeleteImg = (id) => {
+  const handleDeleteImg = (id, index) => {
     let arr = [...images];
     let imgToChange = arr.find((i) => i.id === id);
     imgToChange.url = null;
     setImages(arr);
+    let filesTo = files;
+    filesTo = filesTo.filter((f) => f.id !== id);
+    setFiles(filesTo);
     handleShowContinueBtn(arr);
   };
 
   const handleGeneratePreview = (info, id) => {
+    console.log("id sent = ", id);
     let arr = [...images];
     let imgToChange = arr.find((i) => i.id === id);
     if (info.file.status !== "uploading") {
     }
     imgToChange.url = URL.createObjectURL(info.file);
     setImages(arr);
+    setFiles([...files, { id: id, file: info.file }]);
     handleShowContinueBtn(arr);
   };
 
@@ -79,6 +102,37 @@ const UploadPhotosPage = () => {
       setShowContinue(true);
     } else {
       setShowContinue(false);
+    }
+  };
+
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    const formdata = new FormData();
+
+    formdata.append("userId", user?._id);
+    formdata.append("caption", caption);
+    formdata.append("isPrivate", makePrivate);
+    files.map((item) => {
+      if (item?.file) {
+        formdata.append("galleryPictures", item?.file);
+      }
+    });
+    const response =
+      user?.userType?.toLowerCase() === "customer"
+        ? await uploadCustomerGalleryService(formdata)
+        : await uploadProviderGalleryService(formdata);
+    setIsLoading(false);
+    if (response.ok) {
+      if (user?.userType?.toLowerCase() === "customer") {
+        history.push(routes.whatYouAreLookingFor);
+      } else {
+        history.push(routes.serviceYouWantToRender);
+      }
+      dispatch(adminFetchUserAction(user?._id));
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
     }
   };
 
@@ -118,7 +172,7 @@ const UploadPhotosPage = () => {
                   className="d-flex justify-content-between flex-wrap"
                   style={mobile ? null : { margin: "0 15rem" }}
                 >
-                  {images?.map((img) => (
+                  {images?.map((img, index) => (
                     <div className={mobile ? "w-100" : ""}>
                       <Upload
                         style={mobile ? { width: "100%" } : null}
@@ -151,6 +205,8 @@ const UploadPhotosPage = () => {
                                         objectFit: "cover",
                                       }
                                     : {
+                                        height: "16.8rem",
+                                        width: "16.8rem",
                                         objectFit: "cover",
                                       }
                                 }
@@ -162,7 +218,7 @@ const UploadPhotosPage = () => {
                                   right: "1rem",
                                   borderRadius: "5px",
                                 }}
-                                onClick={() => handleDeleteImg(img?.id)}
+                                onClick={() => handleDeleteImg(img?.id, index)}
                               >
                                 <GrTrash />
                               </div>
@@ -185,12 +241,32 @@ const UploadPhotosPage = () => {
                 </div>
                 <div className="row">
                   <div
+                    className={`col-md-8 offset-md-2 ${styles.attributesCol} `}
+                  >
+                    <div className="flexrowaround align-items-md-center">
+                      <Switch
+                        checkedChildren="Make Private"
+                        unCheckedChildren="Make Public"
+                        defaultChecked={makePrivate}
+                        onChange={() => setMakePrivate(!makePrivate)}
+                      />
+                      <Input
+                        className="mt-3 mt-md-0"
+                        placeholder="Add Caption"
+                        style={mobile ? { width: "100%" } : { width: "25rem" }}
+                        onChange={(e) => setCaption(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div
                     className={`col-md-6 offset-md-3 ${styles.attributesCol} `}
                   >
                     <p
                       className="primary-text text-center cursor"
                       onClick={() => {
-                        if (localStorage.getItem("userType") === "customer") {
+                        if (user?.userType?.toLowerCase() === "customer") {
                           history.push(routes.whatYouAreLookingFor);
                         } else {
                           history.push(routes.serviceYouWantToRender);
@@ -200,7 +276,6 @@ const UploadPhotosPage = () => {
                       Skip <BiRightArrowAlt className="ml-3" />
                     </p>
                   </div>
-                  {/* /.col-md-6 offset-md-3 */}
                 </div>
                 {showContinue && (
                   <div className="row">
@@ -209,13 +284,7 @@ const UploadPhotosPage = () => {
                     >
                       <button
                         className={`btn btn-primary btn-block`}
-                        onClick={() => {
-                          if (localStorage.getItem("userType") === "customer") {
-                            history.push(routes.whatYouAreLookingFor);
-                          } else {
-                            history.push(routes.serviceYouWantToRender);
-                          }
-                        }}
+                        onClick={handleSubmit}
                       >
                         Continue
                       </button>

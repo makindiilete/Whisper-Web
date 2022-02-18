@@ -7,7 +7,10 @@ import { FaAngleLeft } from "react-icons/all";
 import styles from "../../assets/css/auth/yourAttributes.module.css";
 import { imInto, providingTo } from "../../components/dataSets";
 import routes from "../../routes";
-import { Input, Slider } from "antd";
+import { Input, message, Slider } from "antd";
+import { updateCustomerPreferenceService } from "../../services/Customers/Preference/PrefenceService";
+import { adminFetchUserAction } from "../../redux/actions/userAction";
+import { useDispatch, useSelector } from "react-redux";
 
 const CustomerPreferencesPage = (props) => {
   let location = useLocation();
@@ -16,6 +19,8 @@ const CustomerPreferencesPage = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+  const user = useSelector((state) => state.userReducer?.data);
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [selected, setSelected] = useState([]);
   const [currentStep, setCurrentStep] = useState(1);
@@ -25,6 +30,7 @@ const CustomerPreferencesPage = (props) => {
   });
   const [km, setKm] = useState(5);
   const [amount, setAmount] = useState();
+  const [maxAmt, setMaxAmt] = useState();
 
   const addRemoveItem = (item) => {
     //Add
@@ -57,6 +63,47 @@ const CustomerPreferencesPage = (props) => {
     border: "1px solid #DADADA",
     borderRadius: "8px"
   }*/
+
+  const handleSubmitOne = async () => {
+    setIsLoading(true);
+    const response = await updateCustomerPreferenceService({
+      userId: user?._id,
+      IAmInto: selected,
+    });
+    setIsLoading(false);
+    if (response.ok) {
+      if (currentStep === 1) {
+        setCurrentStep(2);
+        history.push(routes.customerPreferences);
+        dispatch(adminFetchUserAction(user?._id));
+      }
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  };
+
+  const handleSubmitTwo = async () => {
+    setIsLoading(true);
+    const response = await updateCustomerPreferenceService({
+      userId: user?._id,
+      minAge: Number(age.startRange),
+      maxAge: Number(age.endRange),
+      minPrice: Number(amount),
+      maxPrice: Number(maxAmt),
+      distanceAway: Number(km),
+    });
+    setIsLoading(false);
+    if (response.ok) {
+      history.push(routes.CUSTOMER_HOME);
+      dispatch(adminFetchUserAction(user?._id));
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  };
 
   function onChange(value) {
     setAge({ startRange: value[0], endRange: value[1] });
@@ -145,7 +192,7 @@ const CustomerPreferencesPage = (props) => {
               </h5>
             </div>
             <div className="d-flex align-items-center">
-              <Input onChange={(e) => setAmount(`$ ${e.target.value}`)} />
+              <Input onChange={(e) => setAmount(e.target.value)} />
               <h5 className="appendInput">/hr</h5>
             </div>
             {/* <Input.Search
@@ -155,9 +202,20 @@ const CustomerPreferencesPage = (props) => {
             />*/}
           </div>
 
-          <div
-            className={`col-md-6 mb-2 mb-md-0 ${styles.attributesCol}`}
-          ></div>
+          <div className={`col-md-6  mb-2 mb-md-0 ${styles.attributesCol}`}>
+            <div>
+              <h5>What is the max amount you are looking to spend per hour?</h5>
+            </div>
+            <div className="d-flex align-items-center">
+              <Input onChange={(e) => setMaxAmt(e.target.value)} />
+              <h5 className="appendInput">/hr</h5>
+            </div>
+            {/* <Input.Search
+              // addonBefore="https://"
+              addonAfter="/hr"
+              // onSearch={onSearch}
+            />*/}
+          </div>
         </div>
       </>
     );
@@ -199,14 +257,10 @@ const CustomerPreferencesPage = (props) => {
                 >
                   <button
                     className={`btn btn-primary btn-block`}
-                    disabled={selected.length === 0}
-                    onClick={() => {
-                      if (currentStep === 1) {
-                        setCurrentStep(2);
-                      } else {
-                        // history.push(routes.customerPreferences)
-                      }
-                    }}
+                    disabled={currentStep === 1 && selected.length === 0}
+                    onClick={
+                      currentStep === 1 ? handleSubmitOne : handleSubmitTwo
+                    }
                   >
                     {currentStep === 1 ? "Continue" : "Find yourself Someone"}
                   </button>

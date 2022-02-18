@@ -971,12 +971,12 @@ export const companionServices = [
 
 export const xRatedServices = ["Anal", "Bjj", "BDSM", "Group"];
 export const imInto = [
-  "Men",
-  "Women",
+  "Man",
+  "Woman",
   "Gay",
-  "Lesbians",
-  "Trans-Men",
-  "Trans-Women",
+  "Lesbian",
+  "Trans-Man",
+  "Trans-Woman",
 ];
 
 export const chats = [

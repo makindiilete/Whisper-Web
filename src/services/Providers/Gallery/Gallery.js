@@ -7,6 +7,8 @@ export const getProviderGalleryByIdService = (id) =>
 
 export const uploadProviderGalleryService = (data) =>
   apiClient.post(`/provider/uploadImagesToProviderGallery`, data);
+export const uploadProviderGalleryWithLinkService = (data) =>
+  apiClient.post(`/provider/uploadImagesToProviderGalleryWithLink`, data);
 export const deleteProviderGalleryService = (data) =>
   apiClient.delete(`/provider/deleteProviderGallery`, data);
 export const likeProviderPictureService = (data) =>
