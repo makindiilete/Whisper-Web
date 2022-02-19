@@ -191,7 +191,20 @@ const TwoLoginPage = (props) => {
             <p className="text-center mt-5">Sign in with</p>
             <div className="flexrowaround">
               <div className="img-fluid mb-4 mb-md-0 social-icons ">
-                <Facebook handleResponse={handleFacebookLogin} />
+                {/*<Facebook handleResponse={handleFacebookLogin} />*/}
+                <FacebookLogin
+                    appId={process.env.REACT_APP_FACEBOOK_APP_ID}
+                    autoLoad={false}
+                    fields="name,email,picture"
+                    callback={handleFacebookLogin}
+                    textButton="Facebook"
+                    icon={
+                      <div className="socialPill__icon">
+                        <BsFacebook color="#3c79e6" />
+                      </div>
+                    }
+                    cssClass="socialPill socialPill__fb"
+                />
               </div>
               <div className="img-fluid mb-4 mb-md-0 social-icons ">
                 <Google handleResponse={handleGoogleLogin} />
