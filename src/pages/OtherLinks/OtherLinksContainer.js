@@ -15,13 +15,8 @@ const OtherLinksContainer = ({ children }) => {
   return (
     <div>
       <OtherLinksNav />
-      <div
-        style={
-          !mobile
-            ? { marginTop: "-4rem", minHeight: "70vh" }
-            : { minHeight: "70vh" }
-        }
-      >
+      <div style={!mobile ? { minHeight: "70vh" } : { minHeight: "70vh" }}>
+        <br />
         {children}
       </div>
       <Footer />

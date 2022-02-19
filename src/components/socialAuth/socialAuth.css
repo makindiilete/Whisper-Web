@@ -1,0 +1,29 @@
+.socialPill {
+  width: 110px !important;
+  height: 35px !important;
+  border-radius: 2rem !important;
+  display: flex !important;
+  justify-content: space-around !important;
+  align-items: center !important;
+  border: none !important;
+  font-size: 1.2rem !important;
+  text-transform: capitalize !important;
+  color: #fff !important;
+}
+
+.socialPill__fb {
+  background: #3c79e6 !important;
+}
+.socialPill__apple {
+  background: #000000 !important;
+}
+
+.socialPill__icon {
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+}

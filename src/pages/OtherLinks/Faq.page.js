@@ -36,10 +36,10 @@ const FaqPage = (props) => {
 
   return (
     <OtherLinksContainer>
+      <br />
       <div
         className="position-relative"
         style={{
-          marginTop: "-4rem",
           width: "100%",
           height: "27.6rem",
           backgroundColor: "#FFF7EF",

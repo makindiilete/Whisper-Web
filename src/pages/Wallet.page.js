@@ -16,6 +16,7 @@ import modalImg from "../assets/images/auth/40.svg";
 import WithdrawalModal from "../components/Modals/withdrawalModal";
 import WalletTransactionDetails from "../components/Modals/walletTransactionDetails";
 import PaymentModal from "../components/Modals/paymentModal";
+import { useSelector } from "react-redux";
 
 const WalletPage = (props) => {
   let location = useLocation();
@@ -24,10 +25,9 @@ const WalletPage = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+  const user = useSelector((state) => state.userReducer?.data);
   const [isLoading, setIsLoading] = useState(false);
-  const [userType, setUserType] = useState(
-    JSON.parse(localStorage.getItem("user")).userType
-  );
+  const [userType, setUserType] = useState(user?.userType);
   const [showSuccess, setShowSuccess] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [showDetails, setShowDetails] = useState(false);

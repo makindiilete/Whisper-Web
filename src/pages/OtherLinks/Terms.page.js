@@ -16,7 +16,6 @@ const TermsPage = (props) => {
       <div
         className="position-relative"
         style={{
-          marginTop: "-4rem",
           width: "100%",
           height: "27.6rem",
           backgroundColor: "#F9F2FF",

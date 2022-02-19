@@ -12,7 +12,25 @@ import { userRegService } from "../../services/Auth/Registration/registrationSer
 import LoaderComponent from "../../components/LoaderComponent";
 import { AuthContext } from "../../Utils/context";
 import { useDispatch } from "react-redux";
-import { userAction } from "../../redux/actions/userAction";
+import {
+  adminFetchUserAction,
+  userAction,
+} from "../../redux/actions/userAction";
+import FacebookLogin from "react-facebook-login";
+import GoogleLogin from "react-google-login";
+import { BsFacebook, TiSocialFacebookCircular } from "react-icons/all";
+import AppleLogin from "react-apple-login";
+import { Facebook } from "../../components/socialAuth/facebook/facebook";
+import { Apple } from "../../components/socialAuth/apple/Apple";
+import { Google } from "../../components/socialAuth/google/Google";
+import {
+  fbLoginService,
+  googleLoginService,
+} from "../../services/Auth/Login/loginService";
+import {
+  fbUpdateService,
+  googleUpdateService,
+} from "../../services/Auth/Registration/Update Social Details/socialDetailsService";
 
 const OneCreateAccountPage = (props) => {
   let location = useLocation();
@@ -32,6 +50,52 @@ const OneCreateAccountPage = (props) => {
     password: "",
   });
 
+  function handleResponse(response, reg) {
+    if (response.ok) {
+      if (reg) {
+        localStorage.setItem("token", response?.data?.data?.token);
+        dispatch(userAction(response?.data?.data));
+        history.push(routes.usertype);
+      } else {
+        localStorage.setItem("token", response?.data?.data?.token);
+        dispatch(adminFetchUserAction(response?.data?.data?._id));
+        history.push(
+          response?.data?.data?.userType?.toLowerCase() === "customer"
+            ? routes.CUSTOMER_HOME
+            : routes.PROVIDER_HOME
+        );
+      }
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  }
+
+  const handleGoogleLogin = async (user) => {
+    setIsLoading(true);
+    const response = await googleLoginService({
+      googleId: user?.profileObj?.googleId,
+      email: user?.profileObj?.email,
+    });
+    setIsLoading(false);
+    handleResponse(response);
+  };
+
+  const handleFacebookLogin = async (user) => {
+    setIsLoading(true);
+    const response = await fbLoginService({
+      facebookId: user?.id,
+      email: user?.email,
+    });
+    setIsLoading(false);
+    handleResponse(response);
+  };
+
+  const handleAppleLogin = (user) => {
+    // console.log("Apple response = ", user);
+  };
+
   const handleSubmit = async () => {
     try {
       const values = await form.validateFields();
@@ -50,6 +114,40 @@ const OneCreateAccountPage = (props) => {
     } catch (error) {
       console.log("Errors = ", error.errorFields);
     }
+  };
+
+  const handleGoogleReg = async (user) => {
+    setIsLoading(true);
+    const response = await userRegService({
+      firstName: user?.profileObj?.givenName,
+      lastName: user?.profileObj?.familyName,
+      email: user?.profileObj?.email,
+      google: {
+        id: user?.profileObj?.googleId,
+        email: user?.profileObj?.email,
+      },
+    });
+    setIsLoading(false);
+    handleResponse(response, "reg");
+  };
+
+  const handleFacebookReg = async (user) => {
+    setIsLoading(true);
+    const response = await userRegService({
+      firstName: user?.name?.split(" ")[0],
+      lastName: user?.name?.split(" ")[1],
+      email: user?.email,
+      facebook: {
+        id: user?.id,
+        email: user?.email,
+      },
+    });
+    setIsLoading(false);
+    handleResponse(response, "reg");
+  };
+
+  const handleAppleReg = (user) => {
+    // console.log("Apple response = ", user);
   };
 
   function handleChange(value, name) {
@@ -184,21 +282,22 @@ const OneCreateAccountPage = (props) => {
             <p className="text-center">Sign in with</p>
             <br />
             <div className="flexrowaround">
-              <img
-                src={fb}
-                className="img-fluid mb-4 mb-md-0 social-icons "
-                alt=""
-              />
-              <img
-                src={google}
-                className="img-fluid  mb-4 mb-md-0 social-icons "
-                alt=""
-              />
-              <img
-                src={apple}
-                className="img-fluid  mb-4 mb-md-0 social-icons "
-                alt=""
-              />
+              <div className="img-fluid mb-4 mb-md-0 social-icons ">
+                <Facebook handleResponse={handleFacebookLogin} />
+              </div>
+
+              <div className="img-fluid mb-4 mb-md-0 social-icons ">
+                <Google handleResponse={handleGoogleLogin} />
+              </div>
+
+              <div className="img-fluid mb-4 mb-md-0 social-icons ">
+                {/*<Apple handleResponse={handleAppleLogin} />*/}
+                <img
+                  src={apple}
+                  className="img-fluid mb-4 mb-md-0 social-icons "
+                  alt=""
+                />
+              </div>
             </div>
           </div>
           {/* /.col-md-6 */}
@@ -219,21 +318,20 @@ const OneCreateAccountPage = (props) => {
             </div>
             <p className="text-center">Create account with</p>
             <div className="flexrowaround" style={{ marginTop: "2.2rem" }}>
-              <img
-                src={fb}
-                className="img-fluid mb-4 mb-md-0 social-icons "
-                alt=""
-              />
-              <img
-                src={google}
-                className="img-fluid  mb-4 mb-md-0 social-icons "
-                alt=""
-              />
-              <img
-                src={apple}
-                className="img-fluid  mb-4 mb-md-0 social-icons "
-                alt=""
-              />
+              <div className="img-fluid mb-4 mb-md-0 social-icons ">
+                <Facebook handleResponse={handleFacebookReg} />
+              </div>
+              <div className="img-fluid mb-4 mb-md-0 social-icons ">
+                <Google handleResponse={handleGoogleReg} />
+              </div>
+              <div className="img-fluid mb-4 mb-md-0 social-icons ">
+                {/*<Apple handleResponse={handleAppleReg} />*/}
+                <img
+                  src={apple}
+                  className="img-fluid mb-4 mb-md-0 social-icons "
+                  alt=""
+                />
+              </div>
             </div>
             {/*</div>*/}
           </div>

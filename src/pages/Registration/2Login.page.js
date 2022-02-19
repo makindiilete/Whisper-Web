@@ -14,8 +14,15 @@ import provImg3 from "../../assets/images/homeInApp/Rectangle 2685 copy 3.svg";
 import provImg6 from "../../assets/images/homeInApp/Rectangle 2685 copy 2.svg";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { loginService } from "../../services/Auth/Login/loginService";
+import {
+  fbLoginService,
+  googleLoginService,
+  loginService,
+} from "../../services/Auth/Login/loginService";
 import { adminFetchUserAction } from "../../redux/actions/userAction";
+import { Facebook } from "../../components/socialAuth/facebook/facebook";
+import { Google } from "../../components/socialAuth/google/Google";
+import { Apple } from "../../components/socialAuth/apple/Apple";
 
 const TwoLoginPage = (props) => {
   let location = useLocation();
@@ -49,6 +56,46 @@ const TwoLoginPage = (props) => {
         response?.data?.errors[0].message || "Something went wrong"
       );
     }
+  };
+
+  function handleResponse(response) {
+    if (response.ok) {
+      localStorage.setItem("token", response?.data?.data?.token);
+      dispatch(adminFetchUserAction(response?.data?.data?._id));
+      history.push(
+        response?.data?.data?.userType?.toLowerCase() === "customer"
+          ? routes.CUSTOMER_HOME
+          : routes.PROVIDER_HOME
+      );
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  }
+
+  const handleGoogleLogin = async (user) => {
+    setIsLoading(true);
+    const response = await googleLoginService({
+      googleId: user?.profileObj?.googleId,
+      email: user?.profileObj?.email,
+    });
+    setIsLoading(false);
+    handleResponse(response);
+  };
+
+  const handleFacebookLogin = async (user) => {
+    setIsLoading(true);
+    const response = await fbLoginService({
+      facebookId: user?.id,
+      email: user?.email,
+    });
+    setIsLoading(false);
+    handleResponse(response);
+  };
+
+  const handleAppleLogin = (user) => {
+    console.log("Apple response = ", user);
   };
 
   function handleChange(value, name) {
@@ -143,21 +190,20 @@ const TwoLoginPage = (props) => {
             </div>
             <p className="text-center mt-5">Sign in with</p>
             <div className="flexrowaround">
-              <img
-                src={fb}
-                className="img-fluid mb-4 mb-md-0 social-icons "
-                alt=""
-              />
-              <img
-                src={google}
-                className="img-fluid  mb-4 mb-md-0 social-icons "
-                alt=""
-              />
-              <img
-                src={apple}
-                className="img-fluid  mb-4 mb-md-0 social-icons "
-                alt=""
-              />
+              <div className="img-fluid mb-4 mb-md-0 social-icons ">
+                <Facebook handleResponse={handleFacebookLogin} />
+              </div>
+              <div className="img-fluid mb-4 mb-md-0 social-icons ">
+                <Google handleResponse={handleGoogleLogin} />
+              </div>
+              <div className="img-fluid mb-4 mb-md-0 social-icons ">
+                <img
+                  src={apple}
+                  className="img-fluid mb-4 mb-md-0 social-icons "
+                  alt=""
+                />
+                {/*<Apple handleResponse={handleAppleLogin} />*/}
+              </div>
             </div>
             <br />
             {/*</div>*/}

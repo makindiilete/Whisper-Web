@@ -4,7 +4,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
   align-items: center;
-  box-shadow: 0 5px 20px #f7f7f7;
+  box-shadow: 0 3px 3px lightgrey;
   padding: 1rem 0;
   margin-bottom: 4rem;
   position: fixed;
