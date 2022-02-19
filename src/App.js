@@ -49,6 +49,7 @@ AOS.init();
 function App() {
   const history = useHistory();
   const [user, setUser] = useState();
+  console.log(`We are running on ${process.env.REACT_APP_ENV}`);
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       <div className="App">
