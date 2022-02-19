@@ -11,6 +11,7 @@ export function Facebook({ handleResponse }) {
       fields="name,email,picture"
       callback={handleResponse}
       textButton="Facebook"
+      isMobile={false}
       icon={
         <div className="socialPill__icon">
           <BsFacebook color="#3c79e6" />
