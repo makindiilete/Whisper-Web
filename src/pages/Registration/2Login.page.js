@@ -7,7 +7,7 @@ import google from "../../assets/images/auth/google.svg";
 import apple from "../../assets/images/auth/apple.svg";
 import AuthContainerPage from "./AuthContainer.page";
 import { Form, Input, message } from "antd";
-import { FaAngleLeft } from "react-icons/all";
+import { BsFacebook, FaAngleLeft } from "react-icons/all";
 import SuccessModal from "../../components/Modals/successModal";
 import provImg1 from "../../assets/images/homeInApp/Rectangle 2685.svg";
 import provImg3 from "../../assets/images/homeInApp/Rectangle 2685 copy 3.svg";
@@ -194,17 +194,17 @@ const TwoLoginPage = (props) => {
               <div className="img-fluid mb-4 mb-md-0 social-icons ">
                 {/*<Facebook handleResponse={handleFacebookLogin} />*/}
                 <FacebookLogin
-                    appId={process.env.REACT_APP_FACEBOOK_APP_ID}
-                    autoLoad={false}
-                    fields="name,email,picture"
-                    callback={handleFacebookLogin}
-                    textButton="Facebook"
-                    icon={
-                      <div className="socialPill__icon">
-                        <BsFacebook color="#3c79e6" />
-                      </div>
-                    }
-                    cssClass="socialPill socialPill__fb"
+                  appId={process.env.REACT_APP_FACEBOOK_APP_ID}
+                  autoLoad={false}
+                  fields="name,email,picture"
+                  callback={handleFacebookLogin}
+                  textButton="Facebook"
+                  icon={
+                    <div className="socialPill__icon">
+                      <BsFacebook color="#3c79e6" />
+                    </div>
+                  }
+                  cssClass="socialPill socialPill__fb"
                 />
               </div>
               <div className="img-fluid mb-4 mb-md-0 social-icons ">
