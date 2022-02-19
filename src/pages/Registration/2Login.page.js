@@ -23,6 +23,7 @@ import { adminFetchUserAction } from "../../redux/actions/userAction";
 import { Facebook } from "../../components/socialAuth/facebook/facebook";
 import { Google } from "../../components/socialAuth/google/Google";
 import { Apple } from "../../components/socialAuth/apple/Apple";
+import FacebookLogin from "react-facebook-login";
 
 const TwoLoginPage = (props) => {
   let location = useLocation();
