@@ -6,61 +6,49 @@ import fb from "../../assets/images/auth/fb.svg";
 import google from "../../assets/images/auth/google.svg";
 import apple from "../../assets/images/auth/apple.svg";
 import AuthContainerPage from "./AuthContainer.page";
-import { Form, Input } from "antd";
+import { Form, Input, message } from "antd";
 import { FaAngleLeft } from "react-icons/all";
 import SuccessModal from "../../components/Modals/successModal";
 import provImg1 from "../../assets/images/homeInApp/Rectangle 2685.svg";
 import provImg3 from "../../assets/images/homeInApp/Rectangle 2685 copy 3.svg";
 import provImg6 from "../../assets/images/homeInApp/Rectangle 2685 copy 2.svg";
 import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
+import { loginService } from "../../services/Auth/Login/loginService";
+import { adminFetchUserAction } from "../../redux/actions/userAction";
 
 const TwoLoginPage = (props) => {
   let location = useLocation();
   const history = useHistory();
   const mobile = useMobile();
+  const dispatch = useDispatch();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+  const user = useSelector((state) => state.userReducer?.data);
+  const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState({
     email: "",
     password: "",
   });
 
-  const handleSubmit = (values) => {
-    let userType = localStorage.getItem("userType");
-    localStorage.setItem(
-      "userType",
-      userType === "customer" ? "provider" : "customer"
-    );
-    localStorage.setItem(
-      "user",
-      JSON.stringify({
-        name: "Michael Omoakin",
-        age: 29,
-        email: "akindiileteforex@gmail.com",
-        bio:
-          "Augue massa pellentesque rhoncus a blandit purus platea hac erat. Egestas eu nibh bibendum at porttitor risus. Sapien, mi potenti morbi amet mauris urna interdum. Eu, suspendisse volutpat purus lacus eget. Tincidunt scelerisque elit pellentesque odio cursus etiam cras.",
-        hereFor: ["Companion", "Xrated"],
-        attributes: {
-          bodyType: "Slim",
-          Height: "Average",
-          Education: "College",
-          Drinking: "Water",
-          Smoking: "Hookah",
-        },
-
-        interests: ["Movies", "Smoking", "Drinks"],
-        occupation: "Business Man",
-        imgUrls: [provImg1, provImg3, provImg6],
-        phone: "+2348109330138",
-        gender: "Male",
-        dob: moment().format("L"),
-        userType: userType === "customer" ? "Customer" : "Provider",
-      })
-    );
-    history.push(
-      userType === "customer" ? routes.CUSTOMER_HOME : routes.PROVIDER_HOME
-    );
+  const handleSubmit = async (values) => {
+    setIsLoading(true);
+    const response = await loginService(data);
+    setIsLoading(false);
+    if (response.ok) {
+      localStorage.setItem("token", response?.data?.data?.token);
+      history.push(
+        response?.data?.data?.userType?.toLowerCase() === "customer"
+          ? routes.CUSTOMER_HOME
+          : routes.PROVIDER_HOME
+      );
+      dispatch(adminFetchUserAction(response?.data?.data?._id));
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
   };
 
   function handleChange(value, name) {
@@ -89,7 +77,7 @@ const TwoLoginPage = (props) => {
           >
             <Input
               placeholder="Email"
-              onChange={(e) => handleChange(e.target.value, "firstName")}
+              onChange={(e) => handleChange(e.target.value, "email")}
             />
           </Form.Item>
 
@@ -104,14 +92,20 @@ const TwoLoginPage = (props) => {
               },
             ]}
           >
-            <Input
+            <Input.Password
               placeholder="Password"
-              onChange={(e) => handleChange(e.target.value, "lastName")}
+              onChange={(e) => handleChange(e.target.value, "password")}
             />
           </Form.Item>
           <br />
           {/*<div className="d-flex justify-content-center">*/}
-          <button className="btn btn-primary btn-block">Sign in</button>
+          <button disabled={isLoading} className="btn btn-primary btn-block">
+            {isLoading ? (
+              <span className="spinner-border text-white" />
+            ) : (
+              "Sign in"
+            )}
+          </button>
         </Form>
       </>
     );
@@ -130,7 +124,7 @@ const TwoLoginPage = (props) => {
             cursor: "pointer",
             zIndex: "999999",
           }}
-          onClick={() => history.goBack()}
+          onClick={() => history.push(`/reg/create-account`)}
         />
         <div className="row">
           <div className="col-md-6 offset-md-3">

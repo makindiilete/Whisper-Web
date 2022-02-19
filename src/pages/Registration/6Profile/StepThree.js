@@ -8,7 +8,10 @@ import {
   updateCustomerProfilePicService,
   updateCustomerProfileService,
 } from "../../../services/Customers/Profile/ProfileService";
-import { updateProviderProfileService } from "../../../services/Providers/Profile/ProfileService";
+import {
+  updateProviderProfilePicService,
+  updateProviderProfileService,
+} from "../../../services/Providers/Profile/ProfileService";
 import { adminFetchUserAction } from "../../../redux/actions/userAction";
 import { useDispatch } from "react-redux";
 
@@ -75,7 +78,7 @@ const StepThree = ({
     const response =
       userType === "customer"
         ? await updateCustomerProfilePicService(formdata)
-        : await updateCustomerProfilePicService(formdata);
+        : await updateProviderProfilePicService(formdata);
     setIsLoading(false);
     if (response.ok) {
       dispatch(adminFetchUserAction(user?._id));

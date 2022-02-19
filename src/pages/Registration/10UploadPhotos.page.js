@@ -111,7 +111,8 @@ const UploadPhotosPage = () => {
 
     formdata.append("userId", user?._id);
     formdata.append("caption", caption);
-    formdata.append("isPrivate", makePrivate);
+    user?.userType?.toLowerCase() === "provider" &&
+      formdata.append("isPrivate", makePrivate);
     files.map((item) => {
       if (item?.file) {
         formdata.append("galleryPictures", item?.file);
@@ -126,7 +127,7 @@ const UploadPhotosPage = () => {
       if (user?.userType?.toLowerCase() === "customer") {
         history.push(routes.whatYouAreLookingFor);
       } else {
-        history.push(routes.serviceYouWantToRender);
+        history.push(routes.whoWillYouProvideTo);
       }
       dispatch(adminFetchUserAction(user?._id));
     } else {
@@ -243,20 +244,35 @@ const UploadPhotosPage = () => {
                   <div
                     className={`col-md-8 offset-md-2 ${styles.attributesCol} `}
                   >
-                    <div className="flexrowaround align-items-md-center">
-                      <Switch
-                        checkedChildren="Make Private"
-                        unCheckedChildren="Make Public"
-                        defaultChecked={makePrivate}
-                        onChange={() => setMakePrivate(!makePrivate)}
-                      />
-                      <Input
-                        className="mt-3 mt-md-0"
-                        placeholder="Add Caption"
-                        style={mobile ? { width: "100%" } : { width: "25rem" }}
-                        onChange={(e) => setCaption(e.target.value)}
-                      />
-                    </div>
+                    {user?.userType?.toLowerCase() === "customer" ? (
+                      <div className="d-flex justify-content-center">
+                        <Input
+                          className="mt-3 mt-md-0"
+                          placeholder="Add Caption"
+                          style={
+                            mobile ? { width: "100%" } : { width: "25rem" }
+                          }
+                          onChange={(e) => setCaption(e.target.value)}
+                        />
+                      </div>
+                    ) : (
+                      <div className="flexrowaround align-items-md-center">
+                        <Switch
+                          checkedChildren="Make Private"
+                          unCheckedChildren="Make Public"
+                          defaultChecked={makePrivate}
+                          onChange={() => setMakePrivate(!makePrivate)}
+                        />
+                        <Input
+                          className="mt-3 mt-md-0"
+                          placeholder="Add Caption"
+                          style={
+                            mobile ? { width: "100%" } : { width: "25rem" }
+                          }
+                          onChange={(e) => setCaption(e.target.value)}
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className="row">
@@ -269,7 +285,7 @@ const UploadPhotosPage = () => {
                         if (user?.userType?.toLowerCase() === "customer") {
                           history.push(routes.whatYouAreLookingFor);
                         } else {
-                          history.push(routes.serviceYouWantToRender);
+                          history.push(routes.whoWillYouProvideTo);
                         }
                       }}
                     >

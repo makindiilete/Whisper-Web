@@ -8,7 +8,11 @@ import { FaAngleLeft } from "react-icons/all";
 import styles from "../../assets/css/auth/yourAttributes.module.css";
 import { imInto } from "../../components/dataSets";
 import routes from "../../routes";
-import { Input, Slider } from "antd";
+import { Input, message, Slider } from "antd";
+import { updateCustomerPreferenceService } from "../../services/Customers/Preference/PrefenceService";
+import { adminFetchUserAction } from "../../redux/actions/userAction";
+import { useDispatch, useSelector } from "react-redux";
+import { updateProviderService_Service } from "../../services/Providers/Service/Service";
 
 const ProviderPreferencesPage = (props) => {
   let location = useLocation();
@@ -17,7 +21,10 @@ const ProviderPreferencesPage = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.userReducer?.data);
   const [isLoading, setIsLoading] = useState(false);
+  const [services, setServices] = useState(user?.providerService?.services);
   const [selected, setSelected] = useState([]);
   const [currentStep, setCurrentStep] = useState(1);
   const [age, setAge] = useState({
@@ -25,20 +32,7 @@ const ProviderPreferencesPage = (props) => {
     endRange: 25,
   });
   const [km, setKm] = useState(5);
-  const [amount, setAmount] = useState();
-
-  const addRemoveItem = (item) => {
-    //Add
-    if (!selected?.includes(item)) {
-      setSelected([...selected, item]);
-    }
-
-    //Remove
-    else {
-      const filterItem = selected?.filter((i) => i !== item);
-      setSelected(filterItem);
-    }
-  };
+  const [amount, setAmount] = useState({});
 
   const slider = {
     width: "100%",
@@ -59,6 +53,10 @@ const ProviderPreferencesPage = (props) => {
     setAge({ startRange: value[0], endRange: value[1] });
   }
 
+  const handleAmountChange = (name, value) => {
+    setAmount({ ...amount, [name]: value });
+  };
+
   function onChangeKm(value) {
     setKm(value);
   }
@@ -67,122 +65,35 @@ const ProviderPreferencesPage = (props) => {
     setKm(value);
   }
 
-  const firstStep = () => {
-    return (
-      <div className={`row `}>
-        <div className={`col-md-8 offset-md-2 ${styles.attributesCol}`}>
-          <h5>I am into</h5>
-          <div className={styles.flexrowbetween}>
-            {imInto?.map((item) => (
-              <button
-                key={item}
-                className={`${styles.attrBtn} ${
-                  selected?.includes(item) ? styles.attrBtnActive : null
-                }`}
-                onClick={() => addRemoveItem(item)}
-              >
-                {item}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    let service = [];
+    services?.map((item, index) =>
+      service.push({
+        serviceCategoryName: Object.keys(amount)[index],
+        pricePerHour: Object.values(amount)[index],
+      })
     );
+
+    const response = await updateProviderService_Service({
+      userId: user?._id,
+      minAge: Number(age.startRange),
+      maxAge: Number(age.endRange),
+      distanceAway: Number(km),
+      services: service,
+      providerServiceId: user?.providerService?._id,
+    });
+    setIsLoading(false);
+    if (response.ok) {
+      dispatch(adminFetchUserAction(user?._id));
+      history.push(routes.PROVIDER_HOME);
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
   };
 
-  const secondStep = () => {
-    return (
-      <>
-        <div className={`row `}>
-          <div className={`col-md-6 mb-2 mb-md-0 ${styles.attributesCol}`}>
-            <div className={styles.flexrowbetween}>
-              <h5>Age</h5>
-              <h5>
-                {" "}
-                {age.startRange} - {age.endRange}{" "}
-              </h5>
-            </div>
-            <div style={slider}>
-              <Slider
-                range
-                step={1}
-                defaultValue={[18, 25]}
-                onChange={onChange}
-                onAfterChange={onAfterChange}
-                min={18}
-              />
-            </div>
-          </div>
-
-          <div className={`col-md-6 mb-2 mb-md-0 ${styles.attributesCol}`}>
-            <div className={styles.flexrowbetween}>
-              <h5>Distance</h5>
-              <h5> {km} Km </h5>
-            </div>
-            <div style={slider}>
-              <Slider
-                step={1}
-                defaultValue={5}
-                onChange={onChangeKm}
-                onAfterChange={onAfterChangeKm}
-                min={1}
-              />
-            </div>
-          </div>
-        </div>
-        <div className={`row `}>
-          <div className={`col-md-6 mb-2 mb-md-0 ${styles.attributesCol}`}>
-            <div>
-              <h5>Set a price/rate for your services</h5>
-            </div>
-            <div className="d-flex align-items-center">
-              <div className="prependInput">
-                <small>Companion</small>
-              </div>
-              <div className="w-100">
-                <Input
-                  style={{ paddingLeft: "9.5rem" }}
-                  onChange={(e) => setAmount(`$ ${e.target.value}`)}
-                />
-              </div>
-              <h5 className="appendInput">/hr</h5>
-            </div>
-            <div className="flexrowbetweencenter">
-              <div
-                style={{
-                  width: "1rem",
-                  height: "1rem",
-                  borderRadius: "0.3rem",
-                  backgroundColor: "#7917CE",
-                }}
-              />
-              <p className="padding-none">
-                10% of your hourly rate will be charged as commission
-              </p>
-            </div>
-          </div>
-
-          <div className={`col-md-6 mb-2 mb-md-0 ${styles.attributesCol}`}>
-            <div>
-              <h5 className="text-white">Set a price/rate for your services</h5>
-            </div>
-            <div className="d-flex align-items-center">
-              <div className="prependInput">
-                <small>X-Rated</small>
-              </div>
-              <div className="w-100">
-                <Input
-                  style={{ paddingLeft: "9.5rem" }}
-                  onChange={(e) => setAmount(`$ ${e.target.value}`)}
-                />
-              </div>
-              <h5 className="appendInput">/hr</h5>
-            </div>
-          </div>
-        </div>
-      </>
-    );
-  };
   return (
     <AuthContainerPage>
       {isLoading ? (
@@ -212,23 +123,105 @@ const ProviderPreferencesPage = (props) => {
                 <h4 className="text-center mt-5 mt-md-0">Your Preferences</h4>
                 <p className="text-center">What are your preferences?</p>
               </div>
-              {currentStep === 1 ? firstStep() : secondStep()}
+              <div className={`row `}>
+                <div
+                  className={`col-md-6 mb-2 mb-md-0 ${styles.attributesCol}`}
+                >
+                  <div className={styles.flexrowbetween}>
+                    <h5>Age</h5>
+                    <h5>
+                      {" "}
+                      {age.startRange} - {age.endRange}{" "}
+                    </h5>
+                  </div>
+                  <div style={slider}>
+                    <Slider
+                      range
+                      step={1}
+                      defaultValue={[18, 25]}
+                      onChange={onChange}
+                      onAfterChange={onAfterChange}
+                      min={18}
+                    />
+                  </div>
+                </div>
+
+                <div
+                  className={`col-md-6 mb-2 mb-md-0 ${styles.attributesCol}`}
+                >
+                  <div className={styles.flexrowbetween}>
+                    <h5>Distance</h5>
+                    <h5> {km} Km </h5>
+                  </div>
+                  <div style={slider}>
+                    <Slider
+                      step={1}
+                      defaultValue={5}
+                      onChange={onChangeKm}
+                      onAfterChange={onAfterChangeKm}
+                      min={1}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className={`row `}>
+                {services?.map((item, index) => (
+                  <div
+                    key={item?._id}
+                    className={`col-md-6 mb-2 mb-md-0 ${styles.attributesCol}`}
+                  >
+                    <div>
+                      <h5 className={`${index !== 0 && "text-white"}`}>
+                        Set a price/rate for your services
+                      </h5>
+                    </div>
+                    <div className="d-flex align-items-center">
+                      <div className="prependInput">
+                        <small>{item?.serviceCategoryName}</small>
+                      </div>
+                      <div className="w-100">
+                        <Input
+                          style={{ paddingLeft: "9.5rem" }}
+                          onChange={(e) =>
+                            handleAmountChange(
+                              item?.serviceCategoryName,
+                              e.target.value
+                            )
+                          }
+                        />
+                      </div>
+                      <h5 className="appendInput">/hr</h5>
+                    </div>
+                    <div
+                      className={`flexrowbetweencenter ${
+                        index !== 0 && "d-none"
+                      }`}
+                    >
+                      <div
+                        style={{
+                          width: "1rem",
+                          height: "1rem",
+                          borderRadius: "0.3rem",
+                          backgroundColor: "#7917CE",
+                        }}
+                      />
+                      <p className="padding-none">
+                        10% of your hourly rate will be charged as commission
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
               <div className="row">
                 <div
                   className={`col-md-6 offset-md-3 ${styles.attributesCol} `}
                 >
                   <button
                     className={`btn btn-primary btn-block`}
-                    disabled={selected.length === 0}
-                    onClick={() => {
-                      if (currentStep === 1) {
-                        setCurrentStep(2);
-                      } else {
-                        // history.push(routes.customerPreferences)
-                      }
-                    }}
+                    disabled={Object.keys(amount)?.length === 0}
+                    onClick={handleSubmit}
                   >
-                    {currentStep === 1 ? "Continue" : "Find yourself Someone"}
+                    Find yourself Someone
                   </button>
                 </div>
               </div>

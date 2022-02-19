@@ -10,11 +10,7 @@ import routes from "../../../routes";
 import { updateUserTypeService } from "../../../services/Auth/Registration/registrationService";
 import { useDispatch, useSelector } from "react-redux";
 import { message } from "antd";
-import {
-  adminFetchUserAction,
-  fetchUserTypeDataAction,
-  loginAction,
-} from "../../../redux/actions/userAction";
+import { adminFetchUserAction } from "../../../redux/actions/userAction";
 
 const TypeOfUserPage = (props) => {
   let location = useLocation();

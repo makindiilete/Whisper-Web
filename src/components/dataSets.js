@@ -932,32 +932,32 @@ export const drink = ["Water", "Wine", "Vodka/Gin", "Whiskey/Brandy", "None"];
 export const providingTo = [
   {
     id: 1,
-    text: "Straight Female",
+    text: "Woman",
     icon: img1,
   },
   {
     id: 2,
-    text: "Straight Male",
+    text: "Man",
     icon: img2,
   },
   {
     id: 3,
-    text: "Gays",
+    text: "Gay",
     icon: img3,
   },
   {
     id: 4,
-    text: "Lesbians",
+    text: "Lesbian",
     icon: img4,
   },
   {
     id: 5,
-    text: "Trans-male",
+    text: "Trans-Man",
     icon: img5,
   },
   {
     id: 6,
-    text: "Trans-female",
+    text: "Trans-Woman",
     icon: img6,
   },
 ];

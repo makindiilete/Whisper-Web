@@ -72,7 +72,7 @@
   border: 1px dotted var(--primary-light-color);
   background: #faf4ff;
   border-radius: 8px;
-  width: 15rem;
+  min-width: 15rem;
   cursor: pointer;
 }
 

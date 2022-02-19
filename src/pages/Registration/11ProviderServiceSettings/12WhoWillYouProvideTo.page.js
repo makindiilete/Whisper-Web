@@ -10,11 +10,20 @@ import img3 from "../../../assets/images/auth/typeOfuser/both.svg";
 import styles from "../../../assets/css/auth/yourAttributes.module.css";
 import routes from "../../../routes";
 import { bodyType, providingTo } from "../../../components/dataSets";
+import {
+  getProviderServiceByIdService,
+  updateProviderService_Service,
+} from "../../../services/Providers/Service/Service";
+import { adminFetchUserAction } from "../../../redux/actions/userAction";
+import { message } from "antd";
+import { useDispatch, useSelector } from "react-redux";
 
 const WhoWillYouProvideToPage = (props) => {
   let location = useLocation();
   const history = useHistory();
   const mobile = useMobile();
+  const user = useSelector((state) => state.userReducer?.data);
+  const dispatch = useDispatch();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
@@ -33,6 +42,24 @@ const WhoWillYouProvideToPage = (props) => {
       setSelected(filterItem);
     }
   };
+
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    let response = await updateProviderService_Service({
+      providingFor: selected,
+      providerServiceId: user?.providerService?._id,
+    });
+    setIsLoading(false);
+    if (response.ok) {
+      dispatch(adminFetchUserAction(user?._id));
+      history.push(routes.providerPreferences);
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  };
+
   return (
     <AuthContainerPage>
       {isLoading ? (
@@ -105,9 +132,7 @@ const WhoWillYouProvideToPage = (props) => {
                   <button
                     className={`btn btn-primary btn-block`}
                     disabled={!selected}
-                    onClick={() =>
-                      history.push(routes.selectTypeOfServiceToProvide)
-                    }
+                    onClick={handleSubmit}
                   >
                     Continue
                   </button>

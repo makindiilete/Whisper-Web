@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as icons from "@fortawesome/free-solid-svg-icons";
 import "../assets/css/navigation.css";
 import useMobile from "../hooks/useMobile";
-import avatar from "../assets/images/homeInApp/Rectangle 13 copy.svg";
+import avatar from "../assets/images/nav/avatarchange.svg";
 import { Dropdown, Menu } from "antd";
 import routes from "../routes";
 import { useSelector } from "react-redux";
@@ -29,6 +29,14 @@ const NavigationPage = (props) => {
     localStorage.removeItem("token");
     history.push(routes.login);
   }
+
+  const truncateString = (str, num) => {
+    if (str.length > num) {
+      return str.slice(0, num) + "...";
+    } else {
+      return str;
+    }
+  };
 
   const menu = (
     <Menu>
@@ -71,6 +79,10 @@ const NavigationPage = (props) => {
         setPath(8);
     }
   }, [location.pathname]);
+
+  const defaultImage = (ev) => {
+    ev.target.src = avatar;
+  };
 
   return (
     <section className="navigation">
@@ -168,10 +180,18 @@ const NavigationPage = (props) => {
           <Dropdown overlay={menu} trigger={["click"]}>
             <div className="settings">
               <img
-                src={user?.customerProfile?.profilePictureUri}
+                src={
+                  user?.customerProfile?.profilePictureUri ||
+                  user?.providerProfile?.profilePictureUri ||
+                  avatar
+                }
                 className=" img-fluid"
                 alt=""
+                onError={defaultImage}
               />
+              <small className="text-dark padding-none">
+                {truncateString(user?.firstName, 6)}
+              </small>
               <FontAwesomeIcon
                 icon={icons.faChevronDown}
                 size="1x"
