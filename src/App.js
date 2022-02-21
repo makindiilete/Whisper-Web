@@ -43,158 +43,165 @@ import TermsPage from "./pages/OtherLinks/Terms.page";
 import PrivacyPage from "./pages/OtherLinks/Privacy.page";
 import FaqPage from "./pages/OtherLinks/Faq.page";
 import ChatPage from "./pages/Messaging/Chat.page";
+import { useSelector } from "react-redux";
 
 AOS.init();
 
 function App() {
   const history = useHistory();
-  const [user, setUser] = useState();
+  const user = useSelector((state) => state.userReducer?.data);
   console.log(`We are running on ${process.env.REACT_APP_ENV}`);
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
-      <div className="App">
-        <Router history={history}>
-          <Switch>
+    <div className="App">
+      <Router history={history}>
+        <Switch>
+          {localStorage.getItem("token") ? (
+            <LoggedAreaRoute
+              exact
+              component={
+                user?.userType?.toLowerCase() === "customer"
+                  ? CustomerHomePage
+                  : ProviderHomePage
+              }
+              path={routes.LANDING}
+            />
+          ) : (
             <PublicAreaRoute
               exact
               component={LandingPage}
               path={routes.LANDING}
             />
-            <Route
-              exact
-              component={OneCreateAccountPage}
-              path={routes.signup_createAccount}
-            />
-            <Route exact component={AboutPage} path={routes.ABOUT} />
-            <Route exact component={ContactPage} path={routes.CONTACT} />
-            <Route exact component={TermsPage} path={routes.TERMS} />
-            <Route exact component={PrivacyPage} path={routes.PRIVACY} />
-            <Route exact component={FaqPage} path={routes.FAQ} />
-            <Route exact component={TwoLoginPage} path={routes.login} />
-            <Route
-              exact
-              component={ForgotPasswordPage}
-              path={routes.forgotPassword}
-            />{" "}
-            <Route
-              exact
-              component={ResetPasswordPage}
-              path={routes.resetPassword}
-            />
-            <Route exact component={TypeOfUserPage} path={routes.usertype} />
-            <Route
-              exact
-              component={ProviderTypeOfServicePage}
-              path={routes.providerServiceType}
-            />
-            <Route
-              exact
-              component={CreateYourProfilePage}
-              path={routes.createyourprofile}
-            />
-            <Route
-              exact
-              component={VerifyYourPhoneNumberPage}
-              path={routes.verifyphonenumber}
-            />
-            <Route
-              exact
-              component={YourAttributesPage}
-              path={routes.yourAttributes}
-            />
-            <Route
-              exact
-              component={AboutYourselfPage}
-              path={routes.aboutYourself}
-            />
-            <Route
-              exact
-              component={UploadPhotosPage}
-              path={routes.uploadYourPhotos}
-            />
-            <Route
-              exact
-              component={WhatTypeOfServiceAreYouProvidingPage}
-              path={routes.serviceYouWantToRender}
-            />
-            <Route
-              exact
-              component={WhatAreYouLookingForPage}
-              path={routes.whatYouAreLookingFor}
-            />
-            <Route
-              exact
-              component={WhatAreYouLookingForPage}
-              path={routes.whatYouAreLookingFor}
-            />
-            <Route
-              exact
-              component={WhoWillYouProvideToPage}
-              path={routes.whoWillYouProvideTo}
-            />
-            <Route
-              exact
-              component={SelectTypeOfServicePage}
-              path={routes.selectTypeOfServiceToProvide}
-            />
-            <Route
-              exact
-              component={CustomerPreferencesPage}
-              path={routes.customerPreferences}
-            />
-            <Route
-              exact
-              component={ProviderPreferencesPage}
-              path={routes.providerPreferences}
-            />
-            <LoggedAreaRoute
-              exact
-              component={CustomerHomePage}
-              path={routes.CUSTOMER_HOME}
-            />
-            <LoggedAreaRoute
-              exact
-              component={CustomerHomePage}
-              path={`${routes.CUSTOMER_HOME}/:id`}
-            />
-            <LoggedAreaRoute
-              exact
-              component={ProviderHomePage}
-              path={routes.PROVIDER_HOME}
-            />
-            <LoggedAreaRoute
-              exact
-              component={WalletPage}
-              path={routes.WALLET}
-            />
-            <LoggedAreaRoute
-              exact
-              component={ProfilePage}
-              path={routes.PROFILE}
-            />
-            <LoggedAreaRoute
-              exact
-              component={EditProfilePage}
-              path={routes.EDIT_PROFILE}
-            />
-            <LoggedAreaRoute exact component={ChatPage} path={routes.CHAT} />
-            <LoggedAreaRoute
-              exact
-              component={ChatPage}
-              path={`${routes.CHAT}/:id`}
-            />
-            <Route component={NotFound} path="*" />
-          </Switch>
-        </Router>
-        <ToastContainer
-          closeButton={false}
-          position="top-right"
-          pauseOnFocusLoss={false}
-          hideProgressBar
-          pauseOnHover
-        />
-      </div>
-    </AuthContext.Provider>
+          )}
+          <Route
+            exact
+            component={OneCreateAccountPage}
+            path={routes.signup_createAccount}
+          />
+          <Route exact component={AboutPage} path={routes.ABOUT} />
+          <Route exact component={ContactPage} path={routes.CONTACT} />
+          <Route exact component={TermsPage} path={routes.TERMS} />
+          <Route exact component={PrivacyPage} path={routes.PRIVACY} />
+          <Route exact component={FaqPage} path={routes.FAQ} />
+          <Route exact component={TwoLoginPage} path={routes.login} />
+          <Route
+            exact
+            component={ForgotPasswordPage}
+            path={routes.forgotPassword}
+          />{" "}
+          <Route
+            exact
+            component={ResetPasswordPage}
+            path={routes.resetPassword}
+          />
+          <Route exact component={TypeOfUserPage} path={routes.usertype} />
+          <Route
+            exact
+            component={ProviderTypeOfServicePage}
+            path={routes.providerServiceType}
+          />
+          <Route
+            exact
+            component={CreateYourProfilePage}
+            path={routes.createyourprofile}
+          />
+          <Route
+            exact
+            component={VerifyYourPhoneNumberPage}
+            path={routes.verifyphonenumber}
+          />
+          <Route
+            exact
+            component={YourAttributesPage}
+            path={routes.yourAttributes}
+          />
+          <Route
+            exact
+            component={AboutYourselfPage}
+            path={routes.aboutYourself}
+          />
+          <Route
+            exact
+            component={UploadPhotosPage}
+            path={routes.uploadYourPhotos}
+          />
+          <Route
+            exact
+            component={WhatTypeOfServiceAreYouProvidingPage}
+            path={routes.serviceYouWantToRender}
+          />
+          <Route
+            exact
+            component={WhatAreYouLookingForPage}
+            path={routes.whatYouAreLookingFor}
+          />
+          <Route
+            exact
+            component={WhatAreYouLookingForPage}
+            path={routes.whatYouAreLookingFor}
+          />
+          <Route
+            exact
+            component={WhoWillYouProvideToPage}
+            path={routes.whoWillYouProvideTo}
+          />
+          <Route
+            exact
+            component={SelectTypeOfServicePage}
+            path={routes.selectTypeOfServiceToProvide}
+          />
+          <Route
+            exact
+            component={CustomerPreferencesPage}
+            path={routes.customerPreferences}
+          />
+          <Route
+            exact
+            component={ProviderPreferencesPage}
+            path={routes.providerPreferences}
+          />
+          <LoggedAreaRoute
+            exact
+            component={CustomerHomePage}
+            path={routes.CUSTOMER_HOME}
+          />
+          <LoggedAreaRoute
+            exact
+            component={CustomerHomePage}
+            path={`${routes.CUSTOMER_HOME}/:id`}
+          />
+          <LoggedAreaRoute
+            exact
+            component={ProviderHomePage}
+            path={routes.PROVIDER_HOME}
+          />
+          <LoggedAreaRoute exact component={WalletPage} path={routes.WALLET} />
+          <LoggedAreaRoute
+            exact
+            component={ProfilePage}
+            path={routes.PROFILE}
+          />
+          <LoggedAreaRoute
+            exact
+            component={EditProfilePage}
+            path={routes.EDIT_PROFILE}
+          />
+          <LoggedAreaRoute exact component={ChatPage} path={routes.CHAT} />
+          <LoggedAreaRoute
+            exact
+            component={ChatPage}
+            path={`${routes.CHAT}/:id`}
+          />
+          <Route component={NotFound} path="*" />
+        </Switch>
+      </Router>
+      <ToastContainer
+        closeButton={false}
+        position="top-right"
+        pauseOnFocusLoss={false}
+        hideProgressBar
+        pauseOnHover
+      />
+    </div>
   );
 }
 
