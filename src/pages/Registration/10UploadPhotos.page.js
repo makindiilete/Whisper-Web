@@ -111,8 +111,7 @@ const UploadPhotosPage = () => {
 
     formdata.append("userId", user?._id);
     formdata.append("caption", caption);
-    user?.userType?.toLowerCase() === "provider" &&
-      formdata.append("isPrivate", makePrivate);
+    formdata.append("isPrivate", makePrivate);
     files.map((item) => {
       if (item?.file) {
         formdata.append("galleryPictures", item?.file);

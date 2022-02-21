@@ -8,6 +8,12 @@
   overflow: hidden;
 }
 
+.profile .uploadBox img {
+  width: 12.4rem;
+  height: 12.4rem;
+  object-fit: cover;
+}
+
 .profile .imgThumbnail {
   width: 12.4rem;
   height: 12.4rem;
@@ -49,5 +55,11 @@
   .profile .imgThumbnail {
     width: 16.4rem;
     height: 16.4rem;
+  }
+
+  .profile .uploadBox img {
+    width: 16.4rem;
+    height: 16.4rem;
+    object-fit: cover;
   }
 }
