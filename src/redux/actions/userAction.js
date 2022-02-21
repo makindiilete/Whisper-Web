@@ -9,6 +9,8 @@ import {
 } from "../../services/Providers/Profile/ProfileService";
 import { loginService } from "../../services/Auth/Login/loginService";
 import { fetchUserByIdService } from "../../services/Admin/UserManager/userManager";
+import { getCustomerGalleryByIdService } from "../../services/Customers/Gallery/GalleryService";
+import { getProviderGalleryByIdService } from "../../services/Providers/Gallery/Gallery";
 
 export const userAction = (payload) => {
   return {
@@ -23,6 +25,21 @@ export const adminFetchUserAction = (userId) => {
     if (response.ok) {
       dispatch({
         type: constants.ADMIN_FETCH_USER,
+        payload: response?.data?.data,
+      });
+    }
+  };
+};
+
+export const fetchUserGalleryAction = (userId, userType) => {
+  return async function (dispatch) {
+    const response =
+      userType === "customer"
+        ? await getCustomerGalleryByIdService(userId)
+        : await getProviderGalleryByIdService(userId);
+    if (response.ok) {
+      dispatch({
+        type: constants.FETCH_GALLERY,
         payload: response?.data?.data,
       });
     }

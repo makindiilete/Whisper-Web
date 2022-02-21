@@ -18,15 +18,15 @@ const MapComponent = (props) => {
     // setLong(3.349149);
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        setLat(position.coords.latitude);
-        setLong(position.coords.longitude);
+        setLat(position?.coords?.latitude);
+        setLong(position?.coords?.longitude);
       },
       (error) => {
         setIsLoading(false);
         if (error.code === 1) {
           message.error("Turn on device location to see people around you");
         } else {
-          message.error(error.message);
+          message.error(error?.message || "Something went wrong");
         }
       }
     );
@@ -70,6 +70,8 @@ const MapComponent = (props) => {
   );
 };
 
-export default GoogleApiWrapper({
-  apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
-})(MapComponent);
+export default React.memo(
+  GoogleApiWrapper({
+    apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
+  })(MapComponent)
+);

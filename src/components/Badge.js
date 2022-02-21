@@ -6,6 +6,7 @@ export function Badge({ text }) {
       case "companion":
         return "primary";
       case "xrated":
+      case "man":
       case "movies":
         return "secondary";
       case "average":

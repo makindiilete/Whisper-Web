@@ -1,6 +1,6 @@
 import { constants } from "../actions/types";
 
-const initState = { data: {} };
+const initState = { data: {}, gallery: [] };
 export const userReducer = (state = initState, action) => {
   switch (action.type) {
     case constants.SAVE_USER:
@@ -11,6 +11,11 @@ export const userReducer = (state = initState, action) => {
         data: action.payload,
       };
     }
+    case constants.FETCH_GALLERY:
+      return {
+        ...state,
+        gallery: action.payload,
+      };
     default:
       return state;
   }

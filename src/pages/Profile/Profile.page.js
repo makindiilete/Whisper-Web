@@ -22,6 +22,7 @@ import DeleteAccountModal from "../../components/DeleteAccountModal";
 import modalImg from "../../assets/images/auth/40.svg";
 import deleteImg from "../../assets/images/deleteAcct.png";
 import SuccessModal from "../../components/Modals/successModal";
+import { useSelector } from "react-redux";
 
 const ProfilePage = () => {
   let location = useLocation();
@@ -30,6 +31,17 @@ const ProfilePage = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+  const user = useSelector((state) => state.userReducer?.data);
+  const userProfile = useSelector(
+    (state) => state.userReducer?.data?.customerProfile
+  );
+  const userPref = useSelector(
+    (state) => state.userReducer?.data?.customerPreference
+  );
+  const userAttributes = useSelector(
+    (state) => state.userReducer?.data?.customerAttributes
+  );
+  const userGallery = useSelector((state) => state.userReducer?.gallery);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [showContinue, setShowContinue] = useState(false);
@@ -39,7 +51,6 @@ const ProfilePage = () => {
   });
   const [premiumActive, setPremiumActive] = useState(false);
   const [showActivatePremium, setShowActivatePremium] = useState(false);
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   const [images, setImages] = useState([
     { id: 1, url: null },
     { id: 2, url: null },
@@ -48,6 +59,21 @@ const ProfilePage = () => {
     { id: 5, url: null },
     { id: 6, url: null },
   ]);
+
+  const handleSetUserImages = () => {
+    let gallery = [...images];
+    for (let i = 0; i < userGallery.length; i++) {
+      let imgObj = {};
+      imgObj.id = images[i].id;
+      imgObj.url = userGallery[i].imageUri[0];
+      gallery[i] = imgObj;
+    }
+    setImages(gallery);
+  };
+
+  useEffect(() => {
+    handleSetUserImages();
+  }, []);
 
   function handleLogout() {
     localStorage.removeItem("user");
@@ -137,12 +163,14 @@ const ProfilePage = () => {
               </div>
             </div>
             <br />
-            <h4>{`${user?.name}, ${user?.age}`}</h4>
+            <h4>{`${user?.firstName} ${user?.lastName} ${
+              userProfile.age || ""
+            }`}</h4>
             <br />
             <br />
             <div className="ml-md-5 grid__Container">
               {images?.map((img) => (
-                <div className={mobile ? "w-100" : ""}>
+                <div key={img?.id} className={mobile ? "w-100" : ""}>
                   <Upload
                     style={mobile ? { width: "100%" } : null}
                     disabled={img?.url}
@@ -195,7 +223,7 @@ const ProfilePage = () => {
                   />
                 </div>
                 <div>
-                  <small className="text-muted">{user?.bio}</small>
+                  <small className="text-muted">{userProfile?.biography}</small>
                 </div>
               </div>
               <br />
@@ -211,31 +239,29 @@ const ProfilePage = () => {
                 <div className="d-flex justify-content-between mb-4">
                   <small className="text-muted"> Body Type </small>
                   <small className="text-muted">
-                    {user?.attributes?.bodyType}
+                    {userAttributes?.bodyType}
                   </small>
                 </div>
                 <div className="d-flex justify-content-between mb-4">
                   <small className="text-muted"> Height </small>
-                  <small className="text-muted">
-                    {user?.attributes?.Height}
-                  </small>
+                  <small className="text-muted">{userAttributes?.height}</small>
                 </div>
                 <div className="d-flex justify-content-between mb-4">
                   <small className="text-muted"> Education </small>
                   <small className="text-muted">
-                    {user?.attributes?.Education}
+                    {userAttributes?.education}
                   </small>
                 </div>
                 <div className="d-flex justify-content-between mb-4">
                   <small className="text-muted"> Drinking </small>
                   <small className="text-muted">
-                    {user?.attributes?.Drinking}
+                    {userAttributes?.drinkType}
                   </small>
                 </div>
                 <div className="d-flex justify-content-between mb-4">
                   <small className="text-muted"> Smoking </small>
                   <small className="text-muted">
-                    {user?.attributes?.Smoking}
+                    {user?.attributes?.smokeType}
                   </small>
                 </div>
               </div>
@@ -252,7 +278,7 @@ const ProfilePage = () => {
                   />
                 </div>
                 <div>
-                  {user?.interests?.map((item) => (
+                  {userPref?.IAmInto?.map((item) => (
                     <Badge text={item} key={item} />
                   ))}
                 </div>
@@ -270,7 +296,7 @@ const ProfilePage = () => {
                   />
                 </div>
                 <div>
-                  {user?.hereFor?.map((item) => (
+                  {userPref?.lookingFor?.map((item) => (
                     <Badge text={item} key={item} />
                   ))}
                 </div>
@@ -281,7 +307,7 @@ const ProfilePage = () => {
               <br />
               <div className="col-md-8">
                 <div className="d-flex justify-content-between">
-                  <h5>Job Title</h5>
+                  {/*<h5 className="text-white">Job Title</h5>*/}
                   <h5>Phone Number</h5>
                   <h5>Email</h5>
                   <AiOutlineEdit
@@ -291,15 +317,16 @@ const ProfilePage = () => {
                   />
                 </div>
                 <div className="d-flex justify-content-between">
-                  <div>
+                  {/*<div>
                     <small className="text-muted">{user?.occupation}</small>
-                  </div>
+                  </div>*/}
                   <div>
-                    <small className="text-muted">{user?.phone}</small>
+                    <small className="text-muted">{userProfile?.phone}</small>
                   </div>
                   <div>
                     <small className="text-muted">{user?.email}</small>
                   </div>
+                  <AiOutlineEdit size="2rem" color="#fff" />
                 </div>
               </div>
               <br />

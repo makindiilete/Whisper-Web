@@ -19,7 +19,10 @@ import {
   googleLoginService,
   loginService,
 } from "../../services/Auth/Login/loginService";
-import { adminFetchUserAction } from "../../redux/actions/userAction";
+import {
+  adminFetchUserAction,
+  fetchUserGalleryAction,
+} from "../../redux/actions/userAction";
 import { Facebook } from "../../components/socialAuth/facebook/facebook";
 import { Google } from "../../components/socialAuth/google/Google";
 import { Apple } from "../../components/socialAuth/apple/Apple";
@@ -52,6 +55,12 @@ const TwoLoginPage = (props) => {
           : routes.PROVIDER_HOME
       );
       dispatch(adminFetchUserAction(response?.data?.data?._id));
+      dispatch(
+        fetchUserGalleryAction(
+          response?.data?.data?._id,
+          response?.data?.data?.userType?.toLowerCase()
+        )
+      );
     } else {
       message.error(
         response?.data?.errors[0].message || "Something went wrong"
