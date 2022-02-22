@@ -41,7 +41,6 @@ const OneCreateAccountPage = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
-  const { user, setUser } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState({
     firstName: "",

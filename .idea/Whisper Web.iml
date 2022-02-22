@@ -14,5 +14,6 @@
     <orderEntry type="module" module-name="Web" />
     <orderEntry type="module" module-name="CodevolutionReact" />
     <orderEntry type="module" module-name="cashbox" />
+    <orderEntry type="module" module-name="React Native" />
   </component>
 </module>

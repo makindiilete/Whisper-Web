@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/../../Cashbox/CASHBOX-NATIVE.michael/.idea/CASHBOX-NATIVE.michael.iml" filepath="$PROJECT_DIR$/../../Cashbox/CASHBOX-NATIVE.michael/.idea/CASHBOX-NATIVE.michael.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../Personal/CLASSES/React/CodevolutionReact/.idea/CodevolutionReact.iml" filepath="$PROJECT_DIR$/../../Personal/CLASSES/React/CodevolutionReact/.idea/CodevolutionReact.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../Personal/CLASSES/React Native/.idea/React Native.iml" filepath="$PROJECT_DIR$/../../Personal/CLASSES/React Native/.idea/React Native.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../Driva/Ryva/.idea/Ryva.iml" filepath="$PROJECT_DIR$/../../Driva/Ryva/.idea/Ryva.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../Africa Prudential/Web/.idea/Web.iml" filepath="$PROJECT_DIR$/../../Africa Prudential/Web/.idea/Web.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/Whisper Web.iml" filepath="$PROJECT_DIR$/.idea/Whisper Web.iml" />
