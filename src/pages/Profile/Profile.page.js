@@ -23,12 +23,22 @@ import modalImg from "../../assets/images/auth/40.svg";
 import deleteImg from "../../assets/images/deleteAcct.png";
 import SuccessModal from "../../components/Modals/successModal";
 import { useDispatch, useSelector } from "react-redux";
-import { uploadCustomerGalleryService } from "../../services/Customers/Gallery/GalleryService";
-import { uploadProviderGalleryService } from "../../services/Providers/Gallery/Gallery";
+import {
+  deleteCustomerGalleryService,
+  getCustomerGalleryByIdService,
+  uploadCustomerGalleryService,
+} from "../../services/Customers/Gallery/GalleryService";
+import {
+  deleteProviderGalleryService,
+  getProviderGalleryByIdService,
+  uploadProviderGalleryService,
+} from "../../services/Providers/Gallery/Gallery";
 import {
   adminFetchUserAction,
   fetchUserGalleryAction,
 } from "../../redux/actions/userAction";
+import PopUpModal from "../../components/Modals/popUpModal";
+import { constants } from "../../redux/actions/types";
 
 const ProfilePage = () => {
   let location = useLocation();
@@ -48,9 +58,18 @@ const ProfilePage = () => {
     (state) => state.userReducer?.data?.customerAttributes
   );
   const userGallery = useSelector((state) => state.userReducer?.gallery);
+  const galleryLoading = useSelector(
+    (state) => state.userReducer?.galleryLoading
+  );
   const dispatch = useDispatch();
+  const [imgPreview, setImgPreview] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState({
+    type: "",
+    status: false,
+  });
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedImgInfo, setSelectedImgInfo] = useState({});
   const [showSuccess, setShowSuccess] = useState(false);
   const [showContinue, setShowContinue] = useState(false);
   const [loadingImg, setLoadingImg] = useState({
@@ -68,19 +87,37 @@ const ProfilePage = () => {
     { id: 6, url: null },
   ]);
 
-  const handleSetUserImages = () => {
+  const handleSetUserImages = (pics) => {
+    console.log("pics here = ", pics);
+    debugger;
     let gallery = [...images];
-    for (let i = 0; i < userGallery.length; i++) {
+    for (let i = 0; i < pics.length; i++) {
       let imgObj = {};
       imgObj.id = images[i].id;
-      imgObj.url = userGallery[i].imageUri[0];
+      imgObj.url = pics[i].imageUri[0];
+      imgObj.deleteId = pics[i]?._id;
       gallery[i] = imgObj;
     }
     setImages(gallery);
   };
 
+  const fetchGallery = async () => {
+    const response =
+      user?.userType?.toLowerCase() === "customer"
+        ? await getCustomerGalleryByIdService(user?._id)
+        : await getProviderGalleryByIdService(user?._id);
+    if (response.ok) {
+      dispatch(fetchUserGalleryAction(response?.data?.data));
+      handleSetUserImages(response?.data?.data);
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  };
+
   useEffect(() => {
-    handleSetUserImages();
+    fetchGallery();
   }, []);
 
   function handleLogout() {
@@ -102,22 +139,22 @@ const ProfilePage = () => {
     },
   };
 
-  const handleDeleteImg = (id) => {
+  /* const handleDeleteImg = () => {
     let arr = [...images];
-    let imgToChange = arr.find((i) => i.id === id);
+    let imgToChange = arr.find((i) => i.id === selectedImgInfo.id);
     imgToChange.url = null;
     setImages(arr);
     handleShowContinueBtn(arr);
-  };
+  };*/
 
-  const handleGeneratePreview = (info, id) => {
+  const handleGeneratePreview = () => {
     let arr = [...images];
-    let imgToChange = arr.find((i) => i.id === id);
-    if (info.file.status !== "uploading") {
+    let imgToChange = arr.find((i) => i.id === selectedImgInfo.id);
+    if (selectedImgInfo.info.file.status !== "uploading") {
     }
-    imgToChange.url = URL.createObjectURL(info.file);
+    imgToChange.url = URL.createObjectURL(selectedImgInfo.info.file);
     setImages(arr);
-    handleImageUpload(info.file);
+    handleImageUpload(selectedImgInfo.info.file);
     handleShowContinueBtn(arr);
   };
 
@@ -146,10 +183,25 @@ const ProfilePage = () => {
       user?.userType?.toLowerCase() === "customer"
         ? await uploadCustomerGalleryService(formdata)
         : await uploadProviderGalleryService(formdata);
-    dispatch(fetchUserGalleryAction(user._id, user?.userType?.toLowerCase()));
     setIsLoading(false);
     if (response.ok) {
-      handleSetUserImages();
+      fetchGallery();
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  };
+
+  const handleImageDelete = async () => {
+    setIsLoading(true);
+    const response =
+      user?.userType?.toLowerCase() === "customer"
+        ? await deleteCustomerGalleryService(selectedImgInfo?.deleteId)
+        : await deleteProviderGalleryService(selectedImgInfo?.deleteId);
+    setIsLoading(false);
+    if (response.ok) {
+      window.location.reload();
     } else {
       message.error(
         response?.data?.errors[0].message || "Something went wrong"
@@ -214,7 +266,11 @@ const ProfilePage = () => {
                       {...props}
                       showUploadList={false}
                       maxCount={1}
-                      onChange={(info) => handleGeneratePreview(info, img?.id)}
+                      onChange={(info) => {
+                        setImgPreview(URL.createObjectURL(info.file));
+                        setSelectedImgInfo({ info: info, id: img?.id });
+                        setShowConfirmation({ type: "upload", status: true });
+                      }}
                     >
                       <div className="uploadBox img">
                         {loadingImg.status && img?.id === loadingImg.id ? (
@@ -232,7 +288,18 @@ const ProfilePage = () => {
                                 right: "1rem",
                                 borderRadius: "5px",
                               }}
-                              onClick={() => handleDeleteImg(img?.id)}
+                              onClick={() => {
+                                setShowConfirmation({
+                                  type: "delete",
+                                  status: true,
+                                });
+                                setImgPreview(img?.url);
+                                setSelectedImgInfo({
+                                  info: null,
+                                  id: img?.id,
+                                  deleteId: img?.deleteId,
+                                });
+                              }}
                             >
                               <GrTrash />
                             </div>
@@ -411,6 +478,24 @@ const ProfilePage = () => {
             setShowSuccess(true);
           } else {
             setShowDeleteModal(false);
+          }
+        }}
+      />
+
+      <PopUpModal
+        visible={showConfirmation.status}
+        deleteFn={showConfirmation.type === "delete"}
+        uploadFn={showConfirmation.type === "upload"}
+        imageToUpload={imgPreview}
+        onCancel={(arg) => {
+          if (arg === "continue" && showConfirmation.type === "delete") {
+            setShowConfirmation({ type: "", status: false });
+            handleImageDelete();
+          } else if (arg === "continue" && showConfirmation.type === "upload") {
+            setShowConfirmation({ type: "", status: false });
+            handleGeneratePreview();
+          } else {
+            setShowConfirmation({ type: "", status: false });
           }
         }}
       />

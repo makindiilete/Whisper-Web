@@ -31,18 +31,10 @@ export const adminFetchUserAction = (userId) => {
   };
 };
 
-export const fetchUserGalleryAction = (userId, userType) => {
-  return async function (dispatch) {
-    const response =
-      userType === "customer"
-        ? await getCustomerGalleryByIdService(userId)
-        : await getProviderGalleryByIdService(userId);
-    if (response.ok) {
-      dispatch({
-        type: constants.FETCH_GALLERY,
-        payload: response?.data?.data,
-      });
-    }
+export const fetchUserGalleryAction = (gallery) => {
+  return {
+    type: constants.FETCH_GALLERY,
+    payload: gallery,
   };
 };
 

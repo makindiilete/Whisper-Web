@@ -9,8 +9,12 @@ export const uploadCustomerGalleryService = (data) =>
   apiClient.post(`/customer/uploadImagesToCustomerGallery`, data);
 export const uploadCustomerGalleryWithLinkService = (data) =>
   apiClient.post(`/customer/uploadImagesToCustomerGalleryWithLink`, data);
-export const deleteCustomerGalleryService = (data) =>
-  apiClient.delete(`/customer/deleteCustomerGallery`, data);
+export const deleteCustomerGalleryService = (id) =>
+  apiClient.delete(
+    `/customer/deleteCustomerGallery`,
+    {},
+    { data: { galleryId: id } }
+  );
 export const likeCustomerPictureService = (data) =>
   apiClient.put(`/customer/likeCustomerGallery`, data);
 export const dislikeCustomerPictureService = (data) =>
