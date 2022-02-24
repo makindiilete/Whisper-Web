@@ -93,7 +93,19 @@ const NavigationPage = (props) => {
             : "nav collapsible collapsible--expanded "
         }
       >
-        <img src={logo} className="img-fluid nav__brand" alt="" />
+        <img
+          onClick={() => {
+            setIsExpanded(!isExpanded);
+            history.push(
+              userType?.toLowerCase() === "customer"
+                ? routes.CUSTOMER_HOME
+                : routes.PROVIDER_HOME
+            );
+          }}
+          src={logo}
+          className="img-fluid nav__brand"
+          alt=""
+        />
         <FontAwesomeIcon
           icon={icons.faBars}
           size="2x"

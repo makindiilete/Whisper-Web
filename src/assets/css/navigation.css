@@ -19,10 +19,11 @@
 
 .nav__item {
   margin: 0.5rem 2rem;
-  border-bottom: 1px solid lightgrey;
+  border-bottom: 1px dashed lightgrey;
   list-style: none !important;
   cursor: pointer;
   transition: all 0.15s;
+  padding-bottom: 1rem;
 }
 
 .nav__item:hover,
