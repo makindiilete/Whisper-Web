@@ -154,7 +154,7 @@ const WalletPage = (props) => {
                 <div>
                   <div className="transactions__item">
                     <h5 className="font-weight-bold padding-none">
-                      {item?.title}
+                      {item?.description}
                     </h5>
                     <p className="padding-none">
                       {" "}
@@ -165,13 +165,14 @@ const WalletPage = (props) => {
                     <div>
                       <small className="text-muted">
                         {" "}
-                        {moment(item?.date).format("L")}{" "}
+                        {moment(item?.createdAt).format("L")}{" "}
                       </small>
                     </div>
                     <div>
                       <small
                         className={`${
-                          item?.type === "Debit"
+                          item?.transactionType === "Debit" ||
+                          item?.transactionType === "Debit On Card"
                             ? "text-danger"
                             : "text-success"
                         }`}

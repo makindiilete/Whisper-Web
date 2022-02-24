@@ -2,24 +2,23 @@ import React, { useEffect, useState } from "react";
 
 export function Badge({ text }) {
   function calcColor() {
-    switch (text?.toString()?.toLowerCase()) {
-      case "companion":
-        return "primary";
-      case "xrated":
-      case "man":
-      case "movies":
-        return "secondary";
-      case "average":
-        return "primary";
-      case "cigarette":
-        return "secondary";
-      case "vodka":
-      case "smoking":
-        return "tertiary";
-      default:
-        return "primary";
+    let textLength = text?.length;
+    if (textLength <= 3) {
+      return "primary";
+    }
+    if (textLength <= 5) {
+      return "secondary";
+    }
+    if (textLength <= 7) {
+      return "tertiary";
+    }
+    if (textLength <= 9) {
+      return "success";
+    } else {
+      return "primary";
     }
   }
+
   return (
     <span
       className={`badges ${
@@ -27,6 +26,8 @@ export function Badge({ text }) {
           ? "badges-primary"
           : calcColor() === "secondary"
           ? "badges-secondary"
+          : calcColor() === "success"
+          ? "badges-success"
           : "badges-tertiary"
       } `}
     >

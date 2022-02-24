@@ -17,8 +17,6 @@ const WalletTransactionDetails = ({ visible, onCancel, data }) => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
-  const { title, to, acctNumber, status, date, amount } = data;
-
   const mobile = useMobile();
   return (
     <Modal
@@ -59,30 +57,36 @@ const WalletTransactionDetails = ({ visible, onCancel, data }) => {
           </div>
           <div className={premium.history}>
             <div>
-              <p className="padding-none">{title}</p>
-              <p className="padding-none">${formatCurrency(amount)}</p>
+              <p className="padding-none">{data?.description}</p>
+              <p className="padding-none">${formatCurrency(data?.amount)}</p>
             </div>{" "}
             <div>
-              <p className="padding-none">Withdrawn to</p>
-              <p className="padding-none">{to}</p>
+              <p className="padding-none">Payment Method</p>
+              <p className="padding-none">{data?.paymentMethod}</p>
             </div>
             <div>
-              <p className="padding-none">Account Number</p>
-              <p className="padding-none">{acctNumber}</p>
+              <p className="padding-none">Transaction Ref.</p>
+              <p className="padding-none">{data?.transactionReference}</p>
             </div>{" "}
             <div>
               <p className="padding-none">Status</p>
               <p
                 className={`padding-none ${
-                  status === "Successful" ? "text-success" : "text-danger"
+                  data?.paymentStatus === "Successful"
+                    ? "text-success"
+                    : data?.paymentStatus === "Pending"
+                    ? "text-warning"
+                    : "text-danger"
                 }`}
               >
-                {status}
+                {data?.paymentStatus}
               </p>
             </div>{" "}
             <div>
               <p className="padding-none">Date</p>
-              <p className="padding-none">{moment(date).format("L")}</p>
+              <p className="padding-none">
+                {moment(data?.createdAt).format("L")}
+              </p>
             </div>
             <br />
             <br />
