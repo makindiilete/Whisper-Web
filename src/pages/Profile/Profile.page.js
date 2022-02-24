@@ -51,13 +51,20 @@ const ProfilePage = () => {
   const coords = useCoords();
   const user = useSelector((state) => state.userReducer?.data);
   const userProfile = useSelector(
-    (state) => state.userReducer?.data?.customerProfile
+    (state) =>
+      state.userReducer?.data?.customerProfile ||
+      state.userReducer?.data?.providerProfile
   );
   const userPref = useSelector(
     (state) => state.userReducer?.data?.customerPreference
   );
+  const providerService = useSelector(
+    (state) => state.userReducer?.data?.providerService
+  );
   const userAttributes = useSelector(
-    (state) => state.userReducer?.data?.customerAttributes
+    (state) =>
+      state.userReducer?.data?.customerAttributes ||
+      state.userReducer?.data?.providerAttributes
   );
   const userGallery = useSelector((state) => state.userReducer?.gallery);
   const galleryLoading = useSelector(
@@ -85,22 +92,26 @@ const ProfilePage = () => {
   const [premiumActive, setPremiumActive] = useState(false);
   const [showActivatePremium, setShowActivatePremium] = useState(false);
   const [images, setImages] = useState([
+    { id: 0, url: null },
     { id: 1, url: null },
     { id: 2, url: null },
     { id: 3, url: null },
     { id: 4, url: null },
     { id: 5, url: null },
-    { id: 6, url: null },
   ]);
 
   const handleSetUserImages = (pics) => {
+    console.log("pics = ", pics);
     let gallery = [...images];
     for (let i = 0; i < pics.length; i++) {
-      let imgObj = {};
-      imgObj.id = images[i].id;
-      imgObj.url = pics[i].imageUri[0];
-      imgObj.deleteId = pics[i]?._id;
-      gallery[i] = imgObj;
+      gallery[i].id = i;
+      gallery[i].url = pics[i].imageUri[0];
+      gallery[i].deleteId = pics[i]?._id;
+    }
+    for (let i = 0; i < gallery.length; i++) {
+      if (!gallery[i]?.deleteId) {
+        gallery[i].url = null;
+      }
     }
     setImages(gallery);
   };
@@ -123,11 +134,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     coords
-      .getCoords(
-        user?.customerProfile?.city,
-        user?.customerProfile?.state,
-        user?.customerProfile?.country
-      )
+      .getCoords(userProfile?.city, userProfile?.state, userProfile?.country)
       .then((r) => setCoordinates({ lat: r.lat, lng: r.lng }))
       .catch((error) => message.error("Could not fetch coordinates."));
     fetchGallery();
@@ -256,16 +263,22 @@ const ProfilePage = () => {
                     className="btn btn-outline-primary btn-sm-block btn-md-auto"
                     onClick={() => {
                       history.push(routes.usertype);
-                      localStorage.setItem("promoteToProvider", "yes");
+                      if (user?.userType?.toLowerCase() === "customer") {
+                        localStorage.setItem("promoteToProvider", "yes");
+                      } else {
+                        localStorage.setItem("promoteToCustomer", "yes");
+                      }
                     }}
                   >
-                    Become a Provider
+                    {user?.userType?.toLowerCase() === "customer"
+                      ? "Become a Provider"
+                      : "Become a Customer"}
                   </button>
                 </div>
               </div>
               <br />
               <h4>{`${user?.firstName} ${user?.lastName} ${
-                userProfile.age || ""
+                userProfile?.age || ""
               }`}</h4>
               <br />
               <br />
@@ -387,22 +400,34 @@ const ProfilePage = () => {
                 </div>
                 <br />
                 <div className="dotted-divider w-100" />
-                <br />
-                <div className="col-md-8">
-                  <div className="d-flex justify-content-between">
-                    <h5>I am interested in</h5>
-                    <AiOutlineEdit
-                      onClick={() => history.push(routes.EDIT_PROFILE)}
-                      size="2rem"
-                      className="cursor"
-                    />
+
+                <>
+                  <br />
+                  <div className="col-md-8">
+                    <div className="d-flex justify-content-between">
+                      <h5>I am interested in</h5>
+                      <AiOutlineEdit
+                        onClick={() => history.push(routes.EDIT_PROFILE)}
+                        size="2rem"
+                        className="cursor"
+                      />
+                    </div>
+                    {user?.userType?.toLowerCase() === "customer" ? (
+                      <div>
+                        {userPref?.IAmInto?.map((item) => (
+                          <Badge text={item} key={item} />
+                        ))}
+                      </div>
+                    ) : (
+                      <div>
+                        {providerService?.providingFor?.map((item) => (
+                          <Badge text={item} key={item} />
+                        ))}
+                      </div>
+                    )}
                   </div>
-                  <div>
-                    {userPref?.IAmInto?.map((item) => (
-                      <Badge text={item} key={item} />
-                    ))}
-                  </div>
-                </div>
+                </>
+
                 <br />
                 <div className="dotted-divider w-100" />
                 <br />
@@ -415,11 +440,20 @@ const ProfilePage = () => {
                       className="cursor"
                     />
                   </div>
-                  <div>
-                    {userPref?.lookingFor?.map((item) => (
-                      <Badge text={item} key={item} />
-                    ))}
-                  </div>
+
+                  {user?.userType?.toLowerCase() === "customer" ? (
+                    <div>
+                      {userPref?.lookingFor?.map((item) => (
+                        <Badge text={item} key={item} />
+                      ))}
+                    </div>
+                  ) : (
+                    <div>
+                      {["Anal", "Blow Job", "Group"]?.map((item) => (
+                        <Badge text={item} key={item} />
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <br />
                 <div className="dotted-divider w-100" />
@@ -457,7 +491,10 @@ const ProfilePage = () => {
                   <h5>Location</h5>
 
                   <div>
-                    <MapComponent />
+                    <MapComponent
+                      latt={coordinates.lat}
+                      lngg={coordinates.lng}
+                    />
                   </div>
                 </div>
                 <br />

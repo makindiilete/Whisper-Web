@@ -209,6 +209,13 @@ const VerifyYourPhoneNumberPage = (props) => {
                       </small>
                     </div>
                     <br />
+                    <h5
+                      className="text-center cursor"
+                      onClick={() => setShowOtp(false)}
+                    >
+                      Change Phone Number
+                    </h5>
+                    <br />
                     <button className="btn btn-primary btn-block">
                       Continue
                     </button>

@@ -28,6 +28,11 @@ const EditProfilePage = (props) => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
   const user = useSelector((state) => state.userReducer?.data);
+  const userProfile = useSelector(
+    (state) =>
+      state.userReducer?.data?.customerProfile ||
+      state.userReducer?.data?.providerProfile
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [genders, setGenders] = useState([
     "male",
@@ -36,7 +41,7 @@ const EditProfilePage = (props) => {
     "Transgender",
     "Intersex",
   ]);
-  const [selected, setSelected] = useState(user?.customerProfile?.gender);
+  const [selected, setSelected] = useState(userProfile?.gender);
   const [showSuccess, setShowSuccess] = useState(false);
   const [showPasswordSuccess, setShowPasswordSuccess] = useState(false);
   const [showBasicInfoSuccess, setShowBasicInfoSuccess] = useState(false);
@@ -54,8 +59,8 @@ const EditProfilePage = (props) => {
   const [basicInfo, setBasicInfo] = useState({
     firstName: user?.firstName,
     lastName: user?.lastName,
-    dob: user?.customerProfile?.dateOfBirth,
-    gender: user?.customerProfile?.gender,
+    dob: userProfile?.dateOfBirth,
+    gender: userProfile?.gender,
   });
   const [yourAccount, setYourAccount] = useState({
     oldPassword: "",
@@ -378,13 +383,13 @@ const EditProfilePage = (props) => {
                     <div className="d-flex justify-content-between mb-4">
                       <small className="text-dark"> Date Of Birth </small>
                       <small className="text-muted">
-                        {user?.customerProfile?.dateOfBirth}
+                        {userProfile?.dateOfBirth}
                       </small>
                     </div>
                     <div className="d-flex justify-content-between mb-4">
                       <small className="text-dark"> Gender </small>
                       <small className="text-muted">
-                        {toSentenceCase(user?.customerProfile?.gender)}
+                        {toSentenceCase(userProfile?.gender)}
                       </small>
                     </div>
                   </>

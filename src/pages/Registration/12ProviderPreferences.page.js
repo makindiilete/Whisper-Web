@@ -68,10 +68,13 @@ const ProviderPreferencesPage = (props) => {
   const handleSubmit = async () => {
     setIsLoading(true);
     let service = [];
+    let serviceStored = JSON.parse(localStorage.getItem("providerService"));
     services?.map((item, index) =>
       service.push({
         serviceCategoryName: Object.keys(amount)[index],
         pricePerHour: Object.values(amount)[index],
+        serviceCategoryId: serviceStored[index].serviceCategoryId,
+        services: serviceStored[index].services,
       })
     );
 
@@ -87,6 +90,7 @@ const ProviderPreferencesPage = (props) => {
     if (response.ok) {
       dispatch(adminFetchUserAction(user?._id));
       history.push(routes.PROVIDER_HOME);
+      localStorage.removeItem("providerService");
     } else {
       message.error(
         response?.data?.errors[0].message || "Something went wrong"

@@ -91,7 +91,8 @@ const ProviderTypeOfServicePage = (props) => {
     setIsLoading(false);
     if (response.ok) {
       dispatch(adminFetchUserAction(user?._id));
-      history.push(`${routes.createyourprofile}?step=1`);
+      history.push(routes.selectTypeOfServiceToProvide);
+      // history.push(`${routes.createyourprofile}?step=1`);
     } else {
       message.error(
         response?.data?.errors[0].message || "Something went wrong"
