@@ -8,28 +8,30 @@ const mapStyles = {
   height: "20rem",
 };
 
-const MapComponent = (props) => {
-  const [lat, setLat] = useState(0);
-  const [long, setLong] = useState(0);
+const MapComponent = ({ google, latt = null, lngg = null }) => {
+  const [lat, setLat] = useState(latt || 0);
+  const [long, setLong] = useState(lngg || 0);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     // setLat(6.605874);
     // setLong(3.349149);
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setLat(position?.coords?.latitude);
-        setLong(position?.coords?.longitude);
-      },
-      (error) => {
-        setIsLoading(false);
-        if (error.code === 1) {
-          message.error("Turn on device location to see people around you");
-        } else {
-          message.error(error?.message || "Something went wrong");
+    if (!latt && !lngg) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLat(position?.coords?.latitude);
+          setLong(position?.coords?.longitude);
+        },
+        (error) => {
+          setIsLoading(false);
+          if (error.code === 1) {
+            message.error("Turn on device location to see people around you");
+          } else {
+            message.error(error?.message || "Something went wrong");
+          }
         }
-      }
-    );
+      );
+    }
   }, []);
 
   return (
@@ -44,7 +46,7 @@ const MapComponent = (props) => {
         />
       ) : (
         <Map
-          google={props.google}
+          google={google}
           style={mapStyles}
           zoom={15}
           initialCenter={{

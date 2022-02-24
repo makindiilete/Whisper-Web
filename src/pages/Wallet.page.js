@@ -17,6 +17,12 @@ import WithdrawalModal from "../components/Modals/withdrawalModal";
 import WalletTransactionDetails from "../components/Modals/walletTransactionDetails";
 import PaymentModal from "../components/Modals/paymentModal";
 import { useSelector } from "react-redux";
+import { getCustomerGalleryByIdService } from "../services/Customers/Gallery/GalleryService";
+import { getProviderGalleryByIdService } from "../services/Providers/Gallery/Gallery";
+import { getUserWalletService } from "../services/App/Wallet/walletService";
+import { fetchUserGalleryAction } from "../redux/actions/userAction";
+import { message } from "antd";
+import { getUserTransactionsService } from "../services/App/Transanction History/transactionHistoryService";
 
 const WalletPage = (props) => {
   let location = useLocation();
@@ -27,6 +33,7 @@ const WalletPage = (props) => {
   }, [location.pathname]);
   const user = useSelector((state) => state.userReducer?.data);
   const [isLoading, setIsLoading] = useState(false);
+  const [wallet, setWallet] = useState({});
   const [userType, setUserType] = useState(user?.userType);
   const [showSuccess, setShowSuccess] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -38,59 +45,39 @@ const WalletPage = (props) => {
   const [showWelcome, setShowWelcome] = useState(true);
   const [premiumActive, setPremiumActive] = useState(false);
   const [showActivatePremium, setShowActivatePremium] = useState(false);
-  const [transactions, setTransactions] = useState([
-    {
-      id: 1,
-      title: "Withdrawal",
-      amount: 1000,
-      date: new Date(2022, 2, 1),
-      type: "Debit",
-      status: "Successful",
-      to: "Bank Account",
-      acctNumber: "0724411724",
-    },
-    {
-      id: 2,
-      title: "Withdrawal",
-      amount: 500,
-      date: new Date(2022, 1, 13),
-      type: "Debit",
-      status: "Declined",
-      to: "Bank Account",
-      acctNumber: "0724411724",
-    },
-    {
-      id: 3,
-      title: "Wallet Funding",
-      amount: 5000,
-      date: new Date(2021, 12, 23),
-      type: "Credit",
-      status: "Successful",
-      to: "Bank Account",
-      acctNumber: "0724411724",
-    },
-    {
-      id: 4,
-      title: "Withdrawal",
-      amount: 1,
-      date: new Date(2021, 11, 15),
-      type: "Debit",
-      status: "Declined",
-      to: "Bank Account",
-      acctNumber: "0724411724",
-    },
-    {
-      id: 5,
-      title: "Withdrawal",
-      amount: 420,
-      date: new Date(2022, 1, 20),
-      type: "Debit",
-      status: "Successful",
-      to: "Bank Account",
-      acctNumber: "0724411724",
-    },
-  ]);
-  const [transactionData, setTransactionData] = useState(transactions[0]);
+  const [transactions, setTransactions] = useState([]);
+  const [transactionData, setTransactionData] = useState({});
+
+  const fetchWallet = async () => {
+    setIsLoading(true);
+    const response = await getUserWalletService(user?._id);
+    setIsLoading(false);
+    if (response.ok) {
+      setWallet(response?.data?.data);
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  };
+
+  const fetchTransactions = async () => {
+    setIsLoading(true);
+    const response = await getUserTransactionsService(user?._id);
+    setIsLoading(false);
+    if (response.ok) {
+      setTransactions(response?.data?.data);
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  };
+
+  useEffect(() => {
+    fetchWallet();
+    fetchTransactions();
+  }, []);
 
   if (isLoading) {
     return (
@@ -121,10 +108,12 @@ const WalletPage = (props) => {
               <div>
                 <small className="padding-none text-white">Wallet ID</small>
                 <br />
-                <small className="padding-none text-white">1228928</small>
+                <small className="padding-none text-white">{wallet?._id}</small>
               </div>
             </div>
-            <h3 className="text-white">$400</h3>
+            <h3 className="text-white">
+              ${formatCurrency(wallet?.walletBalance)}
+            </h3>
             <div className="d-flex justify-content-end">
               <div>
                 <button
@@ -148,6 +137,11 @@ const WalletPage = (props) => {
           <div className="transactions">
             <h4>Transactions</h4>
             <br />
+            {transactions?.length === 0 && (
+              <p className="font-weight-bold primary-text">
+                No transactions available at the moment.
+              </p>
+            )}
             {transactions?.map((item) => (
               <div
                 key={item?.id}

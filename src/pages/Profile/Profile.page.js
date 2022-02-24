@@ -39,6 +39,7 @@ import {
 } from "../../redux/actions/userAction";
 import PopUpModal from "../../components/Modals/popUpModal";
 import { constants } from "../../redux/actions/types";
+import { useCoords } from "../../hooks/useCoords";
 
 const ProfilePage = () => {
   let location = useLocation();
@@ -47,6 +48,7 @@ const ProfilePage = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+  const coords = useCoords();
   const user = useSelector((state) => state.userReducer?.data);
   const userProfile = useSelector(
     (state) => state.userReducer?.data?.customerProfile
@@ -62,6 +64,10 @@ const ProfilePage = () => {
     (state) => state.userReducer?.galleryLoading
   );
   const dispatch = useDispatch();
+  const [coordinates, setCoordinates] = useState({
+    lat: 0,
+    lng: 0,
+  });
   const [imgPreview, setImgPreview] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState({
@@ -88,8 +94,6 @@ const ProfilePage = () => {
   ]);
 
   const handleSetUserImages = (pics) => {
-    console.log("pics here = ", pics);
-    debugger;
     let gallery = [...images];
     for (let i = 0; i < pics.length; i++) {
       let imgObj = {};
@@ -111,12 +115,21 @@ const ProfilePage = () => {
       handleSetUserImages(response?.data?.data);
     } else {
       message.error(
-        response?.data?.errors[0].message || "Something went wrong"
+        response?.data?.errors[0].message ||
+          "Something went wrong fetching gallery"
       );
     }
   };
 
   useEffect(() => {
+    coords
+      .getCoords(
+        user?.customerProfile?.city,
+        user?.customerProfile?.state,
+        user?.customerProfile?.country
+      )
+      .then((r) => setCoordinates({ lat: r.lat, lng: r.lng }))
+      .catch((error) => message.error("Could not fetch coordinates."));
     fetchGallery();
   }, []);
 

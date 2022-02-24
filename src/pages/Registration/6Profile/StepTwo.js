@@ -29,17 +29,17 @@ const StepTwo = ({
   const [isLoading, setIsLoading] = useState(false);
   const [noImageError, setNoImageError] = useState(false);
   const [data, setData] = useState({
-    idType: "",
+    // idType: "",
     idCardNumber: "",
     idCards: "",
   });
   const [imgPath, setImgPath] = useState("");
-  const [idTypes, setIdTypes] = useState([
+  /*  const [idTypes, setIdTypes] = useState([
     `Driver's licence`,
     "International Password",
     "NIMC",
     "National ID Card",
-  ]);
+  ]);*/
 
   const handleSubmit = async (values) => {
     if (data.idCards === "") {
@@ -47,7 +47,7 @@ const StepTwo = ({
     } else {
       setNoImageError(false);
       const formdata = new FormData();
-      formdata.append("idType", data.idType);
+      // formdata.append("idType", data.idType);
       formdata.append("idCardNumber", data.idCardNumber);
       formdata.append("idCards", data.idCards);
       formdata.append("userId", user?._id);
@@ -117,7 +117,7 @@ const StepTwo = ({
         onFinish={handleSubmit}
         size="large"
       >
-        <Form.Item
+        {/* <Form.Item
           className="mb-3 mb-md-0 mt-2"
           initialValue=""
           name="idType"
@@ -148,7 +148,7 @@ const StepTwo = ({
               </Select.Option>
             ))}
           </Select>
-        </Form.Item>{" "}
+        </Form.Item>{" "}*/}
         <Form.Item
           className="mb-3 mb-md-0 mt-2"
           initialValue=""
