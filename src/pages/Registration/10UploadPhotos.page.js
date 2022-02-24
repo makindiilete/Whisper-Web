@@ -74,7 +74,8 @@ const UploadPhotosPage = () => {
     imgToChange.url = null;
     setImages(arr);
     let filesTo = files;
-    filesTo = filesTo.filter((f) => f.id !== id);
+    filesTo[index] = null;
+    // filesTo = filesTo.filter((f) => f.id !== id);
     setFiles(filesTo);
     handleShowContinueBtn(arr);
   };
@@ -87,7 +88,7 @@ const UploadPhotosPage = () => {
     }
     imgToChange.url = URL.createObjectURL(info.file);
     setImages(arr);
-    setFiles([...files, { id: id, file: info.file }]);
+    setFiles([...files, [{ id: id, file: info.file }]]);
     handleShowContinueBtn(arr);
   };
 
@@ -107,20 +108,19 @@ const UploadPhotosPage = () => {
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    const formdata = new FormData();
+    let response;
+    for (let i = 0; i < files.length; i++) {
+      const formdata = new FormData();
+      formdata.append("userId", user?._id);
+      formdata.append("caption", caption);
+      formdata.append("isPrivate", makePrivate);
+      formdata.append("galleryPictures", files[i][0].file);
+      response =
+        user?.userType?.toLowerCase() === "customer"
+          ? await uploadCustomerGalleryService(formdata)
+          : await uploadProviderGalleryService(formdata);
+    }
 
-    formdata.append("userId", user?._id);
-    formdata.append("caption", caption);
-    formdata.append("isPrivate", makePrivate);
-    files.map((item) => {
-      if (item?.file) {
-        formdata.append("galleryPictures", item?.file);
-      }
-    });
-    const response =
-      user?.userType?.toLowerCase() === "customer"
-        ? await uploadCustomerGalleryService(formdata)
-        : await uploadProviderGalleryService(formdata);
     setIsLoading(false);
     if (response.ok) {
       if (user?.userType?.toLowerCase() === "customer") {

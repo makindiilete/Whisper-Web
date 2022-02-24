@@ -101,7 +101,6 @@ const ProfilePage = () => {
   ]);
 
   const handleSetUserImages = (pics) => {
-    console.log("pics = ", pics);
     let gallery = [...images];
     for (let i = 0; i < pics.length; i++) {
       gallery[i].id = i;
@@ -109,7 +108,7 @@ const ProfilePage = () => {
       gallery[i].deleteId = pics[i]?._id;
     }
     for (let i = 0; i < gallery.length; i++) {
-      if (!gallery[i]?.deleteId) {
+      if (!gallery[i]?.deleteId || gallery[i]?.deleteId === null) {
         gallery[i].url = null;
       }
     }
@@ -205,6 +204,12 @@ const ProfilePage = () => {
         : await uploadProviderGalleryService(formdata);
     setIsLoading(false);
     if (response.ok) {
+      let gallery = [...images];
+      for (let i = 0; i < gallery.length; i++) {
+        gallery[i].url = null;
+      }
+      setImages(gallery);
+      message.success("Image uploaded successfully!");
       fetchGallery();
     } else {
       message.error(
@@ -221,7 +226,13 @@ const ProfilePage = () => {
         : await deleteProviderGalleryService(selectedImgInfo?.deleteId);
     setIsLoading(false);
     if (response.ok) {
-      window.location.reload();
+      let gallery = [...images];
+      for (let i = 0; i < gallery.length; i++) {
+        gallery[i].url = null;
+      }
+      setImages(gallery);
+      message.success("Image deleted successfully!");
+      fetchGallery();
     } else {
       message.error(
         response?.data?.errors[0].message || "Something went wrong"
@@ -543,7 +554,7 @@ const ProfilePage = () => {
             handleImageDelete();
           } else if (arg === "continue" && showConfirmation.type === "upload") {
             setShowConfirmation({ type: "", status: false });
-            handleGeneratePreview();
+            handleImageUpload(selectedImgInfo.info.file);
           } else {
             setShowConfirmation({ type: "", status: false });
           }
