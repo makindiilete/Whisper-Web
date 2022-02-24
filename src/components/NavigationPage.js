@@ -95,7 +95,7 @@ const NavigationPage = (props) => {
       >
         <img
           onClick={() => {
-            setIsExpanded(!isExpanded);
+            setIsExpanded(false);
             history.push(
               userType?.toLowerCase() === "customer"
                 ? routes.CUSTOMER_HOME
