@@ -10,7 +10,7 @@ import {
   GrTrash,
   GrUserSettings,
 } from "react-icons/all";
-import { message, Upload } from "antd";
+import { message, Upload, Image } from "antd";
 import LoaderComponent from "../../components/LoaderComponent";
 import "../../assets/css/ProfilePage.css";
 import { Badge } from "../../components/Badge";
@@ -158,39 +158,6 @@ const ProfilePage = () => {
     },
   };
 
-  /* const handleDeleteImg = () => {
-    let arr = [...images];
-    let imgToChange = arr.find((i) => i.id === selectedImgInfo.id);
-    imgToChange.url = null;
-    setImages(arr);
-    handleShowContinueBtn(arr);
-  };*/
-
-  const handleGeneratePreview = () => {
-    let arr = [...images];
-    let imgToChange = arr.find((i) => i.id === selectedImgInfo.id);
-    if (selectedImgInfo.info.file.status !== "uploading") {
-    }
-    imgToChange.url = URL.createObjectURL(selectedImgInfo.info.file);
-    setImages(arr);
-    handleImageUpload(selectedImgInfo.info.file);
-    handleShowContinueBtn(arr);
-  };
-
-  const handleShowContinueBtn = (array = []) => {
-    let arr = [];
-    for (let i = 0; i < array.length; i++) {
-      if (array[i].url) {
-        arr.push(array[i]);
-      }
-    }
-    if (arr?.length > 0) {
-      setShowContinue(true);
-    } else {
-      setShowContinue(false);
-    }
-  };
-
   const handleImageUpload = async (file) => {
     setIsLoading(true);
     const formdata = new FormData();
@@ -317,7 +284,11 @@ const ProfilePage = () => {
                             className="position-relative"
                             style={mobile ? { width: "100%" } : null}
                           >
-                            <img src={img?.url} alt="" className="img-fluid" />
+                            <Image
+                              src={img?.url}
+                              alt=""
+                              className="img-fluid"
+                            />
                             <div
                               className="cursor p-2 bg-light d-flex justify-content-center align-items-center position-absolute"
                               style={{
