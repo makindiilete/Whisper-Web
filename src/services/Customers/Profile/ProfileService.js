@@ -5,6 +5,7 @@ export const getCustomerProfileService = (id) =>
 export const getCustomerProfileByIdService = (id) =>
   apiClient.get(`/customer/getCustomerProfileByUserId/${id}`);
 
+export const updateProfile = (data) => apiClient.put(`/app/updateUser`, data);
 export const updateCustomerProfileService = (data) =>
   apiClient.put(`/customer/updateCustomerProfile`, data);
 export const updateCustomerProfilePicService = (data) =>

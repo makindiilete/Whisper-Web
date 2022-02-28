@@ -12,8 +12,7 @@ import modalImg from "../../assets/images/auth/40.svg";
 import SuccessModal from "../../components/Modals/successModal";
 import { useDispatch, useSelector } from "react-redux";
 import { toSentenceCase } from "../../Utils/toSentenceCase";
-import { updateCustomerProfileService } from "../../services/Customers/Profile/ProfileService";
-import { updateProviderProfileService } from "../../services/Providers/Profile/ProfileService";
+import { updateProfile } from "../../services/Customers/Profile/ProfileService";
 import { adminFetchUserAction } from "../../redux/actions/userAction";
 import LoaderComponent from "../../components/LoaderComponent";
 import moment from "moment";
@@ -78,16 +77,15 @@ const EditProfilePage = (props) => {
   const handleSubmit = async (values, formName) => {
     if (formName === "basicInfo") {
       setIsLoading(true);
-      const formdata = new FormData();
+      /*const formdata = new FormData();
       formdata.append("dateOfBirth", basicInfo.dob);
       formdata.append("gender", basicInfo.gender);
       formdata.append("firstName", basicInfo.firstName);
       formdata.append("lastName", basicInfo.lastName);
-      formdata.append("userId", user?._id);
-      const response =
-        user?.userType?.toLowerCase() === "customer"
-          ? await updateCustomerProfileService(formdata)
-          : await updateProviderProfileService(formdata);
+      formdata.append("userId", user?._id);*/
+      basicInfo.dateOfBirth = basicInfo.dob;
+      basicInfo.userId = user?._id;
+      const response = await updateProfile(basicInfo);
       setIsLoading(false);
       if (response.ok) {
         setShowBasicInfoForm(false);

@@ -240,12 +240,8 @@ const ProfilePage = () => {
                   <button
                     className="btn btn-outline-primary btn-sm-block btn-md-auto"
                     onClick={() => {
-                      history.push(routes.usertype);
-                      if (user?.userType?.toLowerCase() === "customer") {
-                        localStorage.setItem("promoteToProvider", "yes");
-                      } else {
-                        localStorage.setItem("promoteToCustomer", "yes");
-                      }
+                      localStorage.removeItem("token");
+                      history.push(routes.signup_createAccount);
                     }}
                   >
                     {user?.userType?.toLowerCase() === "customer"
