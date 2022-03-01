@@ -40,6 +40,7 @@ import {
 import PopUpModal from "../../components/Modals/popUpModal";
 import { constants } from "../../redux/actions/types";
 import { useCoords } from "../../hooks/useCoords";
+import { getAge } from "../../Utils/getAge";
 
 const ProfilePage = () => {
   let location = useLocation();
@@ -251,9 +252,9 @@ const ProfilePage = () => {
                 </div>
               </div>
               <br />
-              <h4>{`${user?.firstName} ${user?.lastName} ${
-                userProfile?.age || ""
-              }`}</h4>
+              <h4>{`${user?.firstName} ${user?.lastName}, ${getAge(
+                userProfile?.dateOfBirth
+              )}`}</h4>
               <br />
               <br />
               <div className="ml-md-5 grid__Container">

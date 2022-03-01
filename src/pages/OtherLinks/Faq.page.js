@@ -3,8 +3,9 @@ import { useLocation, useHistory } from "react-router-dom";
 import useMobile from "../../hooks/useMobile";
 import OtherLinksContainer from "./OtherLinksContainer";
 import image from "../../assets/images/others/faq.png";
-import { Input } from "antd";
+import { Input, message } from "antd";
 import Accordion from "../../components/Accordion";
+import { fetchAllFaqs } from "../../services/faqService";
 
 const FaqPage = (props) => {
   let location = useLocation();
@@ -13,11 +14,29 @@ const FaqPage = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+  const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useState("");
+  const [allFaqs, setAllFaqs] = useState([]);
 
   const handleSearch = () => {
     console.log(query);
   };
+
+  const handleFetchFaqs = async () => {
+    setIsLoading(true);
+    let response = await fetchAllFaqs(1);
+    response = await fetchAllFaqs(response?.data?.totalDocumentCount);
+    setIsLoading(false);
+    if (response.ok) {
+      setAllFaqs(response?.data?.data);
+    } else {
+      message.error(response?.data?.message || "Something went wrong");
+    }
+  };
+
+  useEffect(() => {
+    handleFetchFaqs();
+  }, []);
 
   /*
   {
@@ -95,7 +114,7 @@ const FaqPage = (props) => {
                   senectus arcu interdum nullam aliquam
                 </p>
               )}
-              <div className="d-flex align-items-center px-2 px-md-0">
+              {/* <div className="d-flex align-items-center px-2 px-md-0">
                 <Input
                   name="search"
                   onChange={(e) => setQuery(e.target.value)}
@@ -104,7 +123,7 @@ const FaqPage = (props) => {
                 <button className="btn btn-primary ml-3" style={btnStyle}>
                   Search
                 </button>
-              </div>
+              </div>*/}
             </div>
           </div>
         </div>
@@ -116,7 +135,7 @@ const FaqPage = (props) => {
         style={!mobile ? { padding: "0 12rem" } : { marginTop: "5rem" }}
       >
         <br />
-        <Accordion />
+        <Accordion allFaqs={allFaqs} />
         <br />
         <br />
       </div>

@@ -3,33 +3,46 @@ import { useLocation, useHistory } from "react-router-dom";
 import useMobile from "../../hooks/useMobile";
 import OtherLinksContainer from "./OtherLinksContainer";
 import background from "../../assets/images/others/getInTouch.jpg";
-import { Form, Input } from "antd";
+import { Form, Input, message } from "antd";
 import routes from "../../routes";
 import SuccessModal from "../../components/Modals/successModal";
 import warningImg from "../../assets/images/auth/warning.svg";
+import { contactUsService } from "../../services/App/contactUs";
 
 const ContactPage = (props) => {
   let location = useLocation();
   const history = useHistory();
   const mobile = useMobile();
+
+  const [form] = Form.useForm();
+  const [isLoading, setIsLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [data, setData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
-  const [form] = Form.useForm();
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [data, setData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
 
   const handleChange = (name, value) => {
     setData({ ...data, [name]: value });
   };
 
-  const handleSubmit = (values) => {
-    setShowSuccess(true);
-    form.resetFields();
+  const handleSubmit = async (values) => {
+    setIsLoading(true);
+    const response = await contactUsService(data);
+    setIsLoading(false);
+    if (response.ok) {
+      setShowSuccess(true);
+      form.resetFields();
+    } else {
+      message.error(response?.data?.message || "Something went wrong");
+    }
   };
   return (
     <>
@@ -94,13 +107,37 @@ const ContactPage = (props) => {
                 <Form.Item
                   className="mb-3 mb-md-0 mt-2"
                   initialValue=""
-                  name="name"
-                  label="Name"
+                  name="firstName"
+                  label="First Name"
                   required
                   rules={[{ required: true, message: "Required field" }]}
                 >
                   <Input
-                    onChange={(e) => handleChange("name", e.target.value)}
+                    onChange={(e) => handleChange("firstName", e.target.value)}
+                  />
+                </Form.Item>
+                <Form.Item
+                  className="mb-3 mb-md-0 mt-2"
+                  initialValue=""
+                  name="lastName"
+                  label="Last Name"
+                  required
+                  rules={[{ required: true, message: "Required field" }]}
+                >
+                  <Input
+                    onChange={(e) => handleChange("lastName", e.target.value)}
+                  />
+                </Form.Item>
+                <Form.Item
+                  className="mb-3 mb-md-0 mt-2"
+                  initialValue=""
+                  name="phone"
+                  label="Phone Number"
+                  required
+                  rules={[{ required: true, message: "Required field" }]}
+                >
+                  <Input
+                    onChange={(e) => handleChange("phone", e.target.value)}
                   />
                 </Form.Item>
                 <Form.Item
@@ -142,7 +179,11 @@ const ContactPage = (props) => {
                   <button
                     className={`btn btn-primary ${mobile && "btn-block"}`}
                   >
-                    Submit
+                    {isLoading ? (
+                      <span className="spinner-border text-white" />
+                    ) : (
+                      "Submit"
+                    )}
                   </button>
                 </div>
                 <br />
@@ -154,7 +195,10 @@ const ContactPage = (props) => {
           title="Yay!"
           subtitle="Form submitted successfully"
           visible={showSuccess}
-          onCancel={() => setShowSuccess(false)}
+          onCancel={() => {
+            setShowSuccess(false);
+            // form.resetFields();
+          }}
         />
       </OtherLinksContainer>
     </>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Form, Input, Modal, Tooltip } from "antd";
+import { Form, Input, message, Modal, Select, Tooltip } from "antd";
 import { isMobile } from "react-device-detect";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as icons from "@fortawesome/free-solid-svg-icons";
@@ -10,30 +10,59 @@ import walletImg from "../../assets/images/homeInApp/customer/circledWallet.svg"
 import card from "../../assets/images/homeInApp/customer/card.svg";
 import "../../assets/css/paymentModal.css";
 import { InfoCircleOutlined } from "@ant-design/icons";
+import { formatCurrency } from "../formatCurrency";
+import { useDispatch, useSelector } from "react-redux";
+import { subscriptionPlansReducer } from "../../redux/reducers/subscriptionPlansReducer";
+import { subscribeUserService } from "../../services/App/Subscription Plans/SubscriptionPlansService";
+import { fetchUserSubscriptionAction } from "../../redux/actions/userAction";
+import LoaderComponent from "../LoaderComponent";
 
-const PaymentModal = ({ visible, onCancel }) => {
+const PaymentModal = ({ visible, onCancel, wallet }) => {
   let location = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
   const mobile = useMobile();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.userReducer.data);
+  const plans = useSelector(
+    (state) => state.subscriptionPlansReducer.activeSub
+  );
+  const [isLoading, setIsLoading] = useState(false);
   const [form] = Form.useForm();
-  const [selectedMethod, setSelectedMethod] = useState(1);
+  const [selectedMethod, setSelectedMethod] = useState(2);
   const [data, setData] = useState({
-    cardNumber: "",
-    expiryDate: "",
-    cvv: "",
+    subscriptionPlanId: "",
+    amount: "",
+    durationInDays: "",
+    userId: user?._id,
   });
 
-  const handleSubmit = (values) => {
-    onCancel("continue");
+  const handleSubmit = async (values) => {
+    setIsLoading(true);
+    const response = await subscribeUserService(data);
+    setIsLoading(false);
+    if (response.ok) {
+      dispatch(fetchUserSubscriptionAction(response?.data?.data?._id));
+      onCancel("continue");
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
   };
 
-  function handleChange(value, name) {
-    setData({ ...data, [name]: value });
+  function handleChange(value) {
+    const selectedPlan = plans.find((i) => i._id === value);
+    setData({
+      userId: user?._id,
+      subscriptionPlanId: value,
+      amount: selectedPlan?.amount,
+      durationInDays: selectedPlan?.durationInDays,
+    });
   }
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (
       data.expiryDate.length === 2 &&
       !String(data.expiryDate).includes("/")
@@ -41,7 +70,7 @@ const PaymentModal = ({ visible, onCancel }) => {
       setData({ ...data, expiryDate: `${data.expiryDate}/` });
       form.setFieldsValue({ expiryDate: `${data.expiryDate}/` });
     }
-  }, [data]);
+  }, [data]);*/
 
   const paymentForm = () => {
     return (
@@ -57,8 +86,8 @@ const PaymentModal = ({ visible, onCancel }) => {
             <Form.Item
               className="mb-3 mb-md-0 mt-2"
               initialValue=""
-              name="cardNumber"
-              label="Card Number"
+              name="subscriptionPlanId"
+              label="Select A Plan"
               rules={[
                 {
                   required: true,
@@ -66,13 +95,18 @@ const PaymentModal = ({ visible, onCancel }) => {
                 },
               ]}
             >
-              <Input
-                onChange={(e) => handleChange(e.target.value, "cardNumber")}
-                suffix={<img src={card} className="img-fluid" alt="" />}
-              />
+              <Select onSelect={handleChange}>
+                {plans?.map((item) => (
+                  <Select.Option value={item?._id}>{`${
+                    item?.subscriptionPlanName
+                  } - $ ${formatCurrency(item?.amount)} / ${
+                    item?.durationInDays
+                  }days`}</Select.Option>
+                ))}
+              </Select>
             </Form.Item>
 
-            <div className="row">
+            {/*   <div className="row">
               <div className="col-md-6 p-0 pr-0 pr-md-1">
                 <Form.Item
                   className="mb-3 mb-md-0 mt-2"
@@ -92,7 +126,7 @@ const PaymentModal = ({ visible, onCancel }) => {
                   />
                 </Form.Item>
               </div>
-              {/* /.col-md-6 */}
+               /.col-md-6
               <div className="col-md-6 p-0">
                 <Form.Item
                   className="mb-3 mb-md-0 mt-2"
@@ -111,9 +145,9 @@ const PaymentModal = ({ visible, onCancel }) => {
                   />
                 </Form.Item>
               </div>
-              {/* /.col-md-6 */}
-            </div>
-            <div
+               /.col-md-6
+            </div>*/}
+            {/*<div
               className="d-flex justify-content-between p-3 mt-3"
               style={{ background: "#FAF4FF", borderRadius: "8px" }}
             >
@@ -130,7 +164,7 @@ const PaymentModal = ({ visible, onCancel }) => {
               <p className="padding-none">
                 Your card will only be charged one-time for this payment
               </p>
-            </div>
+            </div>*/}
             <br />
             <button className="btn btn-primary btn-block">Continue</button>
           </Form>
@@ -149,10 +183,13 @@ const PaymentModal = ({ visible, onCancel }) => {
               <div>
                 <small className="padding-none text-white">Wallet ID</small>
                 <br />
-                <small className="padding-none text-white">1228928</small>
+                <small className="padding-none text-white">{wallet?._id}</small>
               </div>
             </div>
-            <h4 className="text-white text-center mt-5">$500</h4>
+            <h4 className="text-white text-center mt-5">
+              {" "}
+              ${formatCurrency(wallet?.walletBalance)}
+            </h4>
           </div>
           <div
             className="d-flex justify-content-between p-3 mt-3"
@@ -206,12 +243,15 @@ const PaymentModal = ({ visible, onCancel }) => {
         paddingBottom: 0,
       }}
     >
-      <div className="py-5 container-fluid paymentModal">
-        <h4>Payment Method</h4>
-        <p>Make payment with any of the following methods below.</p>
-        <div className="row">
-          <div className="col-md-6">
-            <div
+      {isLoading ? (
+        <LoaderComponent />
+      ) : (
+        <div className="py-5 container-fluid paymentModal">
+          <h4>Payment Method</h4>
+          {/*<p>Make payment with any of the following methods below.</p>*/}
+          <div className="row">
+            <div className="col-md-6">
+              {/*<div
               className={`paymentModal__cards cursor ${
                 selectedMethod === 1 ? "active" : ""
               }`}
@@ -219,21 +259,22 @@ const PaymentModal = ({ visible, onCancel }) => {
             >
               <img src={cardImg} className="img-fluid" alt="" />
               <h5 className="padding-none">Pay with card</h5>
+            </div>*/}
+              <div
+                className={`paymentModal__cards cursor ${
+                  selectedMethod === 2 ? "active" : ""
+                }`}
+                onClick={() => setSelectedMethod(2)}
+              >
+                <img src={walletImg} className="img-fluid" alt="" />
+                <h5 className="padding-none">Pay with Wallet</h5>
+              </div>
             </div>
-            <div
-              className={`paymentModal__cards cursor ${
-                selectedMethod === 2 ? "active" : ""
-              }`}
-              onClick={() => setSelectedMethod(2)}
-            >
-              <img src={walletImg} className="img-fluid" alt="" />
-              <h5 className="padding-none">Pay with Wallet</h5>
-            </div>
+            {paymentForm()}
           </div>
-          {selectedMethod === 1 ? paymentForm() : walletForm()}
+          {/* /.row */}
         </div>
-        {/* /.row */}
-      </div>
+      )}
     </Modal>
   );
 };

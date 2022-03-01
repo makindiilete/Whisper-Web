@@ -1,37 +1,44 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useHistory } from "react-router-dom";
-import useMobile from "../hooks/useMobile";
-import { HomeContainerPage } from "./Home/HomeContainer.page";
-import LoaderComponent from "../components/LoaderComponent";
-import customer from "../assets/css/customerHome.module.css";
-import premiumImg from "../assets/images/homeInApp/customer/premium.svg";
-import { SubscribePremium } from "../components/SubscribePremium";
-import "../assets/css/wallet.css";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import useMobile from "../../hooks/useMobile";
+import { HomeContainerPage } from "../Home/HomeContainer.page";
+import LoaderComponent from "../../components/LoaderComponent";
+import customer from "../../assets/css/customerHome.module.css";
+import { SubscribePremium } from "../../components/SubscribePremium";
+import "../../assets/css/wallet.css";
 import moment from "moment";
-import { formatCurrency } from "../components/formatCurrency";
-import WalletWelcomeModal from "../components/Modals/walletWelcomeModal";
-import WalletFundingModal from "../components/Modals/walletFundingModal";
-import SuccessModal from "../components/Modals/successModal";
-import modalImg from "../assets/images/auth/40.svg";
-import WithdrawalModal from "../components/Modals/withdrawalModal";
-import WalletTransactionDetails from "../components/Modals/walletTransactionDetails";
-import PaymentModal from "../components/Modals/paymentModal";
-import { useSelector } from "react-redux";
-import { getCustomerGalleryByIdService } from "../services/Customers/Gallery/GalleryService";
-import { getProviderGalleryByIdService } from "../services/Providers/Gallery/Gallery";
-import { getUserWalletService } from "../services/App/Wallet/walletService";
-import { fetchUserGalleryAction } from "../redux/actions/userAction";
+import { formatCurrency } from "../../components/formatCurrency";
+import WalletWelcomeModal from "../../components/Modals/walletWelcomeModal";
+import WalletFundingModal from "../../components/Modals/walletFundingModal";
+import SuccessModal from "../../components/Modals/successModal";
+import modalImg from "../../assets/images/auth/40.svg";
+import WithdrawalModal from "../../components/Modals/withdrawalModal";
+import WalletTransactionDetails from "../../components/Modals/walletTransactionDetails";
+import PaymentModal from "../../components/Modals/paymentModal";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  finalizeStripePayment,
+  getUserWalletService,
+  initStripePayment,
+} from "../../services/App/Wallet/walletService";
 import { message } from "antd";
-import { getUserTransactionsService } from "../services/App/Transanction History/transactionHistoryService";
+import { getUserTransactionsService } from "../../services/App/Transanction History/transactionHistoryService";
+import { subscriptionPlansAction } from "../../redux/actions/subscriptionPlansAction";
+import StripeCheckout from "../../components/StripeCheckout";
 
 const WalletPage = (props) => {
   let location = useLocation();
   const history = useHistory();
+  const dispatch = useDispatch();
   const mobile = useMobile();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
   const user = useSelector((state) => state.userReducer?.data);
+  const [clientSecret, setClientSecret] = useState("");
+  const [amountToFund, setAmountToFund] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [wallet, setWallet] = useState({});
   const [userType, setUserType] = useState(user?.userType);
@@ -54,6 +61,7 @@ const WalletPage = (props) => {
     setIsLoading(false);
     if (response.ok) {
       setWallet(response?.data?.data);
+      localStorage.setItem("walletId", response?.data?.data?._id);
     } else {
       message.error(
         response?.data?.errors[0].message || "Something went wrong"
@@ -77,6 +85,7 @@ const WalletPage = (props) => {
   useEffect(() => {
     fetchWallet();
     fetchTransactions();
+    dispatch(subscriptionPlansAction());
   }, []);
 
   if (isLoading) {
@@ -86,6 +95,7 @@ const WalletPage = (props) => {
       </HomeContainerPage>
     );
   }
+
   return (
     <HomeContainerPage>
       <div className="row wallet">
@@ -156,7 +166,15 @@ const WalletPage = (props) => {
                     <h5 className="font-weight-bold padding-none">
                       {item?.description}
                     </h5>
-                    <p className="padding-none">
+                    <p
+                      className={`padding-none font-weight-bold ${
+                        item?.paymentStatus === "Successful"
+                          ? "text-success"
+                          : item?.paymentStatus === "Pending"
+                          ? "text-warning"
+                          : "text-danger"
+                      }`}
+                    >
                       {" "}
                       ${formatCurrency(item?.amount)}{" "}
                     </p>
@@ -203,6 +221,7 @@ const WalletPage = (props) => {
 
       <PaymentModal
         visible={showPaymentModal}
+        wallet={wallet}
         onCancel={(success) => {
           if (success === "continue") {
             setShowPaymentModal(false);
@@ -215,14 +234,11 @@ const WalletPage = (props) => {
 
       <WalletFundingModal
         visible={showFunding}
+        amount={amountToFund}
+        setAmountToFund={setAmountToFund}
         onCancel={(params) => {
           if (params === "Continue") {
             setShowFunding(false);
-            setIsLoading(true);
-            setTimeout(() => {
-              setIsLoading(false);
-              setShowFundingSuccess(true);
-            }, 2000);
           } else {
             setShowFunding(false);
           }

@@ -27,16 +27,24 @@ import { IoIosArrowBack } from "react-icons/all";
 import { SubscribePremium } from "../../components/SubscribePremium";
 import msg from "../../assets/images/chat/love.svg";
 import routes from "../../routes";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserWalletService } from "../../services/App/Wallet/walletService";
+import { message } from "antd";
+import { subscriptionPlansAction } from "../../redux/actions/subscriptionPlansAction";
 
 const CustomerHomePage = (props) => {
   let location = useLocation();
   const history = useHistory();
+  const dispatch = useDispatch();
   const mobile = useMobile();
   const params = location?.search;
   const customerId = location?.pathname?.split("/")[3];
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+  const userSub = useSelector((state) => state.userReducer.activeSub);
+  const user = useSelector((state) => state.userReducer.data);
+  const [wallet, setWallet] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [showSearchResult, setShowSearchResult] = useState(false);
   const [data, setData] = useState({
@@ -133,6 +141,24 @@ const CustomerHomePage = (props) => {
     setCurrentProfile(returnArr[0]);
     setShowRestore(false);
   }
+
+  const fetchWallet = async () => {
+    setIsLoading(true);
+    const response = await getUserWalletService(user?._id);
+    setIsLoading(false);
+    if (response.ok) {
+      setWallet(response?.data?.data);
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  };
+
+  useEffect(() => {
+    fetchWallet();
+    dispatch(subscriptionPlansAction());
+  }, []);
 
   const discover = () => {
     return (
@@ -284,6 +310,15 @@ const CustomerHomePage = (props) => {
               {currentProfile?.attributes?.map((item) => (
                 <Badge text={item} key={item} />
               ))}
+              <br />
+              <br />
+              <br />
+              <button
+                className="btn btn-primary cursor"
+                onClick={() => alert("clicked")}
+              >
+                Request Service
+              </button>
             </div>
           </div>
         </div>
@@ -343,8 +378,8 @@ const CustomerHomePage = (props) => {
       {allLikes?.length > 0 ? (
         <div className="row">
           <SubscribePremium
-            handlePremium={() => setShowActivatePremium(true)}
-            visible={!premiumActive}
+            handlePremium={() => setShowPaymentModal(true)}
+            subscribed={userSub?.length > 0}
           />
           <div
             className={`${
@@ -371,6 +406,7 @@ const CustomerHomePage = (props) => {
         }}
       />
       <PaymentModal
+        wallet={wallet}
         visible={showPaymentModal}
         onCancel={(success) => {
           if (success === "continue") {

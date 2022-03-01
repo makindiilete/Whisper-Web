@@ -34,7 +34,7 @@ import NotFound from "./pages/NotFound";
 import LoggedAreaRoute from "./Layout/LoggedAreaRoute";
 import ProviderHomePage from "./pages/Home/ProviderHome.page";
 import CustomerHomePage from "./pages/Home/CustomerHome.page";
-import WalletPage from "./pages/Wallet.page";
+import WalletPage from "./pages/wallet/Wallet.page";
 import ProfilePage from "./pages/Profile/Profile.page";
 import EditProfilePage from "./pages/Profile/EditProfile.page";
 import AboutPage from "./pages/OtherLinks/About.page";
@@ -44,6 +44,7 @@ import PrivacyPage from "./pages/OtherLinks/Privacy.page";
 import FaqPage from "./pages/OtherLinks/Faq.page";
 import ChatPage from "./pages/Messaging/Chat.page";
 import { useSelector } from "react-redux";
+import StripePayment from "./pages/wallet/StripePayment";
 
 AOS.init();
 
@@ -190,6 +191,11 @@ function App() {
             exact
             component={ChatPage}
             path={`${routes.CHAT}/:id`}
+          />
+          <LoggedAreaRoute
+            exact
+            component={StripePayment}
+            path={`${routes.STRIPE_CHECKOUT}`}
           />
           <Route component={NotFound} path="*" />
         </Switch>

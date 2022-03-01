@@ -18,5 +18,6 @@
     <orderEntry type="module" module-name="NextJs_Tradversy" />
     <orderEntry type="module" module-name="LearnProject" />
     <orderEntry type="module" module-name="NextJs_Codevolution" />
+    <orderEntry type="module" module-name="stripe-sample-code" />
   </component>
 </module>

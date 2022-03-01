@@ -22,11 +22,13 @@ import {
 import {
   adminFetchUserAction,
   fetchUserGalleryAction,
+  fetchUserSubscriptionAction,
 } from "../../redux/actions/userAction";
 import { Facebook } from "../../components/socialAuth/facebook/facebook";
 import { Google } from "../../components/socialAuth/google/Google";
 import { Apple } from "../../components/socialAuth/apple/Apple";
 import FacebookLogin from "react-facebook-login";
+import { subscriptionPlansAction } from "../../redux/actions/subscriptionPlansAction";
 
 const TwoLoginPage = (props) => {
   let location = useLocation();
@@ -55,6 +57,8 @@ const TwoLoginPage = (props) => {
           : routes.PROVIDER_HOME
       );
       dispatch(adminFetchUserAction(response?.data?.data?._id));
+      dispatch(fetchUserSubscriptionAction(response?.data?.data?._id));
+      dispatch(subscriptionPlansAction());
     } else {
       message.error(
         response?.data?.errors[0].message || "Something went wrong"

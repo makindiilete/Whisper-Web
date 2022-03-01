@@ -29,4 +29,5 @@ export default Object.freeze({
   selectTypeOfServiceToProvide: "/reg/select-services",
   providerPreferences: "/reg/provider-preferences",
   customerPreferences: "/reg/customer-preferences",
+  STRIPE_CHECKOUT: "/checkout",
 });

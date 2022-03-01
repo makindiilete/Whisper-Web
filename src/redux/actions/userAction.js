@@ -1,16 +1,7 @@
 import { constants } from "./types";
-import {
-  getCustomerProfileByIdService,
-  getCustomerProfileService,
-} from "../../services/Customers/Profile/ProfileService";
-import {
-  getProviderProfileByIdService,
-  getProviderProfileService,
-} from "../../services/Providers/Profile/ProfileService";
 import { loginService } from "../../services/Auth/Login/loginService";
 import { fetchUserByIdService } from "../../services/Admin/UserManager/userManager";
-import { getCustomerGalleryByIdService } from "../../services/Customers/Gallery/GalleryService";
-import { getProviderGalleryByIdService } from "../../services/Providers/Gallery/Gallery";
+import { getUserActiveSubService } from "../../services/App/Subscription Plans/SubscriptionPlansService";
 
 export const userAction = (payload) => {
   return {
@@ -25,6 +16,18 @@ export const adminFetchUserAction = (userId) => {
     if (response.ok) {
       dispatch({
         type: constants.ADMIN_FETCH_USER,
+        payload: response?.data?.data,
+      });
+    }
+  };
+};
+
+export const fetchUserSubscriptionAction = (userId) => {
+  return async function (dispatch) {
+    const response = await getUserActiveSubService(userId);
+    if (response.ok) {
+      dispatch({
+        type: constants.FETCH_USER_SUBSCRIPTIONS,
         payload: response?.data?.data,
       });
     }
