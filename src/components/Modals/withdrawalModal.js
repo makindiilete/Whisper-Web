@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Form, Input, Modal, Tooltip } from "antd";
+import { Form, Input, message, Modal, Tooltip } from "antd";
 import { isMobile } from "react-device-detect";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as icons from "@fortawesome/free-solid-svg-icons";
@@ -10,23 +10,38 @@ import walletImg from "../../assets/images/homeInApp/customer/circledWallet.svg"
 import card from "../../assets/images/homeInApp/customer/card.svg";
 import "../../assets/css/paymentModal.css";
 import { InfoCircleOutlined } from "@ant-design/icons";
+import { useSelector } from "react-redux";
+import { requestWithdrawalService } from "../../services/App/Withdrawal Request/WithdrawalRequestService";
 
-const WithdrawalModal = ({ visible, onCancel }) => {
+const WithdrawalModal = ({ visible, onCancel, userBank }) => {
   let location = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
   const mobile = useMobile();
+  const user = useSelector((state) => state.userReducer?.data);
   const [form] = Form.useForm();
+  const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState({
     amount: "",
-    bankName: "",
-    bankAccountNumber: "",
-    bankAccountName: "",
+    comment: "",
+    userBank: userBank?._id,
+    userId: user?._id,
   });
 
-  const handleSubmit = (values) => {
-    onCancel("continue");
+  const handleSubmit = async (values) => {
+    setIsLoading(true);
+    data.userBank = userBank?._id;
+    const response = await requestWithdrawalService(data);
+    setIsLoading(false);
+    if (response.ok) {
+      message.success("Withdrawal request submitted");
+      onCancel("continue");
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
   };
 
   function handleChange(value, name) {
@@ -85,8 +100,8 @@ const WithdrawalModal = ({ visible, onCancel }) => {
               <Form.Item
                 className="mb-3 mb-md-0 mt-2"
                 initialValue=""
-                name="bankName"
-                label="Bank Name"
+                name="comment"
+                label="Comment"
                 rules={[
                   {
                     required: true,
@@ -95,51 +110,19 @@ const WithdrawalModal = ({ visible, onCancel }) => {
                 ]}
               >
                 <Input
-                  onChange={(e) => handleChange(e.target.value, "bankName")}
-                />
-              </Form.Item>
-              <Form.Item
-                className="mb-3 mb-md-0 mt-2"
-                initialValue=""
-                name="bankAccountNumber"
-                label="Bank Account Number"
-                rules={[
-                  {
-                    required: true,
-                    message: "Required field",
-                  },
-                ]}
-              >
-                <Input
-                  onChange={(e) =>
-                    handleChange(e.target.value, "bankAccountNumber")
-                  }
-                />
-              </Form.Item>{" "}
-              <Form.Item
-                className="mb-3 mb-md-0 mt-2"
-                initialValue=""
-                name="bankAccountName"
-                label="Bank Account Name"
-                rules={[
-                  {
-                    required: true,
-                    message: "Required field",
-                  },
-                ]}
-              >
-                <Input
-                  onChange={(e) =>
-                    handleChange(e.target.value, "bankAccountName")
-                  }
+                  onChange={(e) => handleChange(e.target.value, "comment")}
                 />
               </Form.Item>
               <br />
               <button
                 className="btn btn-primary btn-block"
-                onClick={() => onCancel("Continue")}
+                disabled={isLoading}
               >
-                Withdraw
+                {isLoading ? (
+                  <span className="spinner-border text-white" />
+                ) : (
+                  "Withdraw"
+                )}
               </button>
             </Form>
           </div>

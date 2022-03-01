@@ -27,6 +27,7 @@ import { message } from "antd";
 import { getUserTransactionsService } from "../../services/App/Transanction History/transactionHistoryService";
 import { subscriptionPlansAction } from "../../redux/actions/subscriptionPlansAction";
 import StripeCheckout from "../../components/StripeCheckout";
+import { getUserBankDetailsByUserIdService } from "../../services/App/User Bank Details/userBankDetailsService";
 
 const WalletPage = (props) => {
   let location = useLocation();
@@ -38,7 +39,7 @@ const WalletPage = (props) => {
   }, [location.pathname]);
   const user = useSelector((state) => state.userReducer?.data);
   const userSub = useSelector((state) => state.userReducer.activeSub);
-  const [clientSecret, setClientSecret] = useState("");
+  const [userBank, setUserBank] = useState({});
   const [amountToFund, setAmountToFund] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [wallet, setWallet] = useState({});
@@ -83,7 +84,21 @@ const WalletPage = (props) => {
     }
   };
 
+  const fetchUserBankDetails = async () => {
+    setIsLoading(true);
+    const response = await getUserBankDetailsByUserIdService(user?._id);
+    setIsLoading(false);
+    if (response.ok) {
+      setUserBank(response?.data?.data[0]);
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  };
+
   useEffect(() => {
+    fetchUserBankDetails();
     fetchWallet();
     fetchTransactions();
     dispatch(subscriptionPlansAction());
@@ -248,6 +263,7 @@ const WalletPage = (props) => {
 
       <WithdrawalModal
         visible={showWithdrawal}
+        userBank={userBank}
         onCancel={(params) => {
           if (params === "Continue") {
             setShowWithdrawal(false);
