@@ -5,8 +5,13 @@ export const getProviderGalleryService = (id) =>
 export const getProviderGalleryByIdService = (id) =>
   apiClient.get(`/provider/getAllProviderGallery/${id}`);
 
+export const getAllPaidPictures = (id) =>
+  apiClient.get(`/provider/getAllPaidPictures/${id}`);
+
 export const uploadProviderGalleryService = (data) =>
   apiClient.post(`/provider/uploadImagesToProviderGallery`, data);
+export const payForPictureService = (data) =>
+  apiClient.post(`/provider/payforPicture`, data);
 export const uploadProviderGalleryWithLinkService = (data) =>
   apiClient.post(`/provider/uploadImagesToProviderGalleryWithLink`, data);
 export const deleteProviderGalleryService = (id) =>

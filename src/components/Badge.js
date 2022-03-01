@@ -19,19 +19,23 @@ export function Badge({ text }) {
     }
   }
 
-  return (
-    <span
-      className={`badges ${
-        calcColor() === "primary"
-          ? "badges-primary"
-          : calcColor() === "secondary"
-          ? "badges-secondary"
-          : calcColor() === "success"
-          ? "badges-success"
-          : "badges-tertiary"
-      } `}
-    >
-      <h5 className="padding-none">{text}</h5>
-    </span>
-  );
+  if (text !== "") {
+    return (
+      <span
+        className={`badges mb-2 ${
+          calcColor() === "primary"
+            ? "badges-primary"
+            : calcColor() === "secondary"
+            ? "badges-secondary"
+            : calcColor() === "success"
+            ? "badges-success"
+            : "badges-tertiary"
+        } `}
+      >
+        <h5 className="padding-none">{text}</h5>
+      </span>
+    );
+  } else {
+    return null;
+  }
 }

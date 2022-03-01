@@ -5,3 +5,5 @@ export const getProviderByDistanceService = (data) =>
 
 export const getProviderByPreferenceService = (data) =>
   apiClient.post(`/provider/getProviderByUserPreference`, data);
+export const getProviderCompleteProfileService = (providerId) =>
+  apiClient.get(`/provider/getProviderCompleteProfile/${providerId}`);

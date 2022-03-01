@@ -1,4 +1,9 @@
 export const getAge = (dob) => {
-  const date = new Date(dob);
-  return new Date().getFullYear() - date.getFullYear();
+  const year = dob?.split("-")[2];
+  const result = new Date().getFullYear() - year;
+  if (result) {
+    return result;
+  } else {
+    return "";
+  }
 };

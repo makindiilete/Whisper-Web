@@ -31,6 +31,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserWalletService } from "../../services/App/Wallet/walletService";
 import { message } from "antd";
 import { subscriptionPlansAction } from "../../redux/actions/subscriptionPlansAction";
+import {
+  getProviderByPreferenceService,
+  getProviderCompleteProfileService,
+} from "../../services/Providers/Search/SearchService";
+import { getAge } from "../../Utils/getAge";
+import {
+  dislikeProviderPictureService,
+  getAllPaidPictures,
+  getProviderGalleryByIdService,
+  likeProviderPictureService,
+  payForPictureService,
+} from "../../services/Providers/Gallery/Gallery";
+import { requestProviderService_Service } from "../../services/Providers/Service/Service";
+import ServiceRequestModal from "../../components/Modals/ServiceRequestModal";
 
 const CustomerHomePage = (props) => {
   let location = useLocation();
@@ -44,6 +58,31 @@ const CustomerHomePage = (props) => {
   }, [location.pathname]);
   const userSub = useSelector((state) => state.userReducer.activeSub);
   const user = useSelector((state) => state.userReducer.data);
+  const [showServiceRequestModal, setShowServiceRequestModal] = useState(false);
+  const [serviceRequest, setServiceRequest] = useState({
+    providerServiceIds: [],
+    appointmentTime: "",
+    providerId: "",
+    customerId: user?._id,
+  });
+  const [allPaidPics, setAllPaidPics] = useState([]);
+  const [imgPosition, setImgPosition] = useState(0);
+  const [index, setIndex] = useState(0);
+  const [images, setImages] = useState([]);
+  const [activeImage, setActiveImage] = useState(images[index]);
+  const [providerIndex, setProviderIndex] = useState({
+    currentIndex: 0,
+    maxIndex: 0,
+  });
+  const [providersByPreference, setProvidersByPreference] = useState([]);
+  const [currentProfile, setCurrentProfile] = useState(
+    providersByPreference[providerIndex.currentIndex]
+  );
+
+  /* const [activeImage, setActiveImage] = useState(
+      currentProfile?.imgUrls[index]
+  );*/
+
   const [wallet, setWallet] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [showSearchResult, setShowSearchResult] = useState(false);
@@ -58,16 +97,8 @@ const CustomerHomePage = (props) => {
   const [showActivatePremium, setShowActivatePremium] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [premiumActive, setPremiumActive] = useState(false);
-  const [imgPosition, setImgPosition] = useState(0);
-  const [index, setIndex] = useState(0);
   const [showRestore, setShowRestore] = useState(false);
   const [lastDeclined, setLastDeclined] = useState(null);
-  const [allLikes, setAllLikes] = useState(customerDiscover);
-  const [currentProfile, setCurrentProfile] = useState(customerDiscover[0]);
-  const [activeImage, setActiveImage] = useState(
-    currentProfile?.imgUrls[index]
-  );
-  const [images, setImages] = useState(currentProfile?.imgUrls);
 
   const handleSearch = () => {
     setShowFilter(false);
@@ -80,7 +111,7 @@ const CustomerHomePage = (props) => {
     }, 2000);
   };
 
-  const handleMoveBack = () => {
+  const handleSwipePreviousImage = () => {
     const length = images.length;
     const indx = imgPosition === 0 ? length : imgPosition - 1;
     const active = images[indx];
@@ -93,7 +124,7 @@ const CustomerHomePage = (props) => {
     }
   };
 
-  const handleMoveNext = () => {
+  const handleSwipeNextImage = () => {
     const length = images.length;
     const indx = imgPosition === length ? 0 : imgPosition + 1;
     const active = images[indx];
@@ -108,37 +139,58 @@ const CustomerHomePage = (props) => {
 
   function handleSetCurrentProfile(id, index) {
     setIndex(index);
-    const selected = allLikes?.find((i) => i.id === id);
-    setActiveImage(selected?.imgUrls[0]);
-    setImages(selected?.imgUrls);
+    const selected = providersByPreference?.find((i) => i._id === id);
     setCurrentProfile(selected);
     setShowSearchResult(false);
   }
 
-  function handleLikeAccepted() {
-    const response = allLikes?.filter((i) => i.id !== currentProfile?.id);
-    setAllLikes(response);
-    setActiveImage(response[0].imgUrls[0]);
-    setCurrentProfile(response[0]);
+  async function handleLikeAccepted() {
+    setIsLoading(true);
+    const res = await likeProviderPictureService({
+      galleryId: activeImage?._id,
+      userId: user?._id,
+    });
+    setIsLoading(false);
+    if (res.ok) {
+      const response = providersByPreference?.filter(
+        (i) => i._id !== currentProfile?.providerProfile?._id
+      );
+      setProvidersByPreference(response);
+      fetchCurrentProfileDetails(response);
+      fetchCurrentProfileGallery(response);
+    } else {
+      message.error(res?.data?.errors[0].message || "Something went wrong");
+    }
   }
 
-  function handleLikeDeclined() {
-    setShowRestore(true);
-    const others = allLikes?.filter((i) => i.id !== currentProfile?.id);
-    const declined = allLikes?.find((i) => i.id === currentProfile?.id);
-    setLastDeclined(declined);
-    setAllLikes(others);
-    setCurrentProfile(others[0]);
-    setActiveImage(others[0].imgUrls[0]);
+  async function handleLikeDeclined() {
+    setIsLoading(true);
+    const res = await dislikeProviderPictureService({
+      galleryId: activeImage?._id,
+      userId: user?._id,
+    });
+    setIsLoading(false);
+    if (res.ok) {
+      setShowRestore(true);
+      const others = providersByPreference?.filter(
+        (i) => i._id !== currentProfile?.providerProfile?._id
+      );
+      const declined = providersByPreference?.find(
+        (i) => i._id === currentProfile?.providerProfile?._id
+      );
+      setLastDeclined(declined);
+      setProvidersByPreference(others);
+      fetchCurrentProfileDetails(others);
+      fetchCurrentProfileGallery(others);
+    } else {
+      message.error(res?.data?.errors[0].message || "Something went wrong");
+    }
   }
-
-  function handleFavorite() {}
 
   function handleDeclineRestored() {
-    let returnArr = [lastDeclined, ...allLikes];
-    setAllLikes(returnArr);
-    setActiveImage(returnArr[0].imgUrls[0]);
-    setCurrentProfile(returnArr[0]);
+    let arr = [];
+    fetchCurrentProfileDetails([...arr, lastDeclined]);
+    fetchCurrentProfileGallery([...arr, lastDeclined]);
     setShowRestore(false);
   }
 
@@ -155,10 +207,112 @@ const CustomerHomePage = (props) => {
     }
   };
 
+  const fetchCurrentProfileGallery = async (others = []) => {
+    setIsLoading(true);
+    const response = await getProviderGalleryByIdService(
+      others[providerIndex.currentIndex]?.user ||
+        providersByPreference[providerIndex.currentIndex]?.user
+    );
+    setIsLoading(false);
+    if (response.ok) {
+      setImages(response?.data?.data);
+      setActiveImage(response?.data?.data[0]);
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  };
+
+  const fetchCurrentProfileDetails = async (others = []) => {
+    setIsLoading(true);
+    const response = await getProviderCompleteProfileService(
+      others[providerIndex.currentIndex]?.user ||
+        providersByPreference[providerIndex.currentIndex]?.user
+    );
+    setIsLoading(false);
+    if (response.ok) {
+      setCurrentProfile(response?.data?.data);
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  };
+
+  const fetchProviderByPreference = async () => {
+    setIsLoading(true);
+    const response = await getProviderByPreferenceService({
+      userId: user?._id,
+    });
+    setIsLoading(false);
+    if (response.ok) {
+      setProvidersByPreference(response?.data?.data);
+      setProviderIndex({
+        ...providerIndex,
+        maxIndex: response?.data?.data?.length - 1,
+      });
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  };
+  const fetchAllPaidPics = async () => {
+    setIsLoading(true);
+    const response = await getAllPaidPictures(user?._id);
+    setIsLoading(false);
+    if (response.ok) {
+      setAllPaidPics(response?.data?.data);
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (providersByPreference[providerIndex.currentIndex]?.user) {
+      fetchAllPaidPics();
+      fetchCurrentProfileDetails();
+      fetchCurrentProfileGallery();
+    }
+  }, [providerIndex]);
+
   useEffect(() => {
     fetchWallet();
+    fetchProviderByPreference();
     dispatch(subscriptionPlansAction());
   }, []);
+
+  const handlePayForPic = async () => {
+    setIsLoading(true);
+    const response = await payForPictureService({
+      userId: user?._id,
+      galleryId: activeImage?._id,
+    });
+    if (response.ok) {
+      message.success("Payment Successful");
+      fetchAllPaidPics();
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  };
+
+  const handleServiceRequest = async () => {
+    setIsLoading(true);
+    const response = await requestProviderService_Service(serviceRequest);
+    setIsLoading(false);
+    if (response.ok) {
+      message.success(response?.data?.message || "Request Submitted");
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  };
 
   const discover = () => {
     return (
@@ -190,29 +344,38 @@ const CustomerHomePage = (props) => {
               </div>
               <div className="prevNextImg">
                 <div className="w-100 d-flex justify-content-between px-3">
-                  <div className="arrow backArrow" onClick={handleMoveBack}>
+                  <div
+                    className="arrow backArrow"
+                    onClick={handleSwipePreviousImage}
+                  >
                     <FontAwesomeIcon
                       icon={icons.faChevronLeft}
                       size="1x"
                       className="text-white"
                     />
                   </div>
-                  {!premiumActive && imgPosition !== 0 && (
-                    <div
-                      className="d-flex flex-column cursor"
-                      onClick={() => setShowActivatePremium(true)}
-                    >
-                      <img
-                        src={locked}
-                        alt=""
-                        className="img-fluid align-self-center"
-                        style={{ width: "3.8rem", height: "4.5rem" }}
-                      />
-                      <p className="text-white text-center">Tap to view</p>
-                    </div>
-                  )}
+                  {activeImage?.isPrivate &&
+                    !allPaidPics?.some(
+                      (value) => value?.galleryId === activeImage?._id
+                    ) && (
+                      <div
+                        className="d-flex flex-column cursor"
+                        onClick={() => setShowActivatePremium(true)}
+                      >
+                        <img
+                          src={locked}
+                          alt=""
+                          className="img-fluid align-self-center"
+                          style={{ width: "3.8rem", height: "4.5rem" }}
+                        />
+                        <p className="text-white text-center">Tap to view</p>
+                      </div>
+                    )}
 
-                  <div className="arrow nextArrow" onClick={handleMoveNext}>
+                  <div
+                    className="arrow nextArrow"
+                    onClick={handleSwipeNextImage}
+                  >
                     <FontAwesomeIcon
                       icon={icons.faChevronRight}
                       size="1x"
@@ -225,10 +388,14 @@ const CustomerHomePage = (props) => {
                 className={`${styles.galleryImg} ${styles.galleryImgOverlay}`}
               />
               <img
-                src={activeImage}
+                src={activeImage?.imageUri[0]}
                 alt=""
                 className={`${styles.galleryImg} ${
-                  !premiumActive && imgPosition !== 0 && customer.imageBlur
+                  activeImage?.isPrivate &&
+                  !allPaidPics?.some(
+                    (value) => value?.galleryId === activeImage?._id
+                  ) &&
+                  customer.imageBlur
                 }`}
               />
               <div className="actions">
@@ -269,7 +436,7 @@ const CustomerHomePage = (props) => {
                       src={fav}
                       className="img-fluid"
                       alt=""
-                      onClick={handleFavorite}
+                      onClick={handleLikeAccepted}
                     />
                   </div>
                 )}
@@ -277,9 +444,15 @@ const CustomerHomePage = (props) => {
             </div>
             <div className={`col-md-6 ${styles.profileContainerRightCol}`}>
               <div className="d-flex justify-content-between">
-                <h4 className="text-dark">{`${currentProfile?.name} ${currentProfile?.age}`}</h4>
-                <div className="d-flex justify-content-between align-items-center">
-                  <h5 className="padding-none mt-2">4.4</h5>
+                <h4 className="text-dark">{`${
+                  currentProfile?.firstName || ""
+                } ${currentProfile?.lastName || ""} ${getAge(
+                  currentProfile?.providerProfile?.dateOfBirth
+                )}`}</h4>
+                {/*  <div className="d-flex justify-content-between align-items-center">
+                  <h5 className="padding-none mt-2">
+                    {currentProfile?.providerProfile?.rating || 0}
+                  </h5>
                   <img
                     src={star}
                     className="img-fluid ml-2"
@@ -289,33 +462,65 @@ const CustomerHomePage = (props) => {
                       height: "1.9rem",
                     }}
                   />
-                </div>
+                </div>*/}
               </div>
               <p className="text-muted">
-                {currentProfile?.location} <br />
-                {`${currentProfile?.distance} away`}
+                {`${currentProfile?.providerProfile?.city || ""}  ${
+                  currentProfile?.providerProfile?.state || ""
+                }`}{" "}
+                <br />
+                {`${currentProfile?.providerProfile?.country || ""}`}
               </p>
               <div>
-                {currentProfile?.lookingFor?.map((item) => (
-                  <Badge text={item} key={item} />
-                ))}
+                {currentProfile?.providerServices[0]?.providingFor?.map(
+                  (item) => (
+                    <Badge text={item || ""} key={item} />
+                  )
+                )}
               </div>
               <br />
               <div className="dotted-divider w-100" />
               <br />
               <h4 className="text-dark">Bio</h4>
-              <p className="text-muted">{currentProfile?.bio}</p>
+              <p className="text-muted">
+                {currentProfile?.providerProfile?.biography}
+              </p>
               <br />
               <h4>Attributes</h4>
-              {currentProfile?.attributes?.map((item) => (
-                <Badge text={item} key={item} />
-              ))}
+              <Badge
+                text={currentProfile?.providerAttributes?.bodyType || ""}
+              />
+              <Badge text={currentProfile?.providerAttributes?.height || ""} />
+              <Badge
+                text={currentProfile?.providerAttributes?.education || ""}
+              />
+              <Badge
+                text={`Smoking: ${
+                  currentProfile?.providerAttributes?.smokeType || ""
+                }`}
+              />
+              <Badge
+                text={`Drink: ${
+                  currentProfile?.providerAttributes?.drinkType || ""
+                }`}
+              />
+
               <br />
               <br />
               <br />
               <button
                 className="btn btn-primary cursor"
-                onClick={() => alert("clicked")}
+                onClick={() => {
+                  if (userSub?.length === 0) {
+                    message.error("Subscribe to premium to request a service");
+                  } else {
+                    setServiceRequest({
+                      ...serviceRequest,
+                      providerId: currentProfile?._id,
+                    });
+                    setShowServiceRequestModal(true);
+                  }
+                }}
               >
                 Request Service
               </button>
@@ -339,7 +544,7 @@ const CustomerHomePage = (props) => {
         <br />
         <br />
         <div className={styles.discoverGridContainer}>
-          {allLikes?.map((item, index) => (
+          {providersByPreference?.map((item, index) => (
             <div
               className="position-relative cursor"
               onClick={() => handleSetCurrentProfile(item?.id, index)}
@@ -375,7 +580,7 @@ const CustomerHomePage = (props) => {
   }
   return (
     <HomeContainerPage>
-      {allLikes?.length > 0 ? (
+      {providersByPreference?.length > 0 ? (
         <div className="row">
           <SubscribePremium
             handlePremium={() => setShowPaymentModal(true)}
@@ -396,14 +601,8 @@ const CustomerHomePage = (props) => {
 
       <ActivatePremiumModal
         visible={showActivatePremium}
-        onCancel={(success) => {
-          if (success === "continue") {
-            setShowActivatePremium(false);
-            setShowPaymentModal(true);
-          } else {
-            setShowActivatePremium(false);
-          }
-        }}
+        handlePayForPic={handlePayForPic}
+        onCancel={() => setShowActivatePremium(false)}
       />
       <PaymentModal
         wallet={wallet}
@@ -433,6 +632,14 @@ const CustomerHomePage = (props) => {
         showButton
         btnText="Continue"
         btnClickHandler={() => setShowSuccess(false)}
+      />
+      <ServiceRequestModal
+        visible={showServiceRequestModal}
+        setServiceRequest={setServiceRequest}
+        serviceRequest={serviceRequest}
+        handleServiceRequest={handleServiceRequest}
+        services={currentProfile?.providerServices[0]?.services}
+        onCancel={() => setShowServiceRequestModal(false)}
       />
     </HomeContainerPage>
   );

@@ -274,7 +274,7 @@ const UploadPhotosPage = () => {
                     )}
                   </div>
                 </div>
-                <div className="row">
+                {/*<div className="row">
                   <div
                     className={`col-md-6 offset-md-3 ${styles.attributesCol} `}
                   >
@@ -291,7 +291,7 @@ const UploadPhotosPage = () => {
                       Skip <BiRightArrowAlt className="ml-3" />
                     </p>
                   </div>
-                </div>
+                </div>*/}
                 {showContinue && (
                   <div className="row">
                     <div

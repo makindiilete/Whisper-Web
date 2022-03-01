@@ -97,7 +97,7 @@ const PaymentModal = ({ visible, onCancel, wallet }) => {
             >
               <Select onSelect={handleChange}>
                 {plans?.map((item) => (
-                  <Select.Option value={item?._id}>{`${
+                  <Select.Option key={item?._id} value={item?._id}>{`${
                     item?.subscriptionPlanName
                   } - $ ${formatCurrency(item?.amount)} / ${
                     item?.durationInDays
