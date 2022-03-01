@@ -398,49 +398,53 @@ const CustomerHomePage = (props) => {
                   customer.imageBlur
                 }`}
               />
-              <div className="actions">
-                {params === "?chat=yes" ? (
-                  <div className="actions__container">
-                    <img
-                      src={msg}
-                      className="img-fluid"
-                      alt=""
-                      onClick={() =>
-                        history.push(`${routes.CHAT}/${customerId}`)
-                      }
-                    />{" "}
-                  </div>
-                ) : (
-                  <div className="actions__container">
-                    {showRestore && (
-                      <img
-                        src={reverse}
-                        className="img-fluid"
-                        alt=""
-                        onClick={handleDeclineRestored}
-                      />
+              {userSub?.length !== 0 && (
+                <>
+                  <div className="actions">
+                    {params === "?chat=yes" ? (
+                      <div className="actions__container">
+                        <img
+                          src={msg}
+                          className="img-fluid"
+                          alt=""
+                          onClick={() =>
+                            history.push(`${routes.CHAT}/${customerId}`)
+                          }
+                        />{" "}
+                      </div>
+                    ) : (
+                      <div className="actions__container">
+                        {showRestore && (
+                          <img
+                            src={reverse}
+                            className="img-fluid"
+                            alt=""
+                            onClick={handleDeclineRestored}
+                          />
+                        )}
+                        <img
+                          src={like}
+                          className="img-fluid"
+                          alt=""
+                          onClick={handleLikeAccepted}
+                        />
+                        <img
+                          src={decline}
+                          className="img-fluid"
+                          alt=""
+                          onClick={handleLikeDeclined}
+                        />{" "}
+                        <img
+                          src={fav}
+                          className="img-fluid"
+                          alt=""
+                          onClick={handleLikeAccepted}
+                        />
+                      </div>
                     )}
-                    <img
-                      src={like}
-                      className="img-fluid"
-                      alt=""
-                      onClick={handleLikeAccepted}
-                    />
-                    <img
-                      src={decline}
-                      className="img-fluid"
-                      alt=""
-                      onClick={handleLikeDeclined}
-                    />{" "}
-                    <img
-                      src={fav}
-                      className="img-fluid"
-                      alt=""
-                      onClick={handleLikeAccepted}
-                    />
                   </div>
-                )}
-              </div>
+                </>
+              )}
             </div>
             <div className={`col-md-6 ${styles.profileContainerRightCol}`}>
               <div className="d-flex justify-content-between">
