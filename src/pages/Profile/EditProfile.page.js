@@ -17,6 +17,11 @@ import { adminFetchUserAction } from "../../redux/actions/userAction";
 import LoaderComponent from "../../components/LoaderComponent";
 import moment from "moment";
 import { changePasswordService } from "../../services/Auth/Change Password/changePasswordService";
+import {
+  createUserBankDetailsService,
+  getUserBankDetailsByUserIdService,
+  updateUserBankDetailsService,
+} from "../../services/App/User Bank Details/userBankDetailsService";
 
 const EditProfilePage = (props) => {
   let location = useLocation();
@@ -26,12 +31,15 @@ const EditProfilePage = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+  const userSub = useSelector((state) => state.userReducer.activeSub);
   const user = useSelector((state) => state.userReducer?.data);
   const userProfile = useSelector(
     (state) =>
       state.userReducer?.data?.customerProfile ||
       state.userReducer?.data?.providerProfile
   );
+  const [userBank, setUserBank] = useState({});
+  const [userBankDetails, setUserBankDetails] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [genders, setGenders] = useState([
     "male",
@@ -46,6 +54,7 @@ const EditProfilePage = (props) => {
   const [showBasicInfoSuccess, setShowBasicInfoSuccess] = useState(false);
   const [showBasicInfoForm, setShowBasicInfoForm] = useState(false);
   const [showYourAccount, setShowYourAcct] = useState(false);
+  const [showYourBankAccount, setShowYourBankAcct] = useState(false);
   const [premiumActive, setPremiumActive] = useState(false);
   const [showActivatePremium, setShowActivatePremium] = useState(false);
   const [notifications, setNotifications] = useState({
@@ -74,6 +83,26 @@ const EditProfilePage = (props) => {
     return current && current > moment().subtract(18, "years");
   }
 
+  const fetchUserBankDetails = async () => {
+    setIsLoading(true);
+    const response = await getUserBankDetailsByUserIdService(user?._id);
+    if (response.ok) {
+      setIsLoading(false);
+      setUserBank(response?.data?.data[0]);
+      setUserBankDetails(response?.data?.data[0]);
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (user?.userType?.toLowerCase() === "provider") {
+      fetchUserBankDetails();
+    }
+  }, []);
+
   const handleSubmit = async (values, formName) => {
     if (formName === "basicInfo") {
       setIsLoading(true);
@@ -91,6 +120,25 @@ const EditProfilePage = (props) => {
         setShowBasicInfoForm(false);
         setShowBasicInfoSuccess(true);
         dispatch(adminFetchUserAction(user?._id));
+      } else {
+        message.error(
+          response?.data?.errors[0].message || "Something went wrong"
+        );
+      }
+    } else if (formName === "bankAcct") {
+      setIsLoading(true);
+      userBank.user = user?._id;
+      userBank.primaryAccount = true;
+      console.log("user bank details = ", Object.keys(userBankDetails));
+      const response =
+        Object.keys(userBankDetails)?.length === 0
+          ? await createUserBankDetailsService(userBank)
+          : await updateUserBankDetailsService(userBank);
+
+      setIsLoading(false);
+      if (response.ok) {
+        setShowYourBankAcct(false);
+        message.success("Bank Details Updated!");
       } else {
         message.error(
           response?.data?.errors[0].message || "Something went wrong"
@@ -118,6 +166,10 @@ const EditProfilePage = (props) => {
 
   const handleChangeAcctinfo = (name, value) => {
     setYourAccount({ ...yourAccount, [name]: value });
+  };
+
+  const handleChangeBankAcctinfo = (name, value) => {
+    setUserBank({ ...userBank, [name]: value });
   };
 
   const basicInfoForm = () => {
@@ -336,6 +388,84 @@ const EditProfilePage = (props) => {
     );
   };
 
+  const yourBankAccountForm = () => {
+    return (
+      <>
+        <Form
+          layout="vertical"
+          scrollToFirstError
+          onFinish={(values) => handleSubmit(values, "bankAcct")}
+        >
+          <Form.Item
+            className="mb-3 mb-md-0 mt-2"
+            name="bankName"
+            label="Bank Name"
+            rules={[
+              {
+                required: true,
+                message: "Required field",
+              },
+            ]}
+          >
+            <Input
+              onChange={(e) =>
+                handleChangeBankAcctinfo("bankName", e.target.value)
+              }
+            />
+          </Form.Item>
+
+          <Form.Item
+            className="mb-3 mb-md-0 mt-2"
+            name="accountName"
+            label="Account Name"
+            rules={[
+              {
+                required: true,
+                message: "Required field",
+              },
+            ]}
+          >
+            <Input
+              onChange={(e) =>
+                handleChangeBankAcctinfo("accountName", e.target.value)
+              }
+            />
+          </Form.Item>
+
+          <Form.Item
+            className="mb-3 mb-md-0 mt-2"
+            name="accountNumber"
+            label="Account Number"
+            rules={[
+              {
+                required: true,
+                message: "Required field",
+              },
+            ]}
+          >
+            <Input
+              onChange={(e) =>
+                handleChangeBankAcctinfo("accountNumber", e.target.value)
+              }
+            />
+          </Form.Item>
+          <br />
+          <div className="d-block d-md-flex justify-content-md-between">
+            <button className="btn btn-primary btn-sm-block btn-md-auto mr-md-3 mb-3 mb-md-0">
+              Save
+            </button>
+            <button
+              onClick={() => setShowYourBankAcct(false)}
+              className="btn btn-outline-primary btn-sm-block btn-md-auto"
+            >
+              Cancel
+            </button>
+          </div>
+        </Form>
+      </>
+    );
+  };
+
   return (
     <HomeContainerPage>
       {isLoading ? (
@@ -345,7 +475,7 @@ const EditProfilePage = (props) => {
           <div className="row">
             <SubscribePremium
               handlePremium={() => setShowActivatePremium(true)}
-              visible={!premiumActive}
+              subscribed={userSub?.length > 0}
             />
             <div
               className={`${
@@ -420,9 +550,55 @@ const EditProfilePage = (props) => {
                   </>
                 )}
               </div>
+              {user?.userType?.toLowerCase() === "provider" && (
+                <>
+                  <br />
+                  <div
+                    className={`dotted-divider ${mobile ? "w-100" : "w-50"}`}
+                  />
+                  <br />
+
+                  <div className="col-md-6 mt-3">
+                    <div className="d-flex align-items-center mb-5">
+                      <h5 className="padding-none mr-5">Bank Details</h5>
+                      <AiOutlineEdit
+                        onClick={() => setShowYourBankAcct(true)}
+                        size="2rem"
+                        className="cursor"
+                      />
+                    </div>
+                    {user?.userType?.toLowerCase() === "customer" &&
+                    showYourBankAccount ? (
+                      yourBankAccountForm()
+                    ) : (
+                      <>
+                        <div className="d-flex justify-content-between mb-4">
+                          <small className="text-dark"> Bank Name </small>
+                          <small className="text-muted">
+                            {userBank?.bankName}
+                          </small>
+                        </div>
+                        <div className="d-flex justify-content-between mb-4">
+                          <small className="text-dark"> Account Name </small>
+                          <small className="text-muted">
+                            {userBank?.accountName}
+                          </small>
+                        </div>
+                        <div className="d-flex justify-content-between mb-4">
+                          <small className="text-dark"> Account Number </small>
+                          <small className="text-muted">
+                            {userBank?.accountNumber}
+                          </small>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </>
+              )}
               <br />
               <div className={`dotted-divider ${mobile ? "w-100" : "w-50"}`} />
               <br />
+
               <div className="col-md-6 mt-3">
                 <div className="d-flex align-items-center mb-5">
                   <h5 className="padding-none mr-5">Notifications</h5>

@@ -37,6 +37,7 @@ const WalletPage = (props) => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
   const user = useSelector((state) => state.userReducer?.data);
+  const userSub = useSelector((state) => state.userReducer.activeSub);
   const [clientSecret, setClientSecret] = useState("");
   const [amountToFund, setAmountToFund] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -101,7 +102,7 @@ const WalletPage = (props) => {
       <div className="row wallet">
         <SubscribePremium
           handlePremium={() => setShowPaymentModal(true)}
-          visible={!premiumActive}
+          subscribed={userSub?.length > 0}
         />
         <div
           className={`paymentModal ${

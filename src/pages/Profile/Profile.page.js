@@ -41,6 +41,7 @@ import PopUpModal from "../../components/Modals/popUpModal";
 import { constants } from "../../redux/actions/types";
 import { useCoords } from "../../hooks/useCoords";
 import { getAge } from "../../Utils/getAge";
+import { getUserBankDetailsByUserIdService } from "../../services/App/User Bank Details/userBankDetailsService";
 
 const ProfilePage = () => {
   let location = useLocation();
@@ -51,6 +52,7 @@ const ProfilePage = () => {
   }, [location.pathname]);
   const coords = useCoords();
   const user = useSelector((state) => state.userReducer?.data);
+  const userSub = useSelector((state) => state.userReducer.activeSub);
   const userProfile = useSelector(
     (state) =>
       state.userReducer?.data?.customerProfile ||
@@ -72,6 +74,7 @@ const ProfilePage = () => {
     (state) => state.userReducer?.galleryLoading
   );
   const dispatch = useDispatch();
+  const [userBank, setUserBank] = useState({});
   const [coordinates, setCoordinates] = useState({
     lat: 0,
     lng: 0,
@@ -132,12 +135,28 @@ const ProfilePage = () => {
     }
   };
 
+  const fetchUserBankDetails = async () => {
+    setIsLoading(true);
+    const response = await getUserBankDetailsByUserIdService(user?._id);
+    setIsLoading(false);
+    if (response.ok) {
+      setUserBank(response?.data?.data[0]);
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  };
+
   useEffect(() => {
     coords
       .getCoords(userProfile?.city, userProfile?.state, userProfile?.country)
       .then((r) => setCoordinates({ lat: r.lat, lng: r.lng }))
       .catch((error) => message.error("Could not fetch coordinates."));
     fetchGallery();
+    if (user?.userType?.toLowerCase() === "provider") {
+      fetchUserBankDetails();
+    }
   }, []);
 
   function handleLogout() {
@@ -217,7 +236,7 @@ const ProfilePage = () => {
           <div className="row">
             <SubscribePremium
               handlePremium={() => setShowActivatePremium(true)}
-              visible={!premiumActive}
+              subscribed={userSub?.length > 0}
             />
             <div
               className={`${
@@ -462,7 +481,38 @@ const ProfilePage = () => {
                     <AiOutlineEdit size="2rem" color="#fff" />
                   </div>
                 </div>
+
                 <br />
+
+                <div className="col-md-8">
+                  {user?.userType?.toLowerCase() === "provider" && (
+                    <>
+                      <div className="dotted-divider w-100" />
+                      <br />
+                      <div className="d-flex justify-content-between">
+                        <h5>Bank Details</h5>
+                        <AiOutlineEdit
+                          onClick={() => history.push(routes.EDIT_PROFILE)}
+                          size="2rem"
+                          className="cursor"
+                        />
+                      </div>
+                      <div className="d-flex align-items-center">
+                        <p className="mr-5 padding-none">Bank Name</p>
+                        <small> {userBank?.bankName} </small>
+                      </div>
+                      <div className="d-flex align-items-center">
+                        <p className="mr-5 padding-none">Account Name</p>
+                        <small>{userBank?.accountName}</small>
+                      </div>
+                      <div className="d-flex align-items-center">
+                        <p className="mr-5 padding-none">Account Number</p>
+                        <small>{userBank?.accountNumber}</small>
+                      </div>
+                    </>
+                  )}
+                </div>
+
                 <div className="dotted-divider w-100" />
 
                 <br />
