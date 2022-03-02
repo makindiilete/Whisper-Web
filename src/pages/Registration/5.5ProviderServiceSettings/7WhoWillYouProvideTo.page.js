@@ -47,7 +47,7 @@ const WhoWillYouProvideToPage = (props) => {
     setIsLoading(true);
     let response = await updateProviderService_Service({
       providingFor: selected,
-      providerServiceId: user?.providerService?._id,
+      providerServiceId: user?.providerServices[0]?._id,
     });
     setIsLoading(false);
     if (response.ok) {

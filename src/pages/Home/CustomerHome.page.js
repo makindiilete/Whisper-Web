@@ -59,12 +59,7 @@ const CustomerHomePage = (props) => {
   const userSub = useSelector((state) => state.userReducer.activeSub);
   const user = useSelector((state) => state.userReducer.data);
   const [showServiceRequestModal, setShowServiceRequestModal] = useState(false);
-  const [serviceRequest, setServiceRequest] = useState({
-    providerServiceIds: [],
-    appointmentTime: "",
-    providerId: "",
-    customerId: user?._id,
-  });
+
   const [allPaidPics, setAllPaidPics] = useState([]);
   const [imgPosition, setImgPosition] = useState(0);
   const [index, setIndex] = useState(0);
@@ -78,6 +73,12 @@ const CustomerHomePage = (props) => {
   const [currentProfile, setCurrentProfile] = useState(
     providersByPreference[providerIndex.currentIndex]
   );
+  const [serviceRequest, setServiceRequest] = useState({
+    providerServiceIds: [currentProfile],
+    appointmentTime: "",
+    providerId: "",
+    customerId: user?._id,
+  });
 
   /* const [activeImage, setActiveImage] = useState(
       currentProfile?.imgUrls[index]

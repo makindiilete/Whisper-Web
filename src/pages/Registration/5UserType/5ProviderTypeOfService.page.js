@@ -11,6 +11,7 @@ import styles from "../../../assets/css/auth/yourAttributes.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllServiceCategoriesService } from "../../../services/App/Service Categories/ServiceCategories";
 import {
+  createProviderService_Service,
   getProviderServiceByIdService,
   updateProviderService_Service,
 } from "../../../services/Providers/Service/Service";
@@ -27,22 +28,13 @@ const ProviderTypeOfServicePage = (props) => {
   const mobile = useMobile();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userReducer?.data);
-  const [isLoading, setIsLoading] = useState(false);
   const [serviceId, setServiceId] = useState("");
-  const [selected, setSelected] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [selected, setSelected] = useState({});
   const [services, setServices] = useState([]);
 
   const addRemoveItem = (item) => {
-    let items = selected;
-    const findItem = selected.find((i) => i._id === item._id);
-    //remove if item does not exist
-    if (findItem) {
-      items = items.filter((i) => i._id !== findItem._id);
-      setSelected(items);
-      //add if item already exist
-    } else {
-      setSelected([...selected, item]);
-    }
+    setSelected(item);
   };
 
   const handleGetAllCategories = async () => {
@@ -77,16 +69,14 @@ const ProviderTypeOfServicePage = (props) => {
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    let service = [];
-    selected?.map((item) =>
-      service.push({
-        serviceCategoryName: item?.categoryName,
-        pricePerHour: null,
-      })
-    );
-    let response = await updateProviderService_Service({
-      services: service,
-      providerServiceId: serviceId,
+    let response = await createProviderService_Service({
+      user: user?._id,
+      serviceCategory: {
+        serviceCategoryName: selected?.categoryName,
+        serviceCategoryId: selected?._id,
+        services: [],
+        pricePerHour: 0,
+      },
     });
     setIsLoading(false);
     if (response.ok) {
@@ -101,7 +91,7 @@ const ProviderTypeOfServicePage = (props) => {
   };
 
   useEffect(() => {
-    handleGetServiceId();
+    // handleGetServiceId();
     handleGetAllCategories();
   }, []);
 
@@ -144,7 +134,7 @@ const ProviderTypeOfServicePage = (props) => {
             {services?.map((item) => (
               <div
                 className={`d-flex justify-content-center align-items-center  ${
-                  selected?.includes(item) && "active"
+                  selected?._id === item?._id && "active"
                 }`}
                 onClick={() => addRemoveItem(item)}
                 key={item?._id}

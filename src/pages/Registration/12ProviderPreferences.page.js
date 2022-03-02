@@ -24,7 +24,9 @@ const ProviderPreferencesPage = (props) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userReducer?.data);
   const [isLoading, setIsLoading] = useState(false);
-  const [services, setServices] = useState(user?.providerService?.services);
+  const [services, setServices] = useState(
+    user?.providerServices[0].serviceCategory
+  );
   const [selected, setSelected] = useState([]);
   const [currentStep, setCurrentStep] = useState(1);
   const [age, setAge] = useState({
@@ -32,7 +34,7 @@ const ProviderPreferencesPage = (props) => {
     endRange: 25,
   });
   const [km, setKm] = useState(5);
-  const [amount, setAmount] = useState({});
+  const [amount, setAmount] = useState(0);
 
   const slider = {
     width: "100%",
@@ -54,7 +56,8 @@ const ProviderPreferencesPage = (props) => {
   }
 
   const handleAmountChange = (name, value) => {
-    setAmount({ ...amount, [name]: value });
+    console.log("Amount = ", value);
+    setAmount(value);
   };
 
   function onChangeKm(value) {
@@ -67,25 +70,17 @@ const ProviderPreferencesPage = (props) => {
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    let service = [];
-    let serviceStored = JSON.parse(localStorage.getItem("providerService"));
-    services?.map((item, index) =>
-      service.push({
-        serviceCategoryName: Object.keys(amount)[index],
-        pricePerHour: Object.values(amount)[index],
-        serviceCategoryId: serviceStored[index].serviceCategoryId,
-        services: serviceStored[index].services,
-      })
-    );
-
+    let service = JSON.parse(localStorage.getItem("providerService"));
+    service.serviceCategory.pricePerHour = amount;
     const response = await updateProviderService_Service({
       userId: user?._id,
       minAge: Number(age.startRange),
       maxAge: Number(age.endRange),
       distanceAway: Number(km),
-      services: service,
-      providerServiceId: user?.providerService?._id,
+      serviceCategory: service?.serviceCategory,
+      providerServiceId: service?.providerServiceId,
     });
+
     setIsLoading(false);
     if (response.ok) {
       dispatch(adminFetchUserAction(user?._id));
@@ -169,52 +164,43 @@ const ProviderPreferencesPage = (props) => {
                 </div>
               </div>
               <div className={`row `}>
-                {services?.map((item, index) => (
-                  <div
-                    key={item?._id}
-                    className={`col-md-6 mb-2 mb-md-0 ${styles.attributesCol}`}
-                  >
-                    <div>
-                      <h5 className={`${index !== 0 && "text-white"}`}>
-                        Set a price/rate for your services
-                      </h5>
-                    </div>
-                    <div className="d-flex align-items-center">
-                      <div className="prependInput">
-                        <small>{item?.serviceCategoryName}</small>
-                      </div>
-                      <div className="w-100">
-                        <Input
-                          style={{ paddingLeft: "9.5rem" }}
-                          onChange={(e) =>
-                            handleAmountChange(
-                              item?.serviceCategoryName,
-                              e.target.value
-                            )
-                          }
-                        />
-                      </div>
-                      <h5 className="appendInput">/hr</h5>
-                    </div>
-                    <div
-                      className={`flexrowbetweencenter ${
-                        index !== 0 && "d-none"
-                      }`}
-                    >
-                      <div
-                        style={{
-                          width: "1rem",
-                          height: "1rem",
-                          borderRadius: "0.3rem",
-                          backgroundColor: "#7917CE",
-                        }}
-                      />
-                      <p className="padding-none">
-                        10% of your hourly rate will be charged as commission
-                      </p>
-                    </div>
+                {/*{services?.map((item, index) => (*/}
+                <div
+                  // key={item?._id}
+                  className={`col-md-6 mb-2 mb-md-0 ${styles.attributesCol}`}
+                >
+                  <div>
+                    <h5>Set a price/rate for your services</h5>
                   </div>
-                ))}
+                  <div className="d-flex align-items-center">
+                    <div className="prependInput">
+                      <small>{services?.serviceCategoryName}</small>
+                    </div>
+                    <div className="w-100">
+                      <Input
+                        style={{ paddingLeft: "9.5rem" }}
+                        onChange={(e) =>
+                          handleAmountChange("amount", e.target.value)
+                        }
+                      />
+                    </div>
+                    <h5 className="appendInput">/hr</h5>
+                  </div>
+                  <div className="flexrowbetweencenter">
+                    <div
+                      style={{
+                        width: "1rem",
+                        height: "1rem",
+                        borderRadius: "0.3rem",
+                        backgroundColor: "#7917CE",
+                      }}
+                    />
+                    <p className="padding-none">
+                      10% of your hourly rate will be charged as commission
+                    </p>
+                  </div>
+                </div>
+                {/*  ))}*/}
               </div>
               <div className="row">
                 <div

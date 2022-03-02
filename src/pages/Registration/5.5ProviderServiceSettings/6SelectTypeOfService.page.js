@@ -9,7 +9,10 @@ import routes from "../../../routes";
 import { getAllServiceCategoriesService } from "../../../services/App/Service Categories/ServiceCategories";
 import { message } from "antd";
 import { getAllServices_Service } from "../../../services/App/Services/Service";
-import { updateProviderService_Service } from "../../../services/Providers/Service/Service";
+import {
+  getProviderServiceByIdService,
+  updateProviderService_Service,
+} from "../../../services/Providers/Service/Service";
 import { useDispatch, useSelector } from "react-redux";
 import { adminFetchUserAction } from "../../../redux/actions/userAction";
 
@@ -23,11 +26,12 @@ const SelectTypeOfServicePage = (props) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userReducer?.data);
   const [finalServices, setFinalServices] = useState([]);
-  const [finalCategories, setFinalCategories] = useState([]);
+  const [finalCategories, setFinalCategories] = useState({});
   const [categories, setCategories] = useState([]);
   const [selected, setSelected] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [services, setServices] = useState([]);
+  const [providerServices, setProviderServices] = useState([]);
 
   const handleGetAllCategories = async () => {
     setIsLoading(true);
@@ -63,16 +67,45 @@ const SelectTypeOfServicePage = (props) => {
     }
   };
 
-  const mapServiceToCategory = useCallback(() => {
+  const handleGetProviderServices = async () => {
+    setIsLoading(true);
+    let response = await getProviderServiceByIdService(user?._id);
+    setIsLoading(false);
+    if (response.ok) {
+      setProviderServices(response?.data?.data);
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  };
+
+  const mapServiceToCategory = () => {
+    console.log("called");
     if (services.length > 0 && categories.length > 0) {
       let category = [...categories];
       let service = [...services];
 
       let catArr = [...categories];
+      let newCatArr = catArr.filter(
+        (i) =>
+          i.categoryName ===
+          providerServices[0]?.serviceCategory?.serviceCategoryName
+      );
       for (let i = 0; i < categories.length; i++) {
         catArr[i].services = [];
       }
-      setFinalCategories(catArr);
+      setFinalCategories({
+        providerServiceId: providerServices[0]?._id,
+        serviceCategory: {
+          serviceCategoryId:
+            providerServices[0]?.serviceCategory?.serviceCategoryId,
+          serviceCategoryName:
+            providerServices[0]?.serviceCategory?.serviceCategoryName,
+          services: [],
+          pricePerHour: 0,
+        },
+      });
 
       for (let i = 0; i < service.length; i++) {
         let findMatchingCategory = category.find(
@@ -82,68 +115,61 @@ const SelectTypeOfServicePage = (props) => {
       }
       setFinalServices(service);
     }
-  }, [services, categories]);
+  };
 
   useEffect(() => {
     mapServiceToCategory();
   }, [services, categories]);
 
   useEffect(() => {
+    handleGetProviderServices();
     handleGetAllCategories();
     handleGetAllServices();
   }, []);
 
-  const addRemoveItem = (categoryName, serviceId, index, pricePerHour = 0) => {
-    let allCategories = [...categories];
-    let categoryObj = allCategories.find(
-      (value) => value.categoryName === categoryName
-    );
-    let services = [...categoryObj.services];
-    //Remove
-    if (services.includes(serviceId)) {
-      allCategories[index].services = services.filter((v) => v !== serviceId);
-      allCategories[index].pricePerHour = pricePerHour;
-      setFinalCategories(allCategories);
-    }
-
-    //Add
-    else {
-      allCategories[index].services = [
-        ...allCategories[index].services,
-        serviceId,
-      ];
-      allCategories[index].pricePerHour = pricePerHour;
-      setFinalCategories(allCategories);
+  const addRemoveItem = (categoryName, serviceId, serviceName, index) => {
+    let services = [...finalCategories?.serviceCategory?.services];
+    let findItem = services?.find((i) => i?.serviceId === serviceId);
+    console.log("find item = ", findItem);
+    if (findItem) {
+      let indexOfItem = services?.findIndex(
+        (i) => i?.serviceId === findItem?.serviceId
+      );
+      console.log("index = ", indexOfItem);
+      let leftOver = services.splice(indexOfItem, 1);
+      console.log("removed item = ", leftOver);
+      console.log("left over = ", services);
+      setFinalCategories({
+        ...finalCategories,
+        serviceCategory: {
+          ...finalCategories.serviceCategory,
+          services: services,
+        },
+      });
+    } else {
+      setFinalCategories({
+        ...finalCategories,
+        serviceCategory: {
+          ...finalCategories.serviceCategory,
+          services: [
+            ...finalCategories?.serviceCategory?.services,
+            { serviceId, serviceName },
+          ],
+        },
+      });
     }
   };
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    const providerServiceId = user?.providerService?._id;
-    let payloadArr = [];
-    let disableSubmit = true;
-    for (let i = 0; i < finalCategories.length; i++) {
-      let obj = {};
-      obj.serviceCategoryId = finalCategories[i]?._id;
-      obj.serviceCategoryName = finalCategories[i]?.categoryName;
-      obj.services = finalCategories[i]?.services;
-      obj.pricePerHour = 0;
-      payloadArr.push(obj);
-    }
-    for (let i = 0; i < payloadArr.length; i++) {
-      if (payloadArr[i].services?.length > 0) {
-        disableSubmit = false;
-        break;
-      }
-    }
-    if (!disableSubmit) {
-      localStorage.setItem("providerService", JSON.stringify(payloadArr));
-      const response = await updateProviderService_Service({
-        providerServiceId,
-        services: payloadArr,
-      });
+    if (finalCategories?.serviceCategory?.services?.length > 0) {
+      const response = await updateProviderService_Service(finalCategories);
       setIsLoading(false);
       if (response.ok) {
+        localStorage.setItem(
+          "providerService",
+          JSON.stringify(finalCategories)
+        );
         dispatch(adminFetchUserAction(user?._id));
         history.push(`${routes.createyourprofile}?step=1`);
       } else {
@@ -163,7 +189,7 @@ const SelectTypeOfServicePage = (props) => {
         <LoaderComponent />
       ) : (
         <div className="uploadPhotos position-relative ">
-          <FaAngleLeft
+          {/* <FaAngleLeft
             fontSize={mobile ? "4rem" : "2rem"}
             color="#000"
             style={{
@@ -174,7 +200,7 @@ const SelectTypeOfServicePage = (props) => {
               zIndex: "999999",
             }}
             onClick={() => history.goBack()}
-          />
+          />*/}
           <div className="container px-5 pb-5 pb-md-0">
             <div
               className="d-flex flex-column justify-content-around"
@@ -197,36 +223,45 @@ const SelectTypeOfServicePage = (props) => {
                 >
                   {categories?.map((category, index) => (
                     <div key={category?._id}>
-                      <h5>
-                        As {category?.categoryName}, what service do you want to
-                        provide?
-                      </h5>
-                      <div className={styles.flexrowbetween}>
-                        {finalServices
-                          ?.filter(
-                            (value) =>
-                              value?.categoryName === category?.categoryName
-                          )
-                          ?.map((item) => (
-                            <button
-                              key={item?._id}
-                              className={`${styles.attrBtn} ${
-                                category?.services?.includes(item?._id)
-                                  ? styles.attrBtnActive
-                                  : null
-                              }`}
-                              onClick={() =>
-                                addRemoveItem(
-                                  item?.categoryName,
-                                  item?._id,
-                                  index
-                                )
-                              }
-                            >
-                              {item?.serviceName}
-                            </button>
-                          ))}
-                      </div>
+                      {category?._id ===
+                        providerServices[0]?.serviceCategory
+                          ?.serviceCategoryId && (
+                        <div>
+                          <h5>
+                            As {category?.categoryName}, what service do you
+                            want to provide?
+                          </h5>
+                          <div className={styles.flexrowbetween}>
+                            {finalServices
+                              ?.filter(
+                                (value) =>
+                                  value?.categoryName === category?.categoryName
+                              )
+                              ?.map((item) => (
+                                <button
+                                  key={item?._id}
+                                  className={`${styles.attrBtn} ${
+                                    finalCategories?.serviceCategory?.services?.some(
+                                      (i) => i.serviceId === item?._id
+                                    )
+                                      ? styles.attrBtnActive
+                                      : null
+                                  }`}
+                                  onClick={() =>
+                                    addRemoveItem(
+                                      item?.categoryName,
+                                      item?._id,
+                                      item?.serviceName,
+                                      index
+                                    )
+                                  }
+                                >
+                                  {item?.serviceName}
+                                </button>
+                              ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>

@@ -7,5 +7,7 @@ export const getProviderServiceByIdService = (id) =>
 
 export const updateProviderService_Service = (data) =>
   apiClient.put(`/provider/updateProviderService`, data);
+export const createProviderService_Service = (data) =>
+  apiClient.post(`/provider/createProviderService`, data);
 export const requestProviderService_Service = (data) =>
   apiClient.post(`/provider/requestService`, data);
