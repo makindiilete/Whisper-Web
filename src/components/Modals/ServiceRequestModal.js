@@ -16,6 +16,7 @@ const ServiceRequestModal = ({
   handleServiceRequest,
   serviceRequest,
   setServiceRequest,
+  price,
 }) => {
   let location = useLocation();
   useEffect(() => {
@@ -33,7 +34,7 @@ const ServiceRequestModal = ({
   function handleChange(name, value) {
     console.log(`Name - ${name} - Value- ${value}`);
     if (name === "providerServiceIds") {
-      setServiceRequest({ ...serviceRequest, providerServiceIds: value });
+      // setServiceRequest({ ...serviceRequest, providerServiceIds: value });
       /* let prvArr = [...serviceRequest?.providerServiceIds];
       if (prvArr?.includes(value)) {
         let filtered = prvArr.filter((i) => i !== value);
@@ -96,18 +97,16 @@ const ServiceRequestModal = ({
                 ]}
               >
                 <Select
-                  onChange={(value) =>
+                  /* onChange={(value) =>
                     handleChange("providerServiceIds", value)
-                  }
+                  }*/
                   mode="multiple"
                   // allowClear
                 >
                   {services?.map((item) => (
                     <Select.Option key={item?._id} value={item?._id}>{`${
-                      item?.serviceCategoryName
-                    } - $ ${formatCurrency(
-                      item?.pricePerHour
-                    )} /hour `}</Select.Option>
+                      item?.serviceName
+                    } - $ ${formatCurrency(price)} /hour `}</Select.Option>
                   ))}
                 </Select>
               </Form.Item>

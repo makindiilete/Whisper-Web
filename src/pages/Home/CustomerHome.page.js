@@ -74,7 +74,7 @@ const CustomerHomePage = (props) => {
     providersByPreference[providerIndex.currentIndex]
   );
   const [serviceRequest, setServiceRequest] = useState({
-    providerServiceIds: [currentProfile],
+    providerServiceIds: [currentProfile?.providerServices[0]?._id],
     appointmentTime: "",
     providerId: "",
     customerId: user?._id,
@@ -100,6 +100,16 @@ const CustomerHomePage = (props) => {
   const [premiumActive, setPremiumActive] = useState(false);
   const [showRestore, setShowRestore] = useState(false);
   const [lastDeclined, setLastDeclined] = useState(null);
+
+  useEffect(() => {
+    if (currentProfile?.providerServices[0]?._id) {
+      console.log("id = ", currentProfile?.providerServices[0]?._id);
+      setServiceRequest({
+        ...serviceRequest,
+        providerServiceIds: [currentProfile?.providerServices[0]?._id],
+      });
+    }
+  }, [currentProfile]);
 
   const handleSearch = () => {
     setShowFilter(false);
@@ -477,11 +487,12 @@ const CustomerHomePage = (props) => {
                 {`${currentProfile?.providerProfile?.country || ""}`}
               </p>
               <div>
-                {currentProfile?.providerServices[0]?.providingFor?.map(
-                  (item) => (
-                    <Badge text={item || ""} key={item} />
-                  )
-                )}
+                <Badge
+                  text={
+                    currentProfile?.providerServices[0]?.serviceCategory
+                      ?.serviceCategoryName || ""
+                  }
+                />
               </div>
               <br />
               <div className="dotted-divider w-100" />
@@ -643,7 +654,12 @@ const CustomerHomePage = (props) => {
         setServiceRequest={setServiceRequest}
         serviceRequest={serviceRequest}
         handleServiceRequest={handleServiceRequest}
-        services={currentProfile?.providerServices[0]?.services}
+        services={
+          currentProfile?.providerServices[0]?.serviceCategory?.services
+        }
+        price={
+          currentProfile?.providerServices[0]?.serviceCategory?.pricePerHour
+        }
         onCancel={() => setShowServiceRequestModal(false)}
       />
     </HomeContainerPage>
