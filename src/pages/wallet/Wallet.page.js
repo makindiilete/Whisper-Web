@@ -28,6 +28,7 @@ import { getUserTransactionsService } from "../../services/App/Transanction Hist
 import { subscriptionPlansAction } from "../../redux/actions/subscriptionPlansAction";
 import StripeCheckout from "../../components/StripeCheckout";
 import { getUserBankDetailsByUserIdService } from "../../services/App/User Bank Details/userBankDetailsService";
+import routes from "../../routes";
 
 const WalletPage = (props) => {
   let location = useLocation();
@@ -151,7 +152,14 @@ const WalletPage = (props) => {
                 {userType !== "Customer" && (
                   <button
                     className="btn btn-light"
-                    onClick={() => setShowWithdrawal(true)}
+                    onClick={() => {
+                      if (!userBank || Object.keys(userBank).length === 0) {
+                        message.error("Add a bank account to proceed");
+                        history.push(routes.EDIT_PROFILE);
+                      } else {
+                        setShowWithdrawal(true);
+                      }
+                    }}
                   >
                     Withdraw
                   </button>
