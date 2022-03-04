@@ -26,12 +26,13 @@ import "../../assets/css/filterModal.css";
 import useLocationHook from "../../hooks/useLocationHook";
 import PlacesAutocomplete from "react-places-autocomplete";
 import { countries } from "../countryList";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateCustomerProfileService } from "../../services/Customers/Profile/ProfileService";
 import { updateProviderProfileService } from "../../services/Providers/Profile/ProfileService";
 import styles from "../../assets/css/auth/yourAttributes.module.css";
 import { updateCustomerPreferenceService } from "../../services/Customers/Preference/PrefenceService";
 import LoaderComponent from "../LoaderComponent";
+import { adminFetchUserAction } from "../../redux/actions/userAction";
 
 const FilterModal = ({ visible, onCancel, data, setData, handleSearch }) => {
   let location = useLocation();
@@ -40,6 +41,7 @@ const FilterModal = ({ visible, onCancel, data, setData, handleSearch }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+  const dispatch = useDispatch();
   const mobile = useMobile();
   const [isLoading, setIsLoading] = useState(false);
   const [age, setAge] = useState({
@@ -97,6 +99,7 @@ const FilterModal = ({ visible, onCancel, data, setData, handleSearch }) => {
     });
     setIsLoading(false);
     if (response.ok) {
+      dispatch(adminFetchUserAction(user?._id));
       handleSearch();
       onCancel("continue");
     } else {
