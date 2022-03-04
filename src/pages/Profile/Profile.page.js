@@ -148,6 +148,10 @@ const ProfilePage = () => {
     }
   };
 
+  function justATest() {
+    console.log(`Logging a test to the console = `, test);
+  }
+
   useEffect(() => {
     coords
       .getCoords(userProfile?.city, userProfile?.state, userProfile?.country)

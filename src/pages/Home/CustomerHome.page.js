@@ -636,7 +636,7 @@ const CustomerHomePage = (props) => {
         visible={showFilter}
         setData={setData}
         data={data}
-        handleSearch={handleSearch}
+        handleSearch={fetchProviderByPreference}
         onCancel={() => setShowFilter(false)}
       />
       <SuccessModal

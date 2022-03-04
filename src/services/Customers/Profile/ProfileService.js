@@ -10,3 +10,5 @@ export const updateCustomerProfileService = (data) =>
   apiClient.put(`/customer/updateCustomerProfile`, data);
 export const updateCustomerProfilePicService = (data) =>
   apiClient.put(`/customer/uploadCustomerProfilePicture`, data);
+export const getCustomerCompleteProfileService = (customerId) =>
+  apiClient.get(`/customer/getCustomerCompleteProfile/${customerId}`);

@@ -94,6 +94,7 @@ const ActivatePremiumModal = ({ visible, onCancel, handlePayForPic }) => {
               <div className="row w-100">
                 {plans?.slice(0, 3)?.map((item, index) => (
                   <div
+                    key={item?._id}
                     className={
                       index === 1
                         ? `col-4 position-relative ${customer.premiumPriceActive} ${customer.premiumPriceCol}`

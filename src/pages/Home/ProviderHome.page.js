@@ -11,6 +11,24 @@ import decline from "../../assets/images/homeInApp/decline.svg";
 import { Badge } from "../../components/Badge";
 import { providerLikes } from "../../components/dataSets";
 import { NoData } from "../../components/NoData";
+import { useSelector } from "react-redux";
+import {
+  getProviderServiceRequestByProviderId_Service,
+  updateAcceptanceService,
+} from "../../services/Providers/Service/Service";
+import { message } from "antd";
+import { getProviderGalleryByIdService } from "../../services/Providers/Gallery/Gallery";
+import {
+  getProviderByPreferenceService,
+  getProviderCompleteProfileService,
+} from "../../services/Providers/Search/SearchService";
+import { subscriptionPlansAction } from "../../redux/actions/subscriptionPlansAction";
+import { getCustomerCompleteProfileService } from "../../services/Customers/Profile/ProfileService";
+import { getCustomerGalleryByIdService } from "../../services/Customers/Gallery/GalleryService";
+import avatar from "../../assets/images/nav/avatarchange.svg";
+import { getAge } from "../../Utils/getAge";
+import LoaderComponent from "../../components/LoaderComponent";
+import moment from "moment";
 
 const ProviderHomePage = (props) => {
   let location = useLocation();
@@ -19,21 +37,27 @@ const ProviderHomePage = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
-  const [imgPosition, setImgPosition] = useState(0);
+  const user = useSelector((state) => state.userReducer.data);
   const [index, setIndex] = useState(0);
+  const [images, setImages] = useState([]);
+  const [activeImage, setActiveImage] = useState("");
+  const [imgPosition, setImgPosition] = useState(0);
   const [showRestore, setShowRestore] = useState(false);
   const [lastDeclined, setLastDeclined] = useState(null);
-  const [allLikes, setAllLikes] = useState(providerLikes);
-  const [currentProfile, setCurrentProfile] = useState(providerLikes[0]);
-  const [activeImage, setActiveImage] = useState(
-    currentProfile?.imgUrls[index]
+  const [providerIndex, setProviderIndex] = useState({
+    currentIndex: 0,
+    maxIndex: 0,
+  });
+  const [providersByPreference, setProvidersByPreference] = useState([]);
+  const [currentProfile, setCurrentProfile] = useState(
+    providersByPreference[providerIndex.currentIndex]
   );
-  const [images, setImages] = useState(currentProfile?.imgUrls);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleMoveBack = () => {
+  const handleSwipePreviousImage = () => {
     const length = images.length;
     const indx = imgPosition === 0 ? length : imgPosition - 1;
-    const active = images[indx];
+    const active = images[indx]?.imageUri[0];
     if (active) {
       setActiveImage(active);
       setImgPosition(indx);
@@ -43,10 +67,10 @@ const ProviderHomePage = (props) => {
     }
   };
 
-  const handleMoveNext = () => {
+  const handleSwipeNextImage = () => {
     const length = images.length;
     const indx = imgPosition === length ? 0 : imgPosition + 1;
-    const active = images[indx];
+    const active = images[indx]?.imageUri[0];
     if (active) {
       setActiveImage(active);
       setImgPosition(indx);
@@ -58,40 +82,141 @@ const ProviderHomePage = (props) => {
 
   function handleSetCurrentProfile(id, index) {
     setIndex(index);
-    const selected = allLikes?.find((i) => i.id === id);
-    setActiveImage(selected?.imgUrls[0]);
-    setImages(selected?.imgUrls);
+    const selected = providersByPreference?.find((i) => i.id === id);
+    fetchCurrentProfileDetails(selected?._id);
+    fetchCurrentProfileGallery(selected?._id);
+    /*    setActiveImage(selected?.imgUrls[0]);
+    setImages(selected?.imgUrls);*/
     setCurrentProfile(selected);
   }
 
-  function handleLikeAccepted() {
-    const response = allLikes?.filter((i) => i.id !== currentProfile?.id);
-    setAllLikes(response);
-    setActiveImage(response[0].imgUrls[0]);
-    setCurrentProfile(response[0]);
+  async function handleLikeAccepted() {
+    setIsLoading(true);
+    const res = await updateAcceptanceService({
+      userId: user?._id,
+      serviceRequestId: providersByPreference[providerIndex.currentIndex]?._id,
+      acceptanceComment: "",
+      acceptanceStatus: "Accepted",
+    });
+    setIsLoading(false);
+    if (res.ok) {
+      message.success("Service request accepted");
+      const response = providersByPreference?.filter(
+        (i) => i.id !== currentProfile?.id
+      );
+
+      setProvidersByPreference(response);
+      fetchCurrentProfileDetails(response);
+      fetchCurrentProfileGallery(response);
+    } else {
+      message.error(res?.data?.errors[0].message || "Something went wrong");
+    }
   }
 
-  function handleLikeDeclined() {
+  async function handleLikeDeclined() {
     setShowRestore(true);
-    const others = allLikes?.filter((i) => i.id !== currentProfile?.id);
-    const declined = allLikes?.find((i) => i.id === currentProfile?.id);
-    setLastDeclined(declined);
-    setAllLikes(others);
-    setCurrentProfile(others[0]);
-    setActiveImage(others[0].imgUrls[0]);
+    setIsLoading(true);
+    const res = await updateAcceptanceService({
+      userId: user?._id,
+      serviceRequestId: providersByPreference[providerIndex.currentIndex]?._id,
+      acceptanceComment: "",
+      acceptanceStatus: "Canceled By Provider",
+    });
+    setIsLoading(false);
+    if (res.ok) {
+      message.success("Service request accepted");
+      const others = providersByPreference?.filter(
+        (i) => i.id !== currentProfile?.id
+      );
+      const declined = providersByPreference?.find(
+        (i) => i.id === currentProfile?.id
+      );
+      setLastDeclined(declined);
+      setProvidersByPreference(others);
+      fetchCurrentProfileDetails(others);
+      fetchCurrentProfileGallery(others);
+    } else {
+      message.error(res?.data?.errors[0].message || "Something went wrong");
+    }
   }
 
   function handleDeclineRestored() {
-    let returnArr = [lastDeclined, ...allLikes];
-    setAllLikes(returnArr);
-    setActiveImage(returnArr[0].imgUrls[0]);
-    setCurrentProfile(returnArr[0]);
+    let arr = [];
+    fetchCurrentProfileDetails([...arr, lastDeclined]);
+    fetchCurrentProfileGallery([...arr, lastDeclined]);
     setShowRestore(false);
+  }
+
+  const fetchCurrentProfileGallery = async (others = []) => {
+    setIsLoading(true);
+    const response = await getCustomerGalleryByIdService(
+      others[providerIndex.currentIndex]?.customer?._id ||
+        providersByPreference[providerIndex.currentIndex]?.customer?._id
+    );
+    setIsLoading(false);
+    if (response.ok) {
+      setImages(response?.data?.data);
+      setActiveImage(response?.data?.data[0]?.imageUri[0]);
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  };
+
+  const fetchCurrentProfileDetails = async (others = []) => {
+    setIsLoading(true);
+    const response = await getCustomerCompleteProfileService(
+      others[providerIndex.currentIndex]?.customer?._id ||
+        providersByPreference[providerIndex.currentIndex]?.customer?._id
+    );
+    setIsLoading(false);
+    if (response.ok) {
+      setCurrentProfile(response?.data?.data);
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  };
+
+  const fetchProviderByPreference = async () => {
+    setIsLoading(true);
+    const response = await getProviderServiceRequestByProviderId_Service(
+      user?._id
+    );
+    setIsLoading(false);
+    if (response.ok) {
+      setProvidersByPreference(response?.data?.data);
+      setProviderIndex({
+        ...providerIndex,
+        maxIndex: response?.data?.data?.length - 1,
+      });
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (providersByPreference[providerIndex.currentIndex]?.customer?._id) {
+      fetchCurrentProfileDetails();
+      fetchCurrentProfileGallery();
+    }
+  }, [providerIndex]);
+
+  useEffect(() => {
+    fetchProviderByPreference();
+  }, []);
+
+  if (isLoading) {
+    return <LoaderComponent />;
   }
 
   return (
     <HomeContainerPage>
-      {allLikes?.length > 0 ? (
+      {providersByPreference?.length > 0 ? (
         <div className="row">
           <div className="col-md-8">
             <h4>My Like/Request</h4>
@@ -110,14 +235,20 @@ const ProviderHomePage = (props) => {
                   </div>
                   <div className="prevNextImg">
                     <div className="w-100 d-flex justify-content-between px-3">
-                      <div className="arrow backArrow" onClick={handleMoveBack}>
+                      <div
+                        className="arrow backArrow"
+                        onClick={handleSwipePreviousImage}
+                      >
                         <FontAwesomeIcon
                           icon={icons.faChevronLeft}
                           size="1x"
                           className="text-white"
                         />
                       </div>
-                      <div className="arrow nextArrow" onClick={handleMoveNext}>
+                      <div
+                        className="arrow nextArrow"
+                        onClick={handleSwipeNextImage}
+                      >
                         <FontAwesomeIcon
                           icon={icons.faChevronRight}
                           size="1x"
@@ -156,10 +287,14 @@ const ProviderHomePage = (props) => {
                   </div>
                 </div>
                 <div className={`col-md-6 ${styles.profileContainerRightCol}`}>
-                  <h4 className="text-dark">{`${currentProfile?.name} ${currentProfile?.age}`}</h4>
+                  <h4 className="text-dark">{`${
+                    currentProfile?.firstName + " " + currentProfile?.lastName
+                  } ${getAge(
+                    currentProfile?.customerProfile?.dateOfBirth
+                  )}`}</h4>
                   <p className="text-muted">
-                    {currentProfile?.location} <br />
-                    {`${currentProfile?.distance} away`}
+                    {currentProfile?.customerProfile?.city} <br />
+                    {`${currentProfile?.customerProfile?.state} ${currentProfile?.customerProfile?.country}`}
                   </p>
                   <div>
                     {currentProfile?.lookingFor?.map((item) => (
@@ -170,12 +305,38 @@ const ProviderHomePage = (props) => {
                   <div className="dotted-divider w-100" />
                   <br />
                   <h4 className="text-dark">Bio</h4>
-                  <p className="text-muted">{currentProfile?.bio}</p>
+                  <p className="text-muted">
+                    {currentProfile?.customerProfile?.biography}
+                  </p>
                   <br />
                   <h4>Attributes</h4>
-                  {currentProfile?.attributes?.map((item) => (
-                    <Badge text={item} key={item} />
-                  ))}
+                  <Badge
+                    text={currentProfile?.customerAttributes?.bodyType || ""}
+                  />
+                  <Badge
+                    text={currentProfile?.customerAttributes?.height || ""}
+                  />
+                  <Badge
+                    text={currentProfile?.customerAttributes?.education || ""}
+                  />
+                  <Badge
+                    text={`Smoking: ${
+                      currentProfile?.customerAttributes?.smokeType || ""
+                    }`}
+                  />
+                  <Badge
+                    text={`Drink: ${
+                      currentProfile?.customerAttributes?.drinkType || ""
+                    }`}
+                  />
+                  <br />
+                  <br />
+                  <h4>Appointment Date</h4>
+                  <p className="text-muted">
+                    {moment(
+                      providersByPreference[providerIndex]?.appointmentTime
+                    ).format("LLL")}
+                  </p>
                 </div>
               </div>
             </div>
@@ -184,7 +345,7 @@ const ProviderHomePage = (props) => {
             <h4>Latest Like/Request</h4>
             <br />
             <div className={styles.thumbnailGridContainer}>
-              {allLikes?.map((item, index) => (
+              {providersByPreference?.map((item, index) => (
                 <div
                   className="position-relative cursor"
                   onClick={() => {
@@ -197,16 +358,20 @@ const ProviderHomePage = (props) => {
                     className={`${styles.galleryImgThumbnail} ${styles.galleryImgThumbnailOverlay}`}
                   />
                   <img
-                    src={item?.imgUrls[0]}
+                    src={item?.customerProfilePic || avatar}
                     alt=""
                     className={styles.galleryImgThumbnail}
                   />
                   <div className={styles.galleryImgThumbnailDesc}>
                     <small className="font-weight-bold text-white">
-                      {`${item?.name} ${item?.age}`}
+                      {`${
+                        item?.customer?.firstName +
+                        " " +
+                        item?.customer?.lastName
+                      }`}
                     </small>
-                    <br />
-                    <small className="text-white">{item?.occupation}</small>
+                    {/*  <br />
+                    <small className="text-white">{item?.occupation}</small>*/}
                   </div>
                   {/* /.font-weight-bold */}
                 </div>
