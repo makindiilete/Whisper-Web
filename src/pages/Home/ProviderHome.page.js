@@ -124,7 +124,7 @@ const ProviderHomePage = (props) => {
     });
     setIsLoading(false);
     if (res.ok) {
-      message.success("Service request accepted");
+      message.success("Service request declined");
       const others = providersByPreference?.filter(
         (i) => i.id !== currentProfile?.id
       );
