@@ -358,7 +358,10 @@ const ProviderHomePage = (props) => {
                     className={`${styles.galleryImgThumbnail} ${styles.galleryImgThumbnailOverlay}`}
                   />
                   <img
-                    src={item?.customerProfilePic || avatar}
+                    src={
+                      item?.customer?.customerProfile?.profilePictureUri ||
+                      avatar
+                    }
                     alt=""
                     className={styles.galleryImgThumbnail}
                   />

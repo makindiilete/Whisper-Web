@@ -26,7 +26,7 @@ const NavigationPage = (props) => {
   useEffect(() => {}, [pathname]);
 
   function handleLogout() {
-    localStorage.removeItem("token");
+    localStorage.clear();
     history.push(routes.login);
   }
 

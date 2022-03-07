@@ -20,7 +20,7 @@ import send from "../../assets/images/chat/send.svg";
 import report from "../../assets/images/chat/report.svg";
 import cancel from "../../assets/images/chat/cancelAppointment.svg";
 import unconnect from "../../assets/images/chat/unconnect.svg";
-import PayForServiceModal from "../../components/Modals/PayForServiceModal";
+import InsertCodeModal from "../../components/Modals/InsertCodeModal";
 import PaymentModal from "../../components/Modals/paymentModal";
 import SuccessModal from "../../components/Modals/successModal";
 import modalImg from "../../assets/images/auth/40.svg";
@@ -36,7 +36,7 @@ const ChatPage = (props) => {
   const [showSuccess, setShowSuccess] = useState(false);
   const [currentChat, setCurrentChat] = useState(customerDiscover[0]);
   const [showMsgs, setShowMsgs] = useState(false);
-  const [showPayForService, setShowPayForService] = useState(false);
+  const [insertCodeModal, setInsertCodeModal] = useState(false);
   const [showPayment, setShowPayment] = useState(false);
   const [chatMsgs, setChatMsgs] = useState([]);
 
@@ -75,12 +75,12 @@ const ChatPage = (props) => {
         </div>
       </Item>
       <Divider />
-      <Item key="1">
+      {/* <Item key="1">
         <div className="d-flex align-content-center">
           <img src={unconnect} className="mr-3 img-fluid" alt="" />
           <small>Disconnect this User</small>
         </div>
-      </Item>
+      </Item>*/}
       <Divider />
       <Item key="2">
         <div className="d-flex align-content-center">
@@ -181,9 +181,9 @@ const ChatPage = (props) => {
                 <button
                   className="btn btn-outline-primary-light btn-sm d-flex align-items-center"
                   style={{ height: "4.1rem", borderRadius: "20.5px" }}
-                  onClick={() => setShowPayForService(true)}
+                  onClick={() => setInsertCodeModal(true)}
                 >
-                  Make Payment
+                  Insert Code
                 </button>
                 <Dropdown overlay={menu} trigger={["click"]}>
                   <img
@@ -256,14 +256,15 @@ const ChatPage = (props) => {
           </>
         </div>
       </div>
-      <PayForServiceModal
-        visible={showPayForService}
+      <InsertCodeModal
+        currentChat={currentChat}
+        visible={insertCodeModal}
         onCancel={(arg) => {
           if (arg === "continue") {
-            setShowPayForService(false);
+            setInsertCodeModal(false);
             setShowPayment(true);
           } else {
-            setShowPayForService(false);
+            setInsertCodeModal(false);
           }
         }}
       />

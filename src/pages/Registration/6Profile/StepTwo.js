@@ -74,15 +74,7 @@ const StepTwo = ({
   }
 
   const props = {
-    // name: "file",
-    // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
-    // headers: {
-    //   authorization: "authorization-text",
-    // },
     beforeUpload: (file) => {
-      // this.setState(state => ({
-      //   fileList: [...state.fileList, file],
-      // }));
       return false;
     },
     onChange(info) {
@@ -90,14 +82,6 @@ const StepTwo = ({
       setData({ ...data, idCards: info.file });
       if (info.file.status !== "uploading") {
       }
-      // if (info.file.status === "done") {
-      //   setImgPath(URL.createObjectURL(info.file));
-      //   message.success(`${info.file.name} file uploaded successfully`);
-      // } else if (info.file.status === "error") {
-      //   setImgPath(URL.createObjectURL(info.file));
-      //   // message.error(`${info.file.name} file upload failed.`);
-      //   message.success(`${info.file.name} file uploaded successfully`);
-      // }
     },
     progress: {
       strokeColor: {

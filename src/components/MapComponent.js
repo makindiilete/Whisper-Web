@@ -3,12 +3,17 @@ import { Map, GoogleApiWrapper, Marker } from "google-maps-react";
 import Loader from "react-loader-spinner";
 import { message } from "antd";
 
-const mapStyles = {
-  width: "100%",
-  height: "20rem",
-};
-
-const MapComponent = ({ google, latt = null, lngg = null }) => {
+const MapComponent = ({
+  google,
+  latt = null,
+  lngg = null,
+  width = "100%",
+  height = "20rem",
+}) => {
+  const mapStyles = {
+    width,
+    height,
+  };
   const [lat, setLat] = useState(latt || 0);
   const [long, setLong] = useState(lngg || 0);
   const [isLoading, setIsLoading] = useState(false);
