@@ -19,6 +19,7 @@ import { updateCustomerPreferenceService } from "../../services/Customers/Prefer
 import { updateProviderPreferenceService } from "../../services/Providers/Preference/PrefenceService";
 import { useDispatch, useSelector } from "react-redux";
 import { adminFetchUserAction } from "../../redux/actions/userAction";
+import { getAllServiceCategoriesService } from "../../services/App/Service Categories/ServiceCategories";
 
 const WhatAreYouLookingForPage = (props) => {
   let location = useLocation();
@@ -32,6 +33,24 @@ const WhatAreYouLookingForPage = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [selected, setSelected] = useState();
   const [selectedPref, setSelectedPref] = useState("");
+  const [categories, setCategories] = useState([]);
+
+  const handleGetAllCategories = async () => {
+    setIsLoading(true);
+    let response = await getAllServiceCategoriesService(1, 1);
+    response = await getAllServiceCategoriesService(
+      1,
+      response?.data?.totalDocumentCount
+    );
+    setIsLoading(false);
+    if (response.ok) {
+      setCategories(response?.data?.data);
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  };
 
   const handleSubmit = async () => {
     setIsLoading(true);
@@ -49,6 +68,10 @@ const WhatAreYouLookingForPage = (props) => {
       );
     }
   };
+
+  useEffect(() => {
+    handleGetAllCategories();
+  }, []);
 
   return (
     <AuthContainerPage>
@@ -84,95 +107,40 @@ const WhatAreYouLookingForPage = (props) => {
                 </p>
               </div>
               <div className="flexrowaround typeOfProvider__cards">
-                <div
-                  className={`d-flex justify-content-center align-items-center  ${
-                    selected === 1 && "active"
-                  }`}
-                  onClick={() => {
-                    setSelected(1);
-                    setSelectedPref("Companion");
-                  }}
-                >
-                  <div className="d-flex flex-column">
-                    <div className="d-flex justify-content-center">
-                      <img
-                        src={img1}
-                        className="img-fluid"
-                        alt=""
-                        style={{
-                          width: "6.2rem",
-                          objectFit: "contain",
-                          height: "6.2rem",
-                        }}
-                      />
+                {categories?.map((item) => (
+                  <div
+                    key={item?._id}
+                    className={`d-flex justify-content-center align-items-center  ${
+                      selected === item?._id && "active"
+                    }`}
+                    onClick={() => {
+                      setSelected(item?._id);
+                      setSelectedPref(item?.categoryName);
+                    }}
+                  >
+                    <div className="d-flex flex-column">
+                      <div className="d-flex justify-content-center">
+                        <img
+                          src={item?.imageUri}
+                          className="img-fluid"
+                          alt=""
+                          style={{
+                            width: "6.2rem",
+                            objectFit: "contain",
+                            height: "6.2rem",
+                          }}
+                        />
+                      </div>
+                      <h5 className="text-center mt-4">
+                        {" "}
+                        {item?.categoryName}{" "}
+                      </h5>
+                      <small className="text-center">{item?.description}</small>
                     </div>
-                    <h5 className="text-center mt-4">Companion</h5>
-                    <small className="text-center">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Sodales proin enim
-                    </small>
                   </div>
-                </div>
-                <div
-                  className={`d-flex justify-content-center align-items-center  ${
-                    selected === 2 && "active"
-                  }`}
-                  onClick={() => {
-                    setSelected(2);
-                    setSelectedPref("X-Rated");
-                  }}
-                >
-                  <div className="d-flex flex-column">
-                    <div className="d-flex justify-content-center">
-                      <img
-                        src={img2}
-                        className="img-fluid"
-                        alt=""
-                        style={{
-                          width: "6.2rem",
-                          objectFit: "contain",
-                          height: "6.2rem",
-                        }}
-                      />
-                    </div>
-                    <h5 className="text-center mt-4">X-Rated</h5>
-                    <small className="text-center">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Sodales proin enim
-                    </small>
-                  </div>
-                </div>
-
-                <div
-                  className={`d-flex justify-content-center align-items-center  ${
-                    selected === 3 && "active"
-                  }`}
-                  onClick={() => {
-                    setSelected(3);
-                    setSelectedPref("Both");
-                  }}
-                >
-                  <div className="d-flex flex-column">
-                    <div className="d-flex justify-content-center">
-                      <img
-                        src={img3}
-                        className="img-fluid"
-                        alt=""
-                        style={{
-                          width: "6.2rem",
-                          objectFit: "contain",
-                          height: "6.2rem",
-                        }}
-                      />
-                    </div>
-                    <h5 className="text-center mt-4">Both</h5>
-                    <small className="text-center">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Sodales proin enim
-                    </small>
-                  </div>
-                </div>
+                ))}
               </div>
+
               <div className="row">
                 <div
                   className={`col-md-6 offset-md-3 ${styles.attributesCol} `}
