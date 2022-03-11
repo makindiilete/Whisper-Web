@@ -257,11 +257,12 @@ const CustomerHomePage = (props) => {
       userId: user?._id,
     });
     setIsLoading(false);
+    console.log("response data = ", response?.data);
     if (response.ok) {
-      setProvidersByPreference(response?.data?.data);
+      setProvidersByPreference(response?.data?.data || []);
       setProviderIndex({
         ...providerIndex,
-        maxIndex: response?.data?.data?.length - 1,
+        maxIndex: response?.data?.data?.length - 1 || 0,
       });
     } else {
       message.error(

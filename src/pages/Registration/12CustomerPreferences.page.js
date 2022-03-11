@@ -11,6 +11,7 @@ import { Input, message, Slider } from "antd";
 import { updateCustomerPreferenceService } from "../../services/Customers/Preference/PrefenceService";
 import { adminFetchUserAction } from "../../redux/actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
+import { useCoords } from "../../hooks/useCoords";
 
 const CustomerPreferencesPage = (props) => {
   let location = useLocation();
@@ -20,7 +21,13 @@ const CustomerPreferencesPage = (props) => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
   const user = useSelector((state) => state.userReducer?.data);
+  const coords = useCoords();
   const dispatch = useDispatch();
+  const [coordinates, setCoordinates] = useState({
+    lat: 0,
+    long: 0,
+  });
+  const [providerLocation, setProviderLocation] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [selected, setSelected] = useState([]);
   const [currentStep, setCurrentStep] = useState(1);
@@ -86,22 +93,30 @@ const CustomerPreferencesPage = (props) => {
 
   const handleSubmitTwo = async () => {
     setIsLoading(true);
-    const response = await updateCustomerPreferenceService({
-      userId: user?._id,
-      minAge: Number(age.startRange),
-      maxAge: Number(age.endRange),
-      minPrice: Number(amount),
-      maxPrice: Number(maxAmt),
-      distanceAway: Number(km),
-    });
-    setIsLoading(false);
-    if (response.ok) {
-      history.push(routes.CUSTOMER_HOME);
-      dispatch(adminFetchUserAction(user?._id));
+    const res = await coords.getCoords(null, null, null, providerLocation);
+    if (res.lat && res.lng) {
+      const response = await updateCustomerPreferenceService({
+        userId: user?._id,
+        minAge: Number(age.startRange),
+        maxAge: Number(age.endRange),
+        minPrice: Number(amount),
+        maxPrice: Number(maxAmt),
+        providerLocation: providerLocation,
+        providerLatitude: res.lat,
+        providerLogitiude: res.lng,
+      });
+      setIsLoading(false);
+      if (response.ok) {
+        history.push(routes.CUSTOMER_HOME);
+        dispatch(adminFetchUserAction(user?._id));
+      } else {
+        message.error(
+          response?.data?.errors[0].message || "Something went wrong"
+        );
+      }
     } else {
-      message.error(
-        response?.data?.errors[0].message || "Something went wrong"
-      );
+      setIsLoading(false);
+      message.error("Cannot fetch coordinates");
     }
   };
 
@@ -170,16 +185,10 @@ const CustomerPreferencesPage = (props) => {
 
           <div className={`col-md-6 mb-2 mb-md-0 ${styles.attributesCol}`}>
             <div className={styles.flexrowbetween}>
-              <h5>Distance</h5>
-              <h5> {km} Km </h5>
-            </div>
-            <div style={slider}>
-              <Slider
-                step={1}
-                defaultValue={5}
-                onChange={onChangeKm}
-                onAfterChange={onAfterChangeKm}
-                min={1}
+              <h5>Provider Location</h5>
+              <Input
+                placeholder="City, State, Country"
+                onChange={(e) => setProviderLocation(e.target.value)}
               />
             </div>
           </div>

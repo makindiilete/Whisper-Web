@@ -4,10 +4,8 @@ import useMobile from "../../hooks/useMobile";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as icons from "@fortawesome/free-solid-svg-icons";
 import { HomeContainerPage } from "../Home/HomeContainer.page";
-import customer from "../../assets/css/customerHome.module.css";
 import { Dropdown, Input, Menu } from "antd";
 import { AiOutlineSearch, BiSearchAlt } from "react-icons/all";
-import styles from "../../assets/css/providerHome.module.css";
 import {
   chats,
   customerDiscover,
@@ -19,7 +17,6 @@ import shield from "../../assets/images/chat/shield.svg";
 import send from "../../assets/images/chat/send.svg";
 import report from "../../assets/images/chat/report.svg";
 import cancel from "../../assets/images/chat/cancelAppointment.svg";
-import unconnect from "../../assets/images/chat/unconnect.svg";
 import InsertCodeModal from "../../components/Modals/InsertCodeModal";
 import PaymentModal from "../../components/Modals/paymentModal";
 import SuccessModal from "../../components/Modals/successModal";

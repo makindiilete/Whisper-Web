@@ -17,9 +17,14 @@ export function useCoords() {
     }
   };
 
-  const getCoords = async (city, state, country) => {
+  const getCoords = async (city, state, country, addr = null) => {
     setIsLoading(true);
-    const address = encodeURI(`${city},${state},${country}`);
+    let address;
+    if (addr) {
+      address = encodeURI(addr);
+    } else {
+      address = encodeURI(`${city},${state},${country}`);
+    }
     const res = await propertyLocationCoords(address);
     setIsLoading(false);
     if (typeof res !== "undefined") {

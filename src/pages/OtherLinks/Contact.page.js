@@ -37,6 +37,7 @@ const ContactPage = (props) => {
     setIsLoading(true);
     const response = await contactUsService(data);
     setIsLoading(false);
+
     if (response.ok) {
       setShowSuccess(true);
       form.resetFields();
