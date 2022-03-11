@@ -222,7 +222,7 @@ const CustomerHomePage = (props) => {
     setIsLoading(true);
     const response = await getProviderGalleryByIdService(
       others[providerIndex.currentIndex]?.user ||
-        providersByPreference[providerIndex.currentIndex]?.user
+        providersByPreference[providerIndex.currentIndex]?.user?._id
     );
     setIsLoading(false);
     if (response.ok) {
@@ -239,7 +239,7 @@ const CustomerHomePage = (props) => {
     setIsLoading(true);
     const response = await getProviderCompleteProfileService(
       others[providerIndex.currentIndex]?.user ||
-        providersByPreference[providerIndex.currentIndex]?.user
+        providersByPreference[providerIndex.currentIndex]?.user?._id
     );
     setIsLoading(false);
     if (response.ok) {
@@ -284,7 +284,7 @@ const CustomerHomePage = (props) => {
   };
 
   useEffect(() => {
-    if (providersByPreference[providerIndex.currentIndex]?.user) {
+    if (providersByPreference[providerIndex.currentIndex]?.user?._id) {
       fetchAllPaidPics();
       fetchCurrentProfileDetails();
       fetchCurrentProfileGallery();
