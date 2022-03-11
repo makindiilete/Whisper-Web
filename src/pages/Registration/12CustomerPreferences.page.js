@@ -92,6 +92,9 @@ const CustomerPreferencesPage = (props) => {
   };
 
   const handleSubmitTwo = async () => {
+    if (providerLocation === "") {
+      return message.error("Enter provider location");
+    }
     setIsLoading(true);
     const res = await coords.getCoords(null, null, null, providerLocation);
     if (res.lat && res.lng) {
