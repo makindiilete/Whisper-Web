@@ -33,6 +33,7 @@ import styles from "../../assets/css/auth/yourAttributes.module.css";
 import { updateCustomerPreferenceService } from "../../services/Customers/Preference/PrefenceService";
 import LoaderComponent from "../LoaderComponent";
 import { adminFetchUserAction } from "../../redux/actions/userAction";
+import { useCoords } from "../../hooks/useCoords";
 
 const FilterModal = ({ visible, onCancel, data, setData, handleSearch }) => {
   let location = useLocation();
@@ -43,6 +44,11 @@ const FilterModal = ({ visible, onCancel, data, setData, handleSearch }) => {
   }, [location.pathname]);
   const dispatch = useDispatch();
   const mobile = useMobile();
+  const coords = useCoords();
+  const [coordinates, setCoordinates] = useState({
+    lat: 0,
+    long: 0,
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [age, setAge] = useState({
     startRange: 18,
@@ -58,11 +64,7 @@ const FilterModal = ({ visible, onCancel, data, setData, handleSearch }) => {
   ]);
   const [places, setPlaces] = useState([]);
   const [selectedGender, setSelectedGender] = useState([]);
-  const [addressData, setAddressData] = useState({
-    city: "",
-    state: "",
-    country: "",
-  });
+  const [providerLocation, setProviderLocation] = useState("");
 
   const addRemoveItem = (item) => {
     //Add
@@ -78,40 +80,38 @@ const FilterModal = ({ visible, onCancel, data, setData, handleSearch }) => {
   };
 
   const handleSubmit = async (values) => {
-    console.log(
-      `Address data = ${JSON.stringify(
-        addressData
-      )} - selected gender = ${selectedGender} - Age = ${JSON.stringify(age)}`
-    );
     setIsLoading(true);
-    const formdata = new FormData();
-    formdata.append("city", addressData.city);
-    formdata.append("state", addressData.state);
-    formdata.append("country", addressData.country);
-    formdata.append("userId", user?._id);
-    let response;
-    response = await updateCustomerProfileService(formdata);
-    response = await updateCustomerPreferenceService({
-      userId: user?._id,
-      IAmInto: selectedGender,
-      minAge: Number(age.startRange),
-      maxAge: Number(age.endRange),
-    });
-    setIsLoading(false);
-    if (response.ok) {
-      dispatch(adminFetchUserAction(user?._id));
-      handleSearch();
-      onCancel("continue");
+    const res = await coords.getCoords(null, null, null, providerLocation);
+    if (res.lat && res.lng) {
+      const formdata = new FormData();
+      formdata.append("city", providerLocation.city);
+      formdata.append("state", providerLocation.state);
+      formdata.append("country", providerLocation.country);
+      formdata.append("userId", user?._id);
+      let response = await updateCustomerPreferenceService({
+        userId: user?._id,
+        IAmInto: selectedGender,
+        minAge: Number(age.startRange),
+        maxAge: Number(age.endRange),
+        providerLocation: providerLocation,
+        providerLatitude: res.lat,
+        providerLogitiude: res.lng,
+      });
+      setIsLoading(false);
+      if (response.ok) {
+        dispatch(adminFetchUserAction(user?._id));
+        handleSearch();
+        onCancel("continue");
+      } else {
+        message.error(
+          response?.data?.errors[0].message || "Something went wrong"
+        );
+      }
     } else {
-      message.error(
-        response?.data?.errors[0].message || "Something went wrong"
-      );
+      setIsLoading(false);
+      message.error("Cannot fetch coordinates");
     }
   };
-
-  function handleChange(value, name) {
-    setData({ ...data, [name]: value });
-  }
 
   function onChange(value) {
     setData({ ...data, startAge: value[0], endAge: value[1] });
@@ -120,10 +120,6 @@ const FilterModal = ({ visible, onCancel, data, setData, handleSearch }) => {
   function onAfterChange(value) {
     setData({ ...data, startAge: value[0], endAge: value[1] });
   }
-
-  const handleChangeAddress = (name, value) => {
-    setAddressData({ ...addressData, [name]: value });
-  };
 
   const slider = {
     width: "100%",
@@ -167,7 +163,7 @@ const FilterModal = ({ visible, onCancel, data, setData, handleSearch }) => {
             <Form.Item
               className="mb-3 mb-md-0 mt-2"
               initialValue=""
-              name="city"
+              name="providerLocation"
               rules={[
                 {
                   required: true,
@@ -176,56 +172,9 @@ const FilterModal = ({ visible, onCancel, data, setData, handleSearch }) => {
               ]}
             >
               <Input
-                placeholder="City"
-                onChange={(e) => handleChangeAddress("city", e.target.value)}
+                placeholder="City, State, Country"
+                onChange={(e) => setProviderLocation(e.target.value)}
               />
-            </Form.Item>
-            <Form.Item
-              className="mb-3 mb-md-0 mt-2"
-              initialValue=""
-              name="state"
-              rules={[
-                {
-                  required: true,
-                  message: "Required field",
-                },
-              ]}
-            >
-              <Input
-                placeholder="State"
-                onChange={(e) => handleChangeAddress("state", e.target.value)}
-              />
-            </Form.Item>
-            <Form.Item
-              className="mb-3 mb-md-0 mt-2"
-              name="country"
-              rules={[
-                {
-                  required: true,
-                  message: "Required field",
-                },
-              ]}
-            >
-              <Select
-                showSearch
-                placeholder="Country"
-                optionFilterProp="children"
-                filterOption={(input, option) =>
-                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
-                  0
-                }
-                filterSort={(optionA, optionB) =>
-                  optionA.children
-                    .toLowerCase()
-                    .localeCompare(optionB.children.toLowerCase())
-                }
-                prefix={<MdLocationPin className="primary-text" />}
-                onChange={(value) => handleChangeAddress("country", value)}
-              >
-                {countries?.map((item) => (
-                  <Select.Option value={item?.name}>{item?.name}</Select.Option>
-                ))}
-              </Select>
             </Form.Item>
 
             <Form.Item
