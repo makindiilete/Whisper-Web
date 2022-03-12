@@ -164,6 +164,7 @@ const FilterModal = ({ visible, onCancel, data, setData, handleSearch }) => {
               className="mb-3 mb-md-0 mt-2"
               initialValue=""
               name="providerLocation"
+              label="Provider's Location"
               rules={[
                 {
                   required: true,
