@@ -51,14 +51,14 @@ const TwoLoginPage = (props) => {
     setIsLoading(false);
     if (response.ok) {
       localStorage.setItem("token", response?.data?.data?.token);
+      dispatch(adminFetchUserAction(response?.data?.data?._id));
+      dispatch(fetchUserSubscriptionAction(response?.data?.data?._id));
+      dispatch(subscriptionPlansAction());
       history.push(
         response?.data?.data?.userType?.toLowerCase() === "customer"
           ? routes.CUSTOMER_HOME
           : routes.PROVIDER_HOME
       );
-      dispatch(adminFetchUserAction(response?.data?.data?._id));
-      dispatch(fetchUserSubscriptionAction(response?.data?.data?._id));
-      dispatch(subscriptionPlansAction());
     } else {
       message.error(
         response?.data?.errors[0].message || "Something went wrong"

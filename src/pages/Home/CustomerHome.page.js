@@ -292,10 +292,12 @@ const CustomerHomePage = (props) => {
   }, [providerIndex]);
 
   useEffect(() => {
-    fetchWallet();
-    fetchProviderByPreference();
-    dispatch(subscriptionPlansAction());
-  }, []);
+    if (user?._id) {
+      fetchWallet();
+      fetchProviderByPreference();
+      dispatch(subscriptionPlansAction());
+    }
+  }, [user?._id]);
 
   const handlePayForPic = async () => {
     setIsLoading(true);
