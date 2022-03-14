@@ -31,7 +31,6 @@ export default function StripePayment() {
     if (response.ok) {
       setClientSecret(response?.data?.data?.transactionReference);
     } else {
-      alert("here ooo");
       history.goBack();
       message.error(
         response?.data?.errors[0].message || "Something went wrong"
@@ -53,7 +52,7 @@ export default function StripePayment() {
 
   return (
     <div className="App">
-      {clientSecret !== "" && (
+      {clientSecret && (
         <Elements options={options} stripe={stripePromise}>
           <StripeCheckout />
         </Elements>

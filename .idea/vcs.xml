@@ -5,6 +5,7 @@
     <mapping directory="$PROJECT_DIR$/../../Africa Prudential/Web" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../../Cashbox/CASHBOX-NATIVE.michael" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../../Driva/Ryva" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../../Personal/CLASSES/Javascripts" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../../Personal/CLASSES/React/CodevolutionReact" vcs="Git" />
   </component>
 </project>

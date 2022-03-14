@@ -25,7 +25,10 @@ const FaqPage = (props) => {
   const handleFetchFaqs = async () => {
     setIsLoading(true);
     let response = await fetchAllFaqs(1);
-    response = await fetchAllFaqs(response?.data?.totalDocumentCount);
+    response = await fetchAllFaqs(
+      response?.data?.totalDocumentCount ||
+        response?.data?.pagination?.totalDocumentCount
+    );
     setIsLoading(false);
     if (response.ok) {
       setAllFaqs(response?.data?.data);

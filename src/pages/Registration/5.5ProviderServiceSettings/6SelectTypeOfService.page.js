@@ -38,7 +38,8 @@ const SelectTypeOfServicePage = (props) => {
     let response = await getAllServiceCategoriesService(1, 1);
     response = await getAllServiceCategoriesService(
       1,
-      response?.data?.totalDocumentCount
+      response?.data?.totalDocumentCount ||
+        response?.data?.pagination?.totalDocumentCount
     );
     setIsLoading(false);
     if (response.ok) {
@@ -55,7 +56,8 @@ const SelectTypeOfServicePage = (props) => {
     let response = await getAllServices_Service(1, 1);
     response = await getAllServices_Service(
       1,
-      response?.data?.totalDocumentCount
+      response?.data?.totalDocumentCount ||
+        response?.data?.pagination?.totalDocumentCount
     );
     setIsLoading(false);
     if (response.ok) {
