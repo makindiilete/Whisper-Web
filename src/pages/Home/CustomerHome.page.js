@@ -45,6 +45,7 @@ import {
 } from "../../services/Providers/Gallery/Gallery";
 import { requestProviderService_Service } from "../../services/Providers/Service/Service";
 import ServiceRequestModal from "../../components/Modals/ServiceRequestModal";
+import { fetchUserSubscriptionAction } from "../../redux/actions/userAction";
 
 const CustomerHomePage = (props) => {
   let location = useLocation();
@@ -296,6 +297,7 @@ const CustomerHomePage = (props) => {
       fetchWallet();
       fetchProviderByPreference();
       dispatch(subscriptionPlansAction());
+      dispatch(fetchUserSubscriptionAction(user?._id));
     }
   }, [user?._id]);
 

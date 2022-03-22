@@ -11,7 +11,7 @@ import decline from "../../assets/images/homeInApp/decline.svg";
 import { Badge } from "../../components/Badge";
 import { providerLikes } from "../../components/dataSets";
 import { NoData } from "../../components/NoData";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getProviderServiceRequestByProviderId_Service,
   updateAcceptanceService,
@@ -29,6 +29,7 @@ import avatar from "../../assets/images/nav/avatarchange.svg";
 import { getAge } from "../../Utils/getAge";
 import LoaderComponent from "../../components/LoaderComponent";
 import moment from "moment";
+import { fetchUserSubscriptionAction } from "../../redux/actions/userAction";
 
 const ProviderHomePage = (props) => {
   let location = useLocation();
@@ -37,6 +38,7 @@ const ProviderHomePage = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.userReducer.data);
   const [index, setIndex] = useState(0);
   const [images, setImages] = useState([]);
@@ -200,6 +202,7 @@ const ProviderHomePage = (props) => {
   };
 
   useEffect(() => {
+    dispatch(fetchUserSubscriptionAction(user?._id));
     if (providersByPreference[providerIndex.currentIndex]?.customer?._id) {
       fetchCurrentProfileDetails();
       fetchCurrentProfileGallery();

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
+import { Elements, useStripe } from "@stripe/react-stripe-js";
 import useMobile from "../../hooks/useMobile";
 import { HomeContainerPage } from "../Home/HomeContainer.page";
 import LoaderComponent from "../../components/LoaderComponent";
@@ -29,6 +29,7 @@ import { subscriptionPlansAction } from "../../redux/actions/subscriptionPlansAc
 import StripeCheckout from "../../components/StripeCheckout";
 import { getUserBankDetailsByUserIdService } from "../../services/App/User Bank Details/userBankDetailsService";
 import routes from "../../routes";
+import { fetchUserSubscriptionAction } from "../../redux/actions/userAction";
 
 const WalletPage = (props) => {
   let location = useLocation();
@@ -103,6 +104,7 @@ const WalletPage = (props) => {
     fetchWallet();
     fetchTransactions();
     dispatch(subscriptionPlansAction());
+    dispatch(fetchUserSubscriptionAction(user?._id));
   }, []);
 
   if (isLoading) {

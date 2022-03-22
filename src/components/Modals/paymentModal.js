@@ -43,7 +43,7 @@ const PaymentModal = ({ visible, onCancel, wallet }) => {
     const response = await subscribeUserService(data);
     setIsLoading(false);
     if (response.ok) {
-      dispatch(fetchUserSubscriptionAction(response?.data?.data?._id));
+      dispatch(fetchUserSubscriptionAction(user?._id));
       onCancel("continue");
     } else {
       message.error(

@@ -2,17 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import useMobile from "../../hooks/useMobile";
 import routes from "../../routes";
-import fb from "../../assets/images/auth/fb.svg";
-import google from "../../assets/images/auth/google.svg";
 import apple from "../../assets/images/auth/apple.svg";
 import AuthContainerPage from "./AuthContainer.page";
 import { Form, Input, message } from "antd";
-import { BsFacebook, FaAngleLeft } from "react-icons/all";
-import SuccessModal from "../../components/Modals/successModal";
-import provImg1 from "../../assets/images/homeInApp/Rectangle 2685.svg";
-import provImg3 from "../../assets/images/homeInApp/Rectangle 2685 copy 3.svg";
-import provImg6 from "../../assets/images/homeInApp/Rectangle 2685 copy 2.svg";
-import moment from "moment";
+import { FaAngleLeft } from "react-icons/all";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fbLoginService,
@@ -21,13 +14,10 @@ import {
 } from "../../services/Auth/Login/loginService";
 import {
   adminFetchUserAction,
-  fetchUserGalleryAction,
   fetchUserSubscriptionAction,
 } from "../../redux/actions/userAction";
 import { Facebook } from "../../components/socialAuth/facebook/facebook";
 import { Google } from "../../components/socialAuth/google/Google";
-import { Apple } from "../../components/socialAuth/apple/Apple";
-import FacebookLogin from "react-facebook-login";
 import { subscriptionPlansAction } from "../../redux/actions/subscriptionPlansAction";
 
 const TwoLoginPage = (props) => {
