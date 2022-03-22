@@ -116,10 +116,10 @@
 }
 
 .createUrProfile .uploadBox.rounded {
-  width: 40rem;
+  width: 30rem;
   border: 3px dashed var(--primary-color);
   padding: 0.5rem;
-  height: 40rem;
+  height: 30rem;
   margin: 2rem 0;
   border-radius: 50% !important;
   cursor: pointer;
