@@ -1,19 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import useMobile from "../../../hooks/useMobile";
-import { message, Upload } from "antd";
-import { FiUpload } from "react-icons/all";
+import { message } from "antd";
 import routes from "../../../routes";
-import {
-  updateCustomerProfilePicService,
-  updateCustomerProfileService,
-} from "../../../services/Customers/Profile/ProfileService";
-import {
-  updateProviderProfilePicService,
-  updateProviderProfileService,
-} from "../../../services/Providers/Profile/ProfileService";
+import { updateCustomerProfilePicWithLinkService } from "../../../services/Customers/Profile/ProfileService";
+import { updateProviderProfilePicWithLinkService } from "../../../services/Providers/Profile/ProfileService";
 import { adminFetchUserAction } from "../../../redux/actions/userAction";
 import { useDispatch } from "react-redux";
+import Webcam from "react-webcam";
 
 const StepThree = ({
   currentStep,
@@ -30,55 +24,27 @@ const StepThree = ({
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+  const webcamRef = React.useRef(null);
+  const [imgSrc, setImgSrc] = React.useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [imgPath, setImgPath] = useState("");
-  const [imgFile, setImgFile] = useState();
+  const [imgPath, setImgPath] = useState(null);
 
-  const props = {
-    // name: "file",
-    // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
-    // headers: {
-    //   authorization: "authorization-text",
-    // },
-    beforeUpload: (file) => {
-      // this.setState(state => ({
-      //   fileList: [...state.fileList, file],
-      // }));
-      return false;
-    },
-    onChange(info) {
-      setImgPath(URL.createObjectURL(info.file));
-      setImgFile(info.file);
-      if (info.file.status !== "uploading") {
-      }
-      // if (info.file.status === "done") {
-      //   setImgPath(URL.createObjectURL(info.file));
-      //   message.success(`${info.file.name} file uploaded successfully`);
-      // } else if (info.file.status === "error") {
-      //   setImgPath(URL.createObjectURL(info.file));
-      //   // message.error(`${info.file.name} file upload failed.`);
-      //   message.success(`${info.file.name} file uploaded successfully`);
-      // }
-    },
-    progress: {
-      strokeColor: {
-        "0%": "#e8dcfe",
-        "70%": "#190a36",
-      },
-      strokeWidth: 3,
-      format: (percent) => `${parseFloat(percent.toFixed(2))}%`,
-    },
-  };
+  const capture = React.useCallback(() => {
+    setImgPath(null);
+    const imageSrc = webcamRef.current.getScreenshot();
+    setImgPath(imageSrc);
+  }, [webcamRef, setImgSrc]);
 
   const handleSubmit = async (values) => {
-    const formdata = new FormData();
-    formdata.append("profilePictures", imgFile);
-    formdata.append("userId", user?._id);
+    const data = {
+      userId: user?._id,
+      profilePictureUri: imgPath,
+    };
     setIsLoading(true);
     const response =
       userType === "customer"
-        ? await updateCustomerProfilePicService(formdata)
-        : await updateProviderProfilePicService(formdata);
+        ? await updateCustomerProfilePicWithLinkService(data)
+        : await updateProviderProfilePicWithLinkService(data);
     setIsLoading(false);
     if (response.ok) {
       dispatch(adminFetchUserAction(user?._id));
@@ -105,9 +71,13 @@ const StepThree = ({
           <div className="uploadBox rounded">
             <div
               className=" w-100 h-100"
-              style={{ borderRadius: "50%", backgroundColor: "lightgrey" }}
+              style={{
+                borderRadius: "50%",
+                backgroundColor: "lightgrey",
+                overflow: "hidden",
+              }}
             >
-              {imgPath && (
+              {imgPath ? (
                 <img
                   src={imgPath}
                   alt=""
@@ -118,28 +88,31 @@ const StepThree = ({
                     objectFit: "cover",
                   }}
                 />
+              ) : (
+                <Webcam
+                  audio={false}
+                  ref={webcamRef}
+                  screenshotFormat="image/jpeg"
+                />
               )}
             </div>
           </div>
           {/* /.uploadBox */}
         </div>
         <div className="d-flex justify-content-center mb-4">
-          <Upload
-            accept="image/*"
-            {...props}
-            maxCount={1}
-            showUploadList={false}
-          >
-            {!imgPath ? (
-              <p className="primary-text text-center">Browse & Upload image</p>
-            ) : (
-              <p className="primary-text text-center">Change image</p>
-            )}
-          </Upload>
+          {!imgPath ? (
+            <p className="primary-text text-center cursor" onClick={capture}>
+              Take a Selfie
+            </p>
+          ) : (
+            <p className="primary-text text-center cursor" onClick={capture}>
+              Retake Selfie
+            </p>
+          )}
         </div>
         <button
           className="btn btn-primary"
-          disabled={!imgFile || isLoading}
+          disabled={!imgPath || isLoading}
           onClick={handleSubmit}
           // style={mobile ? null : { margin: "6rem 30rem" }}
         >

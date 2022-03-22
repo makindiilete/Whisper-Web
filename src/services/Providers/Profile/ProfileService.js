@@ -9,3 +9,5 @@ export const updateProviderProfileService = (data) =>
   apiClient.put(`/provider/updateProviderProfile`, data);
 export const updateProviderProfilePicService = (data) =>
   apiClient.put(`/provider/uploadProviderProfilePicture`, data);
+export const updateProviderProfilePicWithLinkService = (data) =>
+  apiClient.put(`/provider/uploadProviderProfilePictureWithLink`, data);
