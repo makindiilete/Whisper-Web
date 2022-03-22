@@ -15,6 +15,7 @@ const { Item, Divider } = Menu;
 const NavigationPage = (props) => {
   const history = useHistory();
   let location = useLocation();
+  const userGallery = useSelector((state) => state.userReducer?.gallery);
   const user = useSelector((state) => state.userReducer?.data);
   const { pathname } = location;
   const current = pathname.split("/")[1];
@@ -192,11 +193,7 @@ const NavigationPage = (props) => {
           <Dropdown overlay={menu} trigger={["click"]}>
             <div className="settings">
               <img
-                src={
-                  user?.customerProfile?.profilePictureUri ||
-                  user?.providerProfile?.profilePictureUri ||
-                  avatar
-                }
+                src={userGallery[0]?.imageUri[0] || avatar}
                 className=" img-fluid"
                 alt=""
                 onError={defaultImage}

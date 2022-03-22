@@ -14,11 +14,14 @@ import {
 } from "../../services/Auth/Login/loginService";
 import {
   adminFetchUserAction,
+  fetchUserGalleryAction,
   fetchUserSubscriptionAction,
 } from "../../redux/actions/userAction";
 import { Facebook } from "../../components/socialAuth/facebook/facebook";
 import { Google } from "../../components/socialAuth/google/Google";
 import { subscriptionPlansAction } from "../../redux/actions/subscriptionPlansAction";
+import { getCustomerGalleryByIdService } from "../../services/Customers/Gallery/GalleryService";
+import { getProviderGalleryByIdService } from "../../services/Providers/Gallery/Gallery";
 
 const TwoLoginPage = (props) => {
   let location = useLocation();
@@ -35,11 +38,27 @@ const TwoLoginPage = (props) => {
     password: "",
   });
 
+  const fetchGallery = async (userId) => {
+    const response =
+      user?.userType?.toLowerCase() === "customer"
+        ? await getCustomerGalleryByIdService(userId)
+        : await getProviderGalleryByIdService(userId);
+    if (response.ok) {
+      dispatch(fetchUserGalleryAction(response?.data?.data));
+    } else {
+      message.error(
+        response?.data?.errors[0].message ||
+          "Something went wrong fetching gallery"
+      );
+    }
+  };
+
   const handleSubmit = async (values) => {
     setIsLoading(true);
     const response = await loginService(data);
     setIsLoading(false);
     if (response.ok) {
+      await fetchGallery(response?.data?.data?._id);
       localStorage.setItem("token", response?.data?.data?.token);
       dispatch(adminFetchUserAction(response?.data?.data?._id));
       dispatch(fetchUserSubscriptionAction(response?.data?.data?._id));
