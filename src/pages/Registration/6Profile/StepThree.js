@@ -3,7 +3,10 @@ import { useLocation, useHistory } from "react-router-dom";
 import useMobile from "../../../hooks/useMobile";
 import { message } from "antd";
 import routes from "../../../routes";
-import { updateCustomerProfilePicWithLinkService } from "../../../services/Customers/Profile/ProfileService";
+import {
+  customerSelfieVerificationService,
+  updateCustomerProfilePicWithLinkService,
+} from "../../../services/Customers/Profile/ProfileService";
 import { updateProviderProfilePicWithLinkService } from "../../../services/Providers/Profile/ProfileService";
 import { adminFetchUserAction } from "../../../redux/actions/userAction";
 import { useDispatch } from "react-redux";
@@ -35,16 +38,13 @@ const StepThree = ({
     setImgPath(imageSrc);
   }, [webcamRef, setImgSrc]);
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async () => {
     const data = {
       userId: user?._id,
-      profilePictureUri: imgPath,
+      selfiePhotoUri: imgPath,
     };
     setIsLoading(true);
-    const response =
-      userType === "customer"
-        ? await updateCustomerProfilePicWithLinkService(data)
-        : await updateProviderProfilePicWithLinkService(data);
+    const response = await customerSelfieVerificationService(data);
     setIsLoading(false);
     if (response.ok) {
       dispatch(adminFetchUserAction(user?._id));

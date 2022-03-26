@@ -10,7 +10,7 @@ export const updateCustomerProfileService = (data) =>
   apiClient.put(`/customer/updateCustomerProfile`, data);
 export const updateCustomerProfilePicService = (data) =>
   apiClient.put(`/customer/uploadCustomerProfilePicture`, data);
-export const updateCustomerProfilePicWithLinkService = (data) =>
-  apiClient.put(`/customer/uploadCustomerProfilePictureWithLink`, data);
+export const customerSelfieVerificationService = (data) =>
+  apiClient.put(`/auth/selfieverificationWithLink`, data);
 export const getCustomerCompleteProfileService = (customerId) =>
   apiClient.get(`/customer/getCustomerCompleteProfile/${customerId}`);
