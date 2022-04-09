@@ -67,7 +67,7 @@ const CustomerHomePage = (props) => {
   const [images, setImages] = useState([]);
   const [activeImage, setActiveImage] = useState(images[index]);
   const [providerIndex, setProviderIndex] = useState({
-    currentIndex: 0,
+    currentIndex: 1,
     maxIndex: 0,
   });
   const [providersByPreference, setProvidersByPreference] = useState([]);
@@ -414,7 +414,7 @@ const CustomerHomePage = (props) => {
                   customer.imageBlur
                 }`}
               />
-              {userSub?.length !== 0 && (
+              {/*{userSub?.length !== 0 && (*/}
                 <>
                   <div className="actions">
                     {params === "?chat=yes" ? (
@@ -460,7 +460,6 @@ const CustomerHomePage = (props) => {
                     )}
                   </div>
                 </>
-              )}
             </div>
             <div className={`col-md-6 ${styles.profileContainerRightCol}`}>
               <div className="d-flex justify-content-between">
@@ -532,7 +531,7 @@ const CustomerHomePage = (props) => {
               <button
                 className="btn btn-primary cursor"
                 onClick={() => {
-                  if (userSub?.length === 0) {
+                /*  if (userSub?.length === 0) {
                     message.error("Subscribe to premium to request a service");
                   } else {
                     setServiceRequest({
@@ -540,7 +539,12 @@ const CustomerHomePage = (props) => {
                       providerId: currentProfile?._id,
                     });
                     setShowServiceRequestModal(true);
-                  }
+                  }*/
+                  setServiceRequest({
+                    ...serviceRequest,
+                    providerId: currentProfile?._id,
+                  });
+                  setShowServiceRequestModal(true);
                 }}
               >
                 Request Service
