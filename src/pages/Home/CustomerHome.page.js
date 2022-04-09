@@ -59,13 +59,12 @@ const CustomerHomePage = (props) => {
   }, [location.pathname]);
   const userSub = useSelector((state) => state.userReducer.activeSub);
   const user = useSelector((state) => state.userReducer.data);
+  const [images, setImages] = useState([]);
+  const [index, setIndex] = useState(0);
+  const [activeImage, setActiveImage] = useState(images[index]);
   const [showServiceRequestModal, setShowServiceRequestModal] = useState(false);
-
   const [allPaidPics, setAllPaidPics] = useState([]);
   const [imgPosition, setImgPosition] = useState(0);
-  const [index, setIndex] = useState(0);
-  const [images, setImages] = useState([]);
-  const [activeImage, setActiveImage] = useState(images[index]);
   const [providerIndex, setProviderIndex] = useState({
     currentIndex: 1,
     maxIndex: 0,
@@ -370,7 +369,7 @@ const CustomerHomePage = (props) => {
                       className="text-white"
                     />
                   </div>
-                  {activeImage?.isPrivate &&
+                  {images[0]?._id === activeImage?._id ? null : activeImage?.isPrivate &&
                     !allPaidPics?.some(
                       (value) => value?.galleryId === activeImage?._id
                     ) && (
@@ -407,7 +406,7 @@ const CustomerHomePage = (props) => {
                 src={activeImage?.imageUri[0]}
                 alt=""
                 className={`${styles.galleryImg} ${
-                  activeImage?.isPrivate &&
+                images[0]?._id === activeImage?._id ? '' :  activeImage?.isPrivate &&
                   !allPaidPics?.some(
                     (value) => value?.galleryId === activeImage?._id
                   ) &&
