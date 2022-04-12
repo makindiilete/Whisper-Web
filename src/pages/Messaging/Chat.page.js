@@ -4,7 +4,7 @@ import useMobile from "../../hooks/useMobile";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as icons from "@fortawesome/free-solid-svg-icons";
 import { HomeContainerPage } from "../Home/HomeContainer.page";
-import { Dropdown, Input, Menu } from "antd";
+import { Dropdown, Input, Menu, message } from "antd";
 import { AiOutlineSearch, BiSearchAlt } from "react-icons/all";
 import {
   chats,
@@ -21,21 +21,43 @@ import InsertCodeModal from "../../components/Modals/InsertCodeModal";
 import PaymentModal from "../../components/Modals/paymentModal";
 import SuccessModal from "../../components/Modals/successModal";
 import modalImg from "../../assets/images/auth/40.svg";
+import { getUserWalletService } from "../../services/App/Wallet/walletService";
+import { getAllConversationsService } from "../../services/chat/conversations";
+import { useSelector } from "react-redux";
+import { io } from "socket.io-client";
+import socketClient from "socket.io-client";
 
 const { Item, Divider } = Menu;
+const SERVER = "https://whisper-chat-app.herokuapp.com/api/v1/chat";
 
 const ChatPage = (props) => {
   let location = useLocation();
   const history = useHistory();
   const mobile = useMobile();
   const userId = location.pathname?.split("/")[2];
+  const user = useSelector((state) => state.userReducer?.data);
+  const [conversations, setConversations] = useState([]);
+  const [socket, setSocket] = useState(null);
   const [allLikes, setAllLikes] = useState(customerDiscover);
   const [showSuccess, setShowSuccess] = useState(false);
-  const [currentChat, setCurrentChat] = useState(customerDiscover[0]);
+  const [currentChat, setCurrentChat] = useState(null);
   const [showMsgs, setShowMsgs] = useState(false);
   const [insertCodeModal, setInsertCodeModal] = useState(false);
   const [showPayment, setShowPayment] = useState(false);
   const [chatMsgs, setChatMsgs] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    let socket = socketClient(SERVER);
+    socket.on("connect", () =>
+      console.log("Socket connected with id ", socket.id)
+    );
+    socket.on("connect_error", () => {
+      setTimeout(() => socket.connect(), 5000);
+    });
+    // send d current user to server
+    socket.emit("userId", user?._id);
+  }, []);
 
   useEffect(() => {
     setShowMsgs(true);
@@ -54,7 +76,7 @@ const ChatPage = (props) => {
   };
 
   useEffect(() => {
-    setChatMsgs(chats);
+    fetchUserConversations();
   }, []);
 
   useEffect(() => {
@@ -62,6 +84,25 @@ const ChatPage = (props) => {
     scrollToBottom();
     // }
   });
+
+  const fetchAConversation = (item) => {
+    setChatMsgs(chats);
+    setCurrentChat(item);
+    setShowMsgs(!showMsgs);
+  };
+
+  const fetchUserConversations = async () => {
+    setIsLoading(true);
+    const response = await getAllConversationsService(user?._id);
+    setIsLoading(false);
+    if (response.ok) {
+      setConversations(response?.data?.data);
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  };
 
   const menu = (
     <Menu>
@@ -126,8 +167,7 @@ const ChatPage = (props) => {
             <div
               className="position-relative cursor mb-3 d-flex align-items-center"
               onClick={() => {
-                setCurrentChat(item);
-                setShowMsgs(!showMsgs);
+                fetchAConversation(item);
               }}
               key={item?.id}
             >
