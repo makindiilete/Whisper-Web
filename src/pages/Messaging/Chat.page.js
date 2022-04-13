@@ -106,9 +106,9 @@ const ChatPage = (props) => {
     senderParam = sender
   ) => {
     setSelectedConversation(item);
-    setIsLoading(true);
+    setSending(true);
     const response = await getAConversationService(item?._id);
-    setIsLoading(false);
+    setSending(false);
     if (response.ok) {
       setChatMsgs(response?.data?.data);
       setShowMsgs(!showMsgs);
@@ -185,6 +185,17 @@ const ChatPage = (props) => {
     }
   };
 
+  const fetchUserConversationsBackground = async () => {
+    const response = await getAllConversationsService(user?._id);
+    if (response.ok) {
+      setConversations(response?.data?.data);
+    } else {
+      message.error(
+        response?.data?.errors[0].message || "Something went wrong"
+      );
+    }
+  };
+
   const onChange = (e) => {
     console.log("Change:", e.target.value);
     setTypedMsg(e.target.value);
@@ -200,11 +211,23 @@ const ChatPage = (props) => {
         receiver: sender?._id,
         text: typedMsg,
       });
-      setSending(false);
       if (response.ok) {
         setOpenNewChat(false);
         setTypedMsg("");
-        fetchAConversation();
+        const response = await getAConversationService(
+          selectedConversation?._id
+        );
+        setSending(false);
+        if (response.ok) {
+          setChatMsgs(response?.data?.data);
+          setCurrentChat(selectedConversation);
+          setSender(sender);
+          fetchUserConversationsBackground();
+        } else {
+          message.error(
+            response?.data?.errors[0].message || "Something went wrong"
+          );
+        }
       } else {
         message.error(
           response?.data?.errors[0].message || "Something went wrong"
