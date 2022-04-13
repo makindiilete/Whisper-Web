@@ -80,10 +80,6 @@ const ChatPage = (props) => {
   }, []);
 
   useEffect(() => {
-    setShowMsgs(true);
-  }, [userId]);
-
-  useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname, showMsgs]);
   const handleSetCurrentProfile = (id) => {
