@@ -29,6 +29,10 @@
   overflow: scroll;
 }
 
+.chat__list{
+  border-right: 1px dotted grey;
+}
+
 .chat__hide__col {
   display: none;
 }
@@ -37,6 +41,8 @@
   width: fit-content !important;
   border-radius: 8px;
   padding: 2rem;
+  display: flex;
+
 }
 
 .conversation__sender {

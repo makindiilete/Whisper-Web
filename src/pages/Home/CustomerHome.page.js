@@ -42,6 +42,7 @@ import {
   getProviderGalleryByIdService,
   likeProviderPictureService,
   payForPictureService,
+  sendFriendRequestToProvider,
 } from "../../services/Providers/Gallery/Gallery";
 import { requestProviderService_Service } from "../../services/Providers/Service/Service";
 import ServiceRequestModal from "../../components/Modals/ServiceRequestModal";
@@ -157,22 +158,35 @@ const CustomerHomePage = (props) => {
 
   async function handleLikeAccepted() {
     setIsLoading(true);
-    const res = await likeProviderPictureService({
-      galleryId: activeImage?._id,
+    const res = await sendFriendRequestToProvider({
       userId: user?._id,
+      friendId: currentProfile?._id,
     });
     setIsLoading(false);
     if (res.ok) {
       const response = providersByPreference?.filter(
-        (i) => i._id !== currentProfile?.providerProfile?._id
+        (i) => i.user?._id !== currentProfile?._id
       );
       setProvidersByPreference(response);
       fetchCurrentProfileDetails(response);
       fetchCurrentProfileGallery(response);
     } else {
-      message.error(res?.data?.errors[0].message || "Something went wrong");
+      if (res?.data?.errors[0].message === "A Friend Request already exisit") {
+        const response = providersByPreference?.filter(
+          (i) => i.user?._id !== currentProfile?._id
+        );
+        setProvidersByPreference(response);
+        fetchCurrentProfileDetails(response);
+        fetchCurrentProfileGallery(response);
+      } else {
+        message.error(res?.data?.errors[0].message || "Something went wrong");
+      }
     }
   }
+
+  useEffect(() => {
+    console.log("current profile = ", currentProfile);
+  }, [currentProfile]);
 
   async function handleLikeDeclined() {
     setIsLoading(true);
@@ -221,7 +235,7 @@ const CustomerHomePage = (props) => {
   const fetchCurrentProfileGallery = async (others = []) => {
     setIsLoading(true);
     const response = await getProviderGalleryByIdService(
-      others[providerIndex.currentIndex]?.user ||
+      others[providerIndex.currentIndex]?.user?._id ||
         providersByPreference[providerIndex.currentIndex]?.user?._id
     );
     setIsLoading(false);
@@ -238,7 +252,7 @@ const CustomerHomePage = (props) => {
   const fetchCurrentProfileDetails = async (others = []) => {
     setIsLoading(true);
     const response = await getProviderCompleteProfileService(
-      others[providerIndex.currentIndex]?.user ||
+      others[providerIndex.currentIndex]?.user?._id ||
         providersByPreference[providerIndex.currentIndex]?.user?._id
     );
     setIsLoading(false);
@@ -369,23 +383,25 @@ const CustomerHomePage = (props) => {
                       className="text-white"
                     />
                   </div>
-                  {images[0]?._id === activeImage?._id ? null : activeImage?.isPrivate &&
-                    !allPaidPics?.some(
-                      (value) => value?.galleryId === activeImage?._id
-                    ) && (
-                      <div
-                        className="d-flex flex-column cursor"
-                        onClick={() => setShowActivatePremium(true)}
-                      >
-                        <img
-                          src={locked}
-                          alt=""
-                          className="img-fluid align-self-center"
-                          style={{ width: "3.8rem", height: "4.5rem" }}
-                        />
-                        <p className="text-white text-center">Tap to view</p>
-                      </div>
-                    )}
+                  {images[0]?._id === activeImage?._id
+                    ? null
+                    : activeImage?.isPrivate &&
+                      !allPaidPics?.some(
+                        (value) => value?.galleryId === activeImage?._id
+                      ) && (
+                        <div
+                          className="d-flex flex-column cursor"
+                          onClick={() => setShowActivatePremium(true)}
+                        >
+                          <img
+                            src={locked}
+                            alt=""
+                            className="img-fluid align-self-center"
+                            style={{ width: "3.8rem", height: "4.5rem" }}
+                          />
+                          <p className="text-white text-center">Tap to view</p>
+                        </div>
+                      )}
 
                   <div
                     className="arrow nextArrow"
@@ -406,59 +422,48 @@ const CustomerHomePage = (props) => {
                 src={activeImage?.imageUri[0]}
                 alt=""
                 className={`${styles.galleryImg} ${
-                images[0]?._id === activeImage?._id ? '' :  activeImage?.isPrivate &&
-                  !allPaidPics?.some(
-                    (value) => value?.galleryId === activeImage?._id
-                  ) &&
-                  customer.imageBlur
+                  images[0]?._id === activeImage?._id
+                    ? ""
+                    : activeImage?.isPrivate &&
+                      !allPaidPics?.some(
+                        (value) => value?.galleryId === activeImage?._id
+                      ) &&
+                      customer.imageBlur
                 }`}
               />
               {/*{userSub?.length !== 0 && (*/}
-                <>
-                  <div className="actions">
-                    {params === "?chat=yes" ? (
-                      <div className="actions__container">
-                        <img
-                          src={msg}
-                          className="img-fluid"
-                          alt=""
-                          onClick={() =>
-                            history.push(`${routes.CHAT}/${customerId}`)
-                          }
-                        />{" "}
-                      </div>
-                    ) : (
-                      <div className="actions__container">
-                        {showRestore && (
-                          <img
-                            src={reverse}
-                            className="img-fluid"
-                            alt=""
-                            onClick={handleDeclineRestored}
-                          />
-                        )}
-                        <img
-                          src={like}
-                          className="img-fluid"
-                          alt=""
-                          onClick={handleLikeAccepted}
-                        />
-                        <img
-                          src={decline}
-                          className="img-fluid"
-                          alt=""
-                          onClick={handleLikeDeclined}
-                        />{" "}
-                        <img
-                          src={fav}
-                          className="img-fluid"
-                          alt=""
-                          onClick={handleLikeAccepted}
-                        />
-                      </div>
+              <>
+                <div className="actions">
+                  <div className="actions__container">
+                    {showRestore && (
+                      <img
+                        src={reverse}
+                        className="img-fluid"
+                        alt=""
+                        onClick={handleDeclineRestored}
+                      />
                     )}
+                    <img
+                      src={like}
+                      className="img-fluid"
+                      alt=""
+                      onClick={handleLikeAccepted}
+                    />
+                    <img
+                      src={decline}
+                      className="img-fluid"
+                      alt=""
+                      onClick={handleLikeDeclined}
+                    />{" "}
+                    <img
+                      src={fav}
+                      className="img-fluid"
+                      alt=""
+                      onClick={handleLikeAccepted}
+                    />
                   </div>
-                </>
+                </div>
+              </>
             </div>
             <div className={`col-md-6 ${styles.profileContainerRightCol}`}>
               <div className="d-flex justify-content-between">
@@ -530,7 +535,7 @@ const CustomerHomePage = (props) => {
               <button
                 className="btn btn-primary cursor"
                 onClick={() => {
-                /*  if (userSub?.length === 0) {
+                  /*  if (userSub?.length === 0) {
                     message.error("Subscribe to premium to request a service");
                   } else {
                     setServiceRequest({

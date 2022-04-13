@@ -22,5 +22,9 @@ export const deleteProviderGalleryService = (id) =>
   );
 export const likeProviderPictureService = (data) =>
   apiClient.put(`/provider/likeProviderGallery`, data);
+export const sendFriendRequestToProvider = (data) =>
+  apiClient.post(`/app/createFriendRequest`, data);
+export const getFriends = (userId) =>
+  apiClient.get(`/app/getFriends/${userId}`);
 export const dislikeProviderPictureService = (data) =>
   apiClient.put(`/provider/dislikeProviderGallery`, data);

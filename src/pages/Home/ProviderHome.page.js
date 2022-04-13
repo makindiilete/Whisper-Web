@@ -30,6 +30,10 @@ import { getAge } from "../../Utils/getAge";
 import LoaderComponent from "../../components/LoaderComponent";
 import moment from "moment";
 import { fetchUserSubscriptionAction } from "../../redux/actions/userAction";
+import {
+  acceptFriendRequest,
+  getAllMatchesService,
+} from "../../services/chat/conversations";
 
 const ProviderHomePage = (props) => {
   let location = useLocation();
@@ -40,6 +44,8 @@ const ProviderHomePage = (props) => {
   }, [location.pathname]);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userReducer.data);
+  const [currentSelected, setCurrentSelected] = useState(null);
+  const [appointmentTime, setAppointmentTime] = useState(null);
   const [index, setIndex] = useState(0);
   const [images, setImages] = useState([]);
   const [activeImage, setActiveImage] = useState("");
@@ -82,11 +88,13 @@ const ProviderHomePage = (props) => {
     }
   };
 
-  function handleSetCurrentProfile(id, index) {
+  function handleSetCurrentProfile(item, index) {
     setIndex(index);
-    const selected = providersByPreference?.find((i) => i.id === id);
-    fetchCurrentProfileDetails(selected?._id);
-    fetchCurrentProfileGallery(selected?._id);
+    const selected = providersByPreference?.find(
+      (i) => i.customer?._id === item?.customer?._id
+    );
+    fetchCurrentProfileDetails(selected?.customer?._id);
+    fetchCurrentProfileGallery(selected?.customer?._id);
     /*    setActiveImage(selected?.imgUrls[0]);
     setImages(selected?.imgUrls);*/
     setCurrentProfile(selected);
@@ -94,22 +102,23 @@ const ProviderHomePage = (props) => {
 
   async function handleLikeAccepted() {
     setIsLoading(true);
-    const res = await updateAcceptanceService({
+    let res;
+    await updateAcceptanceService({
       userId: user?._id,
       serviceRequestId: providersByPreference[providerIndex.currentIndex]?._id,
       acceptanceComment: "",
       acceptanceStatus: "Accepted",
     });
+    res = await acceptFriendRequest({
+      userId: user?._id,
+      friendRequestId: currentSelected?._id,
+    });
     setIsLoading(false);
     if (res.ok) {
       message.success("Service request accepted");
-      const response = providersByPreference?.filter(
-        (i) => i.id !== currentProfile?.id
-      );
-
-      setProvidersByPreference(response);
-      fetchCurrentProfileDetails(response);
-      fetchCurrentProfileGallery(response);
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
     } else {
       message.error(res?.data?.errors[0].message || "Something went wrong");
     }
@@ -149,11 +158,10 @@ const ProviderHomePage = (props) => {
     setShowRestore(false);
   }
 
-  const fetchCurrentProfileGallery = async (others = []) => {
+  const fetchCurrentProfileGallery = async (userId) => {
     setIsLoading(true);
     const response = await getCustomerGalleryByIdService(
-      others[providerIndex.currentIndex]?.customer?._id ||
-        providersByPreference[providerIndex.currentIndex]?.customer?._id
+      userId || providersByPreference[providerIndex.currentIndex]?.customer?._id
     );
     setIsLoading(false);
     if (response.ok) {
@@ -166,11 +174,22 @@ const ProviderHomePage = (props) => {
     }
   };
 
-  const fetchCurrentProfileDetails = async (others = []) => {
+  const fetchCurrentProfileDetails = async (userId) => {
     setIsLoading(true);
+    const currentUser = providersByPreference?.find(
+      (i) => i.customer?._id === userId
+    );
+    console.log("current user = ", currentUser);
+    if (currentUser?.appointmentTime) {
+      setAppointmentTime(
+        providersByPreference[providerIndex.currentIndex]?.appointmentTime
+      );
+    } else {
+      setAppointmentTime(null);
+    }
+
     const response = await getCustomerCompleteProfileService(
-      others[providerIndex.currentIndex]?.customer?._id ||
-        providersByPreference[providerIndex.currentIndex]?.customer?._id
+      userId || providersByPreference[providerIndex.currentIndex]?.customer?._id
     );
     setIsLoading(false);
     if (response.ok) {
@@ -187,9 +206,10 @@ const ProviderHomePage = (props) => {
     const response = await getProviderServiceRequestByProviderId_Service(
       user?._id
     );
+    const likes = await getAllMatchesService(user?._id);
     setIsLoading(false);
     if (response.ok) {
-      setProvidersByPreference(response?.data?.data);
+      setProvidersByPreference([...response?.data?.data, ...likes?.data?.data]);
       setProviderIndex({
         ...providerIndex,
         maxIndex: response?.data?.data?.length - 1,
@@ -290,6 +310,10 @@ const ProviderHomePage = (props) => {
                   </div>
                 </div>
                 <div className={`col-md-6 ${styles.profileContainerRightCol}`}>
+                  <p className="text-dark text-underline">
+                    {" "}
+                    {appointmentTime ? "Request" : "Like"}{" "}
+                  </p>
                   <h4 className="text-dark">{`${
                     currentProfile?.firstName + " " + currentProfile?.lastName
                   } ${getAge(
@@ -334,12 +358,14 @@ const ProviderHomePage = (props) => {
                   />
                   <br />
                   <br />
-                  <h4>Appointment Date</h4>
-                  <p className="text-muted">
-                    {moment(
-                      providersByPreference[providerIndex]?.appointmentTime
-                    ).format("LLL")}
-                  </p>
+                  {appointmentTime && (
+                    <>
+                      <h4>Appointment Date</h4>
+                      <p className="text-muted">
+                        {moment(appointmentTime).format("LLL")}
+                      </p>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -352,7 +378,8 @@ const ProviderHomePage = (props) => {
                 <div
                   className="position-relative cursor"
                   onClick={() => {
-                    handleSetCurrentProfile(item?.id, index);
+                    setCurrentSelected(item);
+                    handleSetCurrentProfile(item, index);
                     window.scrollTo(0, 0);
                   }}
                   key={item?.id}
@@ -362,6 +389,7 @@ const ProviderHomePage = (props) => {
                   />
                   <img
                     src={
+                      item?.sentBy?.customerProfile?.profilePictureUri ||
                       item?.customer?.customerProfile?.profilePictureUri ||
                       avatar
                     }
