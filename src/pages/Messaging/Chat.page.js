@@ -377,7 +377,7 @@ const ChatPage = (props) => {
                     <h5 className="padding-none">{sender?.firstName}</h5>
                   </div>
 
-                  <div className="d-flex align-items-center">
+                  {/*  <div className="d-flex align-items-center">
                     <button
                       className="btn btn-outline-primary-light btn-sm d-flex align-items-center"
                       style={{ height: "4.1rem", borderRadius: "20.5px" }}
@@ -385,7 +385,7 @@ const ChatPage = (props) => {
                     >
                       Insert Code
                     </button>
-                    {/*   <Dropdown overlay={menu} trigger={["click"]}>
+                       <Dropdown overlay={menu} trigger={["click"]}>
                     <img
                         src={shield}
                         alt=""
@@ -396,8 +396,8 @@ const ChatPage = (props) => {
                           objectFit: "contain",
                         }}
                     />
-                  </Dropdown>*/}
-                  </div>
+                  </Dropdown>
+                  </div>*/}
                 </div>
               </>
               <br />
