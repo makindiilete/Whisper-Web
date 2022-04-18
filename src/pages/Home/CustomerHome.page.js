@@ -189,13 +189,32 @@ const CustomerHomePage = (props) => {
   }, [currentProfile]);
 
   async function handleLikeDeclined() {
-    setIsLoading(true);
-    const res = await dislikeProviderPictureService({
-      galleryId: activeImage?._id,
-      userId: user?._id,
-    });
-    setIsLoading(false);
-    if (res.ok) {
+    if (activeImage?._id) {
+      setIsLoading(true);
+      const res = await dislikeProviderPictureService({
+        galleryId: activeImage?._id,
+        userId: user?._id,
+      });
+      setIsLoading(false);
+      if (
+        res.ok ||
+        res?.data?.message === "You has already disliked this gallery before"
+      ) {
+        setShowRestore(true);
+        const others = providersByPreference?.filter(
+          (i) => i._id !== currentProfile?.providerProfile?._id
+        );
+        const declined = providersByPreference?.find(
+          (i) => i._id === currentProfile?.providerProfile?._id
+        );
+        setLastDeclined(declined);
+        setProvidersByPreference(others);
+        fetchCurrentProfileDetails(others);
+        fetchCurrentProfileGallery(others);
+      } else {
+        message.error(res?.data?.errors[0].message || "Something went wrong");
+      }
+    } else {
       setShowRestore(true);
       const others = providersByPreference?.filter(
         (i) => i._id !== currentProfile?.providerProfile?._id
@@ -207,8 +226,6 @@ const CustomerHomePage = (props) => {
       setProvidersByPreference(others);
       fetchCurrentProfileDetails(others);
       fetchCurrentProfileGallery(others);
-    } else {
-      message.error(res?.data?.errors[0].message || "Something went wrong");
     }
   }
 
