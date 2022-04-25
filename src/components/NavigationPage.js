@@ -76,6 +76,9 @@ const NavigationPage = (props) => {
       case "messaging":
         setPath(2);
         break;
+      case "requests":
+        setPath(3);
+        break;
       default:
         setPath(8);
     }
@@ -141,6 +144,15 @@ const NavigationPage = (props) => {
               <li
                 onClick={() => {
                   setIsExpanded(!isExpanded);
+                  history.push(routes.SERVICE_REQUESTS);
+                }}
+                className="nav__item"
+              >
+                Service Requests
+              </li>
+              <li
+                onClick={() => {
+                  setIsExpanded(!isExpanded);
                   history.push(routes.CHAT);
                 }}
                 className="nav__item"
@@ -179,6 +191,15 @@ const NavigationPage = (props) => {
                 className={`nav__item ${path === 1 && "active"}`}
               >
                 Wallet
+              </li>
+              <li
+                onClick={() => {
+                  setIsExpanded(!isExpanded);
+                  history.push(routes.SERVICE_REQUESTS);
+                }}
+                className={`nav__item ${path === 3 && "active"}`}
+              >
+                Service Requests
               </li>
               <li
                 onClick={() => history.push(routes.CHAT)}

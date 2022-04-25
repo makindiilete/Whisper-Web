@@ -45,6 +45,7 @@ import FaqPage from "./pages/OtherLinks/Faq.page";
 import ChatPage from "./pages/Messaging/Chat.page";
 import { useSelector } from "react-redux";
 import StripePayment from "./pages/wallet/StripePayment";
+import ServiceRequestsPage from "./pages/Requests/Service_Requests.page";
 
 AOS.init();
 
@@ -176,6 +177,11 @@ function App() {
             path={routes.PROVIDER_HOME}
           />
           <LoggedAreaRoute exact component={WalletPage} path={routes.WALLET} />
+          <LoggedAreaRoute
+            exact
+            component={ServiceRequestsPage}
+            path={routes.SERVICE_REQUESTS}
+          />
           <LoggedAreaRoute
             exact
             component={ProfilePage}
